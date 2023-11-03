@@ -2,6 +2,7 @@ cfg/*.env
 env/
 ide/
 
+test.*
 manymiles/migrate.py
 
 __pycache__/
