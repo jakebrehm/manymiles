@@ -1,0 +1,39 @@
+{% extends "login/landing.html" %}
+
+{% block body %}
+
+    <div class="container vertical-center">
+        <div class="row w-100 mx-auto vertical-margins">
+            <div class="col-md-8">
+                <h1 class="text-light slogan-lg">ManyMiles</h1>
+                <h3 class="text-dark slogan-md">Keep track of your mileage</h3>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-header">Log in</h5><br>
+                        <!-- {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{message}}
+                                    </div>
+                                    <br>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %} -->
+                        <form method="post" action="/login_validation">
+                            <label>Username</label>
+                            <input type="text" class="form-control" name="username"><br>
+                            <label>Password</label><br>
+                            <input type="password" class="form-control" name="password"><br><br>
+                            <input type="submit" class="btn btn-primary btn-block btn-lg" value="Login">
+                        </form>
+                        <p class="mt-2">Don't have an account? <a href="/register">Create one</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
