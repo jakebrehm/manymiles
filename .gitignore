@@ -2,6 +2,7 @@ cfg/*.env
 env/
 ide/
 
+archive/
 test.*
 manymiles/migrate.py
 

@@ -1,39 +1,68 @@
 {% extends "login/landing.html" %}
 
+{% block css %}
+    <!-- Custom style -->
+    <link rel="stylesheet" href="{{ url_for('login.static', filename='css/style.css') }}">
+{% endblock %}
+
 {% block body %}
+    <!-- Navigation bar -->
+    <nav class="container-fluid">
+        <ul>
+            <li>
+                <a href="./" class="contrast" onclick="event.preventDefault()"><strong>ManyMiles</strong></a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <details role="list" dir="rtl">
+                    <summary aria-haspopup="listbox" role="link" class="secondary">
+                        Theme
+                    </summary>
+                    <ul role="listbox">
+                        <li><a href="#" data-theme-handler="auto">Auto</a></li>
+                        <li><a href="#" data-theme-handler="light">Light</a></li>
+                        <li><a href="#" data-theme-handler="dark">Dark</a></li>
+                    </ul>
+                </details>
+            </li>
+        </ul>
+    </nav>
 
-    <div class="container vertical-center">
-        <div class="row w-100 mx-auto vertical-margins">
-            <div class="col-md-8">
-                <h1 class="text-light slogan-lg">ManyMiles</h1>
-                <h3 class="text-dark slogan-md">Keep track of your mileage</h3>
+    <!-- Main container -->
+    <main class="container">
+        <article class="grid">
+            <div>
+                <hgroup>
+                    <h1>Sign in</h1>
+                    <h2>Get access to all the features of ManyMiles</h2>
+                </hgroup>
+                <form>
+                    <input type="text" name="login" placeholder="Username" aria-label="Username" autocomplete="username" required>
+                    <input type="password" name="password" placeholder="Password" aria-label="Password" autocomplete="current-password" required>
+                    <fieldset>
+                        <label for="remember">
+                            <input type="checkbox" role="switch" id="remember" name="remember">
+                            Remember me next time
+                        </label>
+                    </fieldset>
+                    <button type="submit" class="contrast" onclick="event.preventDefault()">Log in</button>
+                </form>
+                <hgroup class="sign-up">
+                    <small>
+                        Don't have an account?
+                        <a href="/register">Sign up</a>
+                        or
+                        <a href="#">preview</a>
+                    </small>
+                </hgroup>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-header">Log in</h5><br>
-                        <!-- {% with messages = get_flashed_messages() %}
-                            {% if messages %}
-                                {% for message in messages %}
-                                    <div class="alert alert-danger" role="alert">
-                                        {{message}}
-                                    </div>
-                                    <br>
-                                {% endfor %}
-                            {% endif %}
-                        {% endwith %} -->
-                        <form method="post" action="/login_validation">
-                            <label>Username</label>
-                            <input type="text" class="form-control" name="username"><br>
-                            <label>Password</label><br>
-                            <input type="password" class="form-control" name="password"><br><br>
-                            <input type="submit" class="btn btn-primary btn-block btn-lg" value="Login">
-                        </form>
-                        <p class="mt-2">Don't have an account? <a href="/register">Create one</a></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+            <div id="hero"></div>
+        </article>
+    </main>
+{% endblock %}
 
+{% block javascript %}
+    <!-- Theme-switching Javascript -->
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
 {% endblock %}

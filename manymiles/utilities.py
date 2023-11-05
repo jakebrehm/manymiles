@@ -1,11 +1,17 @@
+import datetime as dt
 import hashlib
 import os
 from typing import Optional
 
+from sqlalchemy.orm.session import Session
+
 import models
 
 
-def generate_hash(password: str, salt: Optional[bytes] = None) -> tuple[str, str]:
+def generate_hash(
+    password: str,
+    salt: Optional[bytes] = None,
+) -> tuple[str, str]:
     """Hashes the provided password and generates a salt for the user.
      
     Uses the MD5 algorithm. A salt can be provided as an argument if the user
@@ -34,3 +40,35 @@ def is_correct_password(user: models.User, password_to_verify: str) -> bool:
 
     # Compare the two hashes and return the result
     return (user.password_hash == h.hexdigest())
+
+
+def log_current_password(session: Session, user: models.User) -> None:
+    """Adds the user's current password to the password history table.
+    
+    Also updates the `password_id` column of the User record.
+
+    Should be called after the user's password is updated and committed.
+    """
+
+    # 
+    password = models.Password(
+        user_id=user.user_id,
+        password_hash=user.password_hash,
+        updated_datetime=dt.datetime.now(),
+    )
+    session.add(password)
+    session.commit()
+
+    # 
+    user.password_id = password.password_id
+    session.commit()
+
+
+# def create_user(**kwargs) -> models.User:
+#     """Creates a user and adds them to the database.
+    
+#     Also adds a record to the password history table.
+#     """
+
+#     # 
+#     user = models.User(**kwargs)

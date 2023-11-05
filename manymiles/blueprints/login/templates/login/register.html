@@ -1,39 +1,70 @@
 {% extends "login/landing.html" %}
 
+{% block css %}
+    <!-- Custom style -->
+    <link rel="stylesheet" href="{{ url_for('login.static', filename='css/style.css') }}">
+{% endblock %}
+
 {% block body %}
+    <!-- Navigation bar -->
+    <nav class="container-fluid">
+        <ul>
+            <li>
+                <a href="./" class="contrast" onclick="event.preventDefault()"><strong>ManyMiles</strong></a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <details role="list" dir="rtl">
+                    <summary aria-haspopup="listbox" role="link" class="secondary">
+                        Theme
+                    </summary>
+                    <ul role="listbox">
+                        <li><a href="#" data-theme-handler="auto">Auto</a></li>
+                        <li><a href="#" data-theme-handler="light">Light</a></li>
+                        <li><a href="#" data-theme-handler="dark">Dark</a></li>
+                    </ul>
+                </details>
+            </li>
+        </ul>
+    </nav>
 
-    <div class="container vertical-center">
-        <div class="row w-100 mx-auto vertical-margins">
-            <div class="col-md-8">
-                <h1 class="text-light slogan-lg">ManyMiles</h1>
-                <h3 class="text-dark slogan-md">Keep track of your mileage</h3>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-header">Create an account</h5><br>
-                        <!-- {% with messages = get_flashed_messages() %}
-                            {% if messages %}
-                                {% for message in messages %}
-                                    <div class="alert alert-danger" role="alert">
-                                        {{message}}
-                                    </div>
-                                    <br>
-                                {% endfor %}
-                            {% endif %}
-                        {% endwith %} -->
-                        <form method="post" action="/add_user">
-                            <label>Username</label>
-                            <input type="text" class="form-control" name="add-username"><br>
-                            <label>Password</label><br>
-                            <input type="password" class="form-control" name="add-password"><br><br>
-                            <input type="submit" class="btn btn-primary btn-block btn-lg" value="Register">
-                        </form>
-                        <p class="mt-2">Already have an account? <a href="/">Log in</a></p>
+    <!-- Main container -->
+    <main class="container">
+        <article class="grid">
+            <div>
+                <hgroup>
+                    <h1>Sign up</h1>
+                    <h2>Fields marked with an asterisk (*) are optional</h2>
+                </hgroup>
+                <form>
+                    <input type="text" name="login" placeholder="Username" aria-label="Username" autocomplete="username" required>
+                    <input type="email" name="email" placeholder="Email" aria-label="Email" autocomplete="email" required>
+                    <div class="grid tight">
+                        <div class="tight">
+                            <input type="text" name="first-name" placeholder="First Name*" aria-label="First Name" autocomplete="given-name">
+                        </div>
+                        <div class="tight">
+                            <input type="text" name="last-name" placeholder="Last Name*" aria-label="Last Name" autocomplete="family-name">
+                        </div>
                     </div>
-                </div>
+                    <input type="password" name="password" placeholder="Password" aria-label="Password" autocomplete="new-password" required>
+                    <input type="password" name="confirm-password" placeholder="Confirm Password" aria-label="Confirm Password" autocomplete="new-password" required>
+                    <button type="submit" class="contrast" onclick="event.preventDefault()">Log in</button>
+                </form>
+                <hgroup class="sign-up">
+                    <h2>
+                        Already have an account?
+                        <a href="/login">Sign in</a>
+                    </h2>
+                </hgroup>
             </div>
-        </div>
-    </div>
+            <div id="hero"></div>
+        </article>
+    </main>
+{% endblock %}
 
+{% block javascript %}
+    <!-- Theme-switching Javascript -->
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
 {% endblock %}
