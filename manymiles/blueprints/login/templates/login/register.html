@@ -48,8 +48,14 @@
                             <input type="text" name="last-name" placeholder="Last Name*" aria-label="Last Name" autocomplete="family-name">
                         </div>
                     </div>
-                    <input type="password" name="password" placeholder="Password" aria-label="Password" autocomplete="new-password" required>
-                    <input type="password" name="confirm-password" placeholder="Confirm Password" aria-label="Confirm Password" autocomplete="new-password" required>
+                    <input id="new-password-input" type="password" name="password" placeholder="Password" aria-label="Password" autocomplete="new-password" required>
+                    <input id="confirm-password-input" type="password" name="confirm-password" placeholder="Confirm Password" aria-label="Confirm Password" autocomplete="new-password" required>
+                    <fieldset>
+                        <label for="show-passwords">
+                            <input type="checkbox" role="switch" id="show-passwords" name="show-passwords" onclick="showPasswords()">
+                            Show passwords
+                        </label>
+                    </fieldset>
                     <button type="submit" class="contrast" onclick="event.preventDefault()">Log in</button>
                 </form>
                 <hgroup class="sign-up">
@@ -67,4 +73,6 @@
 {% block javascript %}
     <!-- Theme-switching Javascript -->
     <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <!-- Input validation Javascript -->
+    <script src="{{ url_for('login.static', filename='js/register_validate.js') }}"></script>
 {% endblock %}
