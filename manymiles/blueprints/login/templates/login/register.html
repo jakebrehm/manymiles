@@ -6,29 +6,6 @@
 {% endblock %}
 
 {% block body %}
-    <!-- Navigation bar -->
-    <nav class="container-fluid">
-        <ul>
-            <li>
-                <a href="./" class="contrast" onclick="event.preventDefault()"><strong>ManyMiles</strong></a>
-            </li>
-        </ul>
-        <ul>
-            <li>
-                <details role="list" dir="rtl">
-                    <summary aria-haspopup="listbox" role="link" class="secondary">
-                        Theme
-                    </summary>
-                    <ul role="listbox">
-                        <li><a href="#" data-theme-handler="auto">Auto</a></li>
-                        <li><a href="#" data-theme-handler="light">Light</a></li>
-                        <li><a href="#" data-theme-handler="dark">Dark</a></li>
-                    </ul>
-                </details>
-            </li>
-        </ul>
-    </nav>
-
     <!-- Main container -->
     <main class="container">
         <article class="grid">
@@ -71,8 +48,6 @@
 {% endblock %}
 
 {% block javascript %}
-    <!-- Theme-switching Javascript -->
-    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
     <!-- Input validation Javascript -->
     <script src="{{ url_for('login.static', filename='js/register_validate.js') }}"></script>
 {% endblock %}

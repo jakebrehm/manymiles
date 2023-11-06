@@ -15,8 +15,33 @@
     {% block css %}{% endblock %}
 </head>
 <body>
+    <!-- Navigation bar -->
+    <nav class="container-fluid">
+        <ul>
+            <li>
+                <a href="./" class="contrast" onclick="event.preventDefault()"><strong>ManyMiles</strong></a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <details role="list" dir="rtl">
+                    <summary aria-haspopup="listbox" role="link" class="secondary">
+                        Theme
+                    </summary>
+                    <ul role="listbox">
+                        <li><a href="#" data-theme-handler="auto">Auto</a></li>
+                        <li><a href="#" data-theme-handler="light">Light</a></li>
+                        <li><a href="#" data-theme-handler="dark">Dark</a></li>
+                    </ul>
+                </details>
+            </li>
+        </ul>
+    </nav>
+
     {% block body %}{% endblock %}
 
+    <!-- Theme-switching Javascript -->
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
     {% block javascript %}{% endblock %}
 </body>
 </html>
