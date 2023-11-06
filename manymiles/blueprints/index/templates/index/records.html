@@ -1,0 +1,19 @@
+{% extends "index/index.html" %}
+
+{% block css %}
+{% endblock %}
+
+{% block body %}
+    <!-- Main container -->
+    <main class="container">
+        <h1>Records</h1>
+        <div id="table"></div>
+        <button id="table-button" onclick="renderRecordTable()">
+            Table button
+        </button>
+    </main>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{{ url_for('index.static', filename='js/render_table.js') }}"></script>
+{% endblock %}

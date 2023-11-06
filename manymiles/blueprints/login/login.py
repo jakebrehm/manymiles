@@ -11,11 +11,11 @@ bp_login = Blueprint(
 
 
 @bp_login.route("/register")
-def register() -> ...:
+def register() -> str:
     """"""
     return render_template("login/register.html")
 
 @bp_login.route("/login")
-def login() -> ...:
+def login() -> str:
     """"""
     return render_template("login/login.html")
