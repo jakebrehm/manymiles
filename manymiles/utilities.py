@@ -5,7 +5,8 @@ from typing import Optional
 
 from sqlalchemy.orm.session import Session
 
-import models
+# import models
+from . import models
 
 
 def generate_hash(

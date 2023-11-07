@@ -1,12 +1,12 @@
 from sqlalchemy import (
     Column, DateTime, ForeignKey, Integer, LargeBinary, String, Text
 )
-from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
+# from extensions import db
+from .extensions import db
 
 
-class User(Base):
+class User(db.Model):
      
     __tablename__ = "user"
 
@@ -38,7 +38,7 @@ class User(Base):
         ")")
 
 
-class Record(Base):
+class Record(db.Model):
 
     __tablename__ = "record"
 
@@ -62,7 +62,7 @@ class Record(Base):
         ")")
 
 
-class Login(Base):
+class Login(db.Model):
 
     __tablename__ = "login"
 
@@ -82,7 +82,7 @@ class Login(Base):
         ")")
 
 
-class Password(Base):
+class Password(db.Model):
 
     __tablename__ = "password"
 
@@ -104,7 +104,7 @@ class Password(Base):
         ")")
 
 
-class Role(Base):
+class Role(db.Model):
 
     __tablename__ = "role"
 
@@ -118,7 +118,7 @@ class Role(Base):
         ")")
 
 
-class UserRole(Base):
+class UserRole(db.Model):
 
     __tablename__ = "user_role"
 

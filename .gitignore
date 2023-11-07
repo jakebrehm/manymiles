@@ -1,6 +1,6 @@
-cfg/*.env
 env/
 ide/
+*.env
 
 archive/
 test.*

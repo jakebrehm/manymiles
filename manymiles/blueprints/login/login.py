@@ -1,7 +1,9 @@
-from flask import Blueprint, render_template
+from flask import (
+    Blueprint, render_template, redirect, request, Response, session
+)
 
 
-bp_login = Blueprint(
+blueprint_login = Blueprint(
     "login",
     __name__,
     template_folder="templates",
@@ -10,12 +12,32 @@ bp_login = Blueprint(
 )
 
 
-@bp_login.route("/register")
+@blueprint_login.route("/register")
 def register() -> str:
     """"""
     return render_template("login/register.html")
 
-@bp_login.route("/login")
+@blueprint_login.route("/login")
 def login() -> str:
     """"""
     return render_template("login/login.html")
+
+@blueprint_login.route("/validate_login", methods=["POST"])
+def validate_login() -> Response:
+    """"""
+    username = request.form.get("username")
+    password = request.form.get("password")
+    remember = request.form.get("remember")
+
+    print(f"{username=}")
+    print(f"{password=}")
+    print(f"{remember=}")
+
+    # session["user_id"] = 
+    session["username"] = username
+
+    if remember == "on":
+        session.permanent = True
+    
+
+    return redirect("/")

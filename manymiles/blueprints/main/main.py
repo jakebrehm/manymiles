@@ -2,8 +2,8 @@ import pandas as pd
 from flask import Blueprint, render_template
 
 
-bp_index = Blueprint(
-    "index",
+blueprint_main = Blueprint(
+    "main",
     __name__,
     template_folder="templates",
     static_folder="static",
@@ -11,18 +11,18 @@ bp_index = Blueprint(
 )
 
 
-@bp_index.route("/")
-@bp_index.route("/home")
+@blueprint_main.route("/")
+@blueprint_main.route("/home")
 def home() -> str:
     """"""
     return render_template("index/home.html")
 
-@bp_index.route("/records")
+@blueprint_main.route("/records")
 def records() -> str:
     """"""
     return render_template("index/records.html")
 
-@bp_index.route("/_get_records", methods=["GET", "POST"])
+@blueprint_main.route("/_get_records", methods=["GET", "POST"])
 def _get_records() -> str:
     df = pd.DataFrame({
         "A": [1, 2, 3],
