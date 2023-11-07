@@ -5,7 +5,6 @@ from typing import Optional
 
 from sqlalchemy.orm.session import Session
 
-# import models
 from . import models
 
 

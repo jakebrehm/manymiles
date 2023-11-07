@@ -2,7 +2,6 @@ from sqlalchemy import (
     Column, DateTime, ForeignKey, Integer, LargeBinary, String, Text
 )
 
-# from extensions import db
 from .extensions import db
 
 
