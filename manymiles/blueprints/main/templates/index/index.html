@@ -36,8 +36,12 @@
                 </details>
             </li>
             <li><a href="/records">Records</a></li>
+            {% if session["user_id"] %}
+            <li><a href="/logout" role="button">Log out</a></li>
+            {% else %}
             <li><a href="/login" role="button">Log in</a></li>
             <li><a href="/register" role="button" class="secondary">Sign up</a></li>
+            {% endif %}
         </ul>
     </nav>
 

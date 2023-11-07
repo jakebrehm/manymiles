@@ -10,7 +10,7 @@ class User(db.Model):
     __tablename__ = "user"
 
     user_id = Column("id", Integer, primary_key=True)
-    username = Column("username", String(32), nullable=False)
+    username = Column("username", String(32), nullable=False, unique=True)
     password_id = Column(
         "password_id",
         ForeignKey("password.id", name="fk_user_password"),
