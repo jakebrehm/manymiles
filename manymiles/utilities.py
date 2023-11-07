@@ -1,6 +1,7 @@
 import datetime as dt
 import hashlib
 import os
+import re
 from typing import Optional
 
 from sqlalchemy.orm.session import Session
@@ -64,11 +65,28 @@ def log_current_password(session: Session, user: models.User) -> None:
     session.commit()
 
 
-# def create_user(**kwargs) -> models.User:
-#     """Creates a user and adds them to the database.
+def create_account(session: Session, **kwargs) -> models.User:
+    """Creates an account and adds it to the database.
     
-#     Also adds a record to the password history table.
-#     """
+    Also adds a record to the password history table.
+    """
 
-#     # 
-#     user = models.User(**kwargs)
+    # Create a User object and add it to the database
+    user = models.User(**kwargs)
+    session.add(user)
+    session.commit()
+
+    # Log their password in the password history table
+    log_current_password(session, user)
+
+
+def is_valid_email(email: str) -> bool:
+    """Checks whether or not a provided email is valid."""
+    
+    expression = r"^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$"
+    return bool(re.match(expression, email))
+
+
+def is_valid_password(password: str) -> bool:
+    """Checks whether or not a provided password is valid."""
+    ...

@@ -15,7 +15,6 @@ blueprint_login = Blueprint(
     static_url_path="/login/static",
 )
 
-
 @blueprint_login.route("/register")
 def register() -> str:
     """"""
@@ -52,6 +51,8 @@ def validate_login() -> Response:
     # Get the user object
     user = db.session.query(User).filter_by(username=username).first()
 
+    # TODO: validate inputs
+
     # If the user was not found, flash an alert
     if user is None:
         flash("An account with that username doesn't exist.")
@@ -75,3 +76,30 @@ def validate_login() -> Response:
     
     # Send the user to the homepage
     return redirect("/")
+
+@blueprint_login.route("/add_user", methods=["POST"])
+def add_user():
+    """Creates an account and adds the user to the database."""
+
+    # Get the relevant information from the form
+    username = request.form.get("username")
+    email = request.form.get("email")
+    first_name = request.form.get("first-name")
+    last_name = request.form.get("last-name")
+    password = request.form.get("password")
+    confirm_password = request.form.get("confirm-password")
+
+    # Confirm that the username is valid
+
+    # Confirm that the passwords match
+    if not (password == confirm_password):
+        ...
+    
+    # Confirm that the email is valid
+    if not utilities.is_valid_email(email):
+        flash("The email provided is not valid.")
+        return redirect("/register")
+
+    # TODO confirm that the passwords are valid
+
+    return redirect("/register") # TODO

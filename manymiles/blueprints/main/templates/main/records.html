@@ -1,4 +1,4 @@
-{% extends "index/index.html" %}
+{% extends "main/index.html" %}
 
 {% block css %}
 {% endblock %}
@@ -15,5 +15,5 @@
 {% endblock %}
 
 {% block javascript %}
-    <script src="{{ url_for('index.static', filename='js/render_table.js') }}"></script>
+    <script src="{{ url_for('main.static', filename='js/render_table.js') }}"></script>
 {% endblock %}

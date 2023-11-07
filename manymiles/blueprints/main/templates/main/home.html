@@ -1,4 +1,4 @@
-{% extends "index/index.html" %}
+{% extends "main/index.html" %}
 
 {% block css %}
 {% endblock %}
@@ -7,7 +7,7 @@
     <!-- Main container -->
     <main class="container">
         {% if session["username"] %}
-        <h2>Welcome, {{ session["username"] }}!</h2>
+        <h2>Welcome, {{ session["first_name"] }}!</h2>
         {% else %}
         <h2>Welcome!</h2>
         {% endif %}

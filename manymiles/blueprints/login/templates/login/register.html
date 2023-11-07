@@ -14,9 +14,9 @@
                     <h1>Sign up</h1>
                     <h2>Fields marked with an asterisk (*) are optional</h2>
                 </hgroup>
-                <form>
-                    <input type="text" name="login" placeholder="Username" aria-label="Username" autocomplete="username" required>
-                    <input type="email" name="email" placeholder="Email" aria-label="Email" autocomplete="email" required>
+                <form method="post" action="/add_user">
+                    <input id="username-input" type="text" name="username" placeholder="Username" aria-label="Username" autocomplete="username" required>
+                    <input id="email-input" type="email" name="email" placeholder="Email" aria-label="Email" autocomplete="email" required>
                     <div class="grid tight">
                         <div class="tight">
                             <input type="text" name="first-name" placeholder="First Name*" aria-label="First Name" autocomplete="given-name">
@@ -33,7 +33,7 @@
                             Show passwords
                         </label>
                     </fieldset>
-                    <button type="submit" class="contrast" onclick="event.preventDefault()">Log in</button>
+                    <button id="submit-button" type="submit" class="contrast" disabled>Log in</button>
                 </form>
                 <hgroup class="sign-up">
                     <h2>

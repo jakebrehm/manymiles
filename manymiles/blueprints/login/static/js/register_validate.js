@@ -39,17 +39,37 @@ function validatePassword(password) {
 }
 
 /**
- * [validatePasswords description]
+ * [validateEmail description]
+ * Determines whether or not the email is valid.
+ * @param   {String}    email       The email to validate.
+ * @return  {Boolean}               Whether or not the email is valid.
+ */
+function validateEmail(email) {
+    return /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$/.test(email);
+}
+
+/**
+ * [validateForm description]
  * Adds event listeners to the password inputs on the page that changes
  * their "aria-invalid" attributes according to their values' validity.
  */
-function validatePasswordInputs() {
+function validateForm() {
 
+    // Get handles to the form submission button
+    const submitButton = document.getElementById("submit-button");
+    // Get handles to the username and email inputs
+    const username = document.getElementById("username-input");
+    const email = document.getElementById("email-input");
     // Get handles to each of the password inputs
     const newPassword = document.getElementById("new-password-input");
     const confirmPassword = document.getElementById("confirm-password-input");
     // Create an array of these two password inputs
     const passwordInputs = [newPassword, confirmPassword];
+    // Create an array of all required inputs
+    const requiredInputs = [username, email, newPassword, confirmPassword];
+
+    console.log(username.value)
+    console.log(email.value)
 
     //
     passwordInputs.forEach((passwordInput) => {
@@ -87,7 +107,57 @@ function validatePasswordInputs() {
             }
         );
     });
+
+    // 
+    email.addEventListener(
+        "input",
+        function() {
+            // Get the value of the email input
+            const emailValue = email.value;
+
+            // Modify the validity attribute for the email input
+            if (!emailValue) {
+                email.removeAttribute("aria-invalid");
+            } else if (validateEmail(emailValue)) {
+                email.setAttribute("aria-invalid", "false");
+            } else {
+                email.setAttribute("aria-invalid", "true");
+            }
+        }
+    );
+
+    // 
+    requiredInputs.forEach((requiredInput) => {
+        requiredInput.addEventListener(
+            "input",
+            function() {
+                // Get the values of each required input
+                const newValue = newPassword.value;
+                const confirmValue = confirmPassword.value;
+                const usernameValue = username.value;
+                const emailValue = email.value;
+
+                // Determine if the values match
+                const valuesMatch = (newValue == confirmValue);
+                // Determine if both passwords are valid
+                const valuesValid = (
+                    validatePassword(newValue) && validatePassword(confirmValue)
+                );
+                // Determine if the user information is valid
+                const validUserInfo = (
+                    usernameValue && validateEmail(emailValue)
+                );
+
+                // Toggle the submit button depending on the form's validity
+                if (valuesValid && valuesMatch && validUserInfo) {
+                    submitButton.disabled = false;
+                } else {
+                    submitButton.disabled = true;
+                }
+            }
+        );
+    });
 }
 
 // Call the function
-validatePasswordInputs()
+validateForm()
