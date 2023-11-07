@@ -44,6 +44,8 @@
 
             <div class="row">
                 <div class="col-sm-8" style="align-self: center !important">
+                    <div class="desktop-only">
+                    Go to page: 
                     {% for page in records.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
                         {% if page %}
                         <a href="{{ url_for('main.records', page_num=page, per_page=records.per_page) }}" style="padding: 5px;">{{page}}</a>
@@ -51,6 +53,7 @@
                         ...
                         {% endif %}
                     {% endfor %}
+                    </div>
                 </div>
                 <div class="col-sm-4">
                     <div style="float: right !important;">
