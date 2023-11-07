@@ -4,9 +4,29 @@
     background-color: rgb(197, 0, 0);
 }
 
+/* Table */
+
+tr:hover {
+    background: #80808022 !important;
+}
+
+tr:hover td {
+    background-color: transparent;
+}
+
 /* Record buttons */
 
+@media only screen and (max-width: 900px) {
+    .desktop-only {
+        display: none;
+    }
+}
+
 .record-button {
-    width: 30%;
+    width: 50%;
     padding: 5%;
+}
+
+.pagination-button {
+    width: 80px;
 }

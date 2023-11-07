@@ -6,39 +6,35 @@
 
         <!-- Blueprint-specific style -->
         <link rel="stylesheet" href="{{ url_for('main.static', filename='css/style.css') }}">
-
 {% endblock %}
 
 {% block body %}
     <!-- Main container -->
     <main class="container">
         <h1>Records</h1>
-        <div id="table"></div>
-        <button id="table-button" onclick="renderRecordTable()">
-            Table button
-        </button>
 
         {% if records %}
         <div class="container">
             <table role="grid">
                 <thead>
-                    <th style="width: 15%">Date</th>
-                    <th style="width: 15%">Time</th>
-                    <th style="width: 15%">Mileage</th>
-                    <th>Notes</th>
-                    <th style="width: 20%"></th>
+                    <th style="width: 15%;">Date</th>
+                    <th style="width: 15%;">Time</th>
+                    <th style="width: 15%;">Mileage</th>
+                    <th style="width: 42%;" class="desktop-only">Notes</th>
+                    <!-- <th></th> -->
+                    <th style="width: 13%;"></th>
                 </thead>
             {% for record in records.items %}
                 <tr>
                     <td>{{ record.recorded_datetime.strftime("%Y-%m-%d") }}</td>
                     <td>{{ record.recorded_datetime.strftime("%-I:%M %p") }}</td>
                     <td>{{ record.mileage }}</td>
-                    <td>{{ record.notes if record.notes else "" }}</td>
-                    <td>
-                        <a href="/update?record={{ record.record_id }}" class="record-button" role="button">
+                    <td style="width: 42%;" class="desktop-only">{{ record.notes if record.notes else "" }}</td>
+                    <td style="width: 13%">
+                        <a style="width: 50px" href="/update?record={{ record.record_id }}" class="record-button" role="button">
                             <i class="fa fa-edit" aria-hidden="true"></i>
                         </a>
-                        <a href="/delete_record?record={{ record.record_id }}" class="record-button deep-red" role="button">
+                        <a style="width: 50px" href="/delete_record?record={{ record.record_id }}" class="record-button deep-red" role="button">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </a>
                     </td>
@@ -46,13 +42,27 @@
             {% endfor %}
             </table>
 
-            {% for page in records.iter_pages(left_edge=3, right_edge=3, left_current=3, right_current=3) %}
-                {% if page %}
-                    <a href="{{ url_for('main.records', page_num=page, per_page=records.per_page) }}">{{page}}</a>
-                {% else %}
-                    ...
-                {% endif %}
-            {% endfor %}
+            <div class="row">
+                <div class="col-sm-8" style="align-self: center !important">
+                    {% for page in records.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
+                        {% if page %}
+                        <a href="{{ url_for('main.records', page_num=page, per_page=records.per_page) }}" style="padding: 5px;">{{page}}</a>
+                        {% else %}
+                        ...
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="col-sm-4">
+                    <div style="float: right !important;">
+                        <a href="#" role="button" class="secondary pagination-button">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        </a>
+                        <a href="#" role="button" class="pagination-button">
+                            <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
         {% endif %}
     </main>
