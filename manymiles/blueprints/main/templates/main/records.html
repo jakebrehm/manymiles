@@ -11,9 +11,28 @@
 {% block body %}
     <!-- Main container -->
     <main class="container">
-        <h1>Records</h1>
+        <article>
+            <header class="thin-card">
+                <h4 class="no-bottom-margin">Add a new record</h4>
+            </header>
+            <form method="post" action="/add_record">
+                <div class="grid">
+                    <div>
+                        <label class="no-bottom-margin" for="timestamp">Timestamp
+                            <input class="no-bottom-margin" type="datetime-local" id="timestamp" aria-label="Timestamp" name="timestamp" required>
+                        </label>
+                    </div>
+                    <div>
+                        <label class="no-bottom-margin" for="mileage">Mileage
+                            <input class="no-bottom-margin" type="number" id="mileage" aria-label="Mileage" name="mileage" required>
+                        </label>
+                    </div>
+                </div>
+                <button class="no-bottom-margin" style="margin-top: 10px;">Submit</button>
+            </form>
+        </article>
 
-        {% if records %}
+        {% if records.items %}
         <div class="container">
             <table role="grid">
                 <thead>
@@ -45,7 +64,7 @@
             <div class="row">
                 <div class="col-sm-8" style="align-self: center !important">
                     <div class="desktop-only">
-                    Go to page: 
+                    Page {{ records.page }} of {{ records.pages }}: 
                     {% for page in records.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
                         {% if page %}
                         <a href="{{ url_for('main.records', page_num=page, per_page=records.per_page) }}" style="padding: 5px;">{{page}}</a>
@@ -57,12 +76,16 @@
                 </div>
                 <div class="col-sm-4">
                     <div style="float: right !important;">
-                        <a href="#" role="button" class="secondary pagination-button">
+                        {% if records.prev_num %}
+                        <a href="{{ url_for('main.records', page_num=records.prev_num, per_page=records.per_page) }}" role="button" class="secondary pagination-button">
                             <i class="fa fa-arrow-left" aria-hidden="true"></i>
                         </a>
-                        <a href="#" role="button" class="pagination-button">
+                        {% endif %}
+                        {% if records.next_num %}
+                        <a href="{{ url_for('main.records', page_num=records.next_num, per_page=records.per_page) }}" role="button" class="pagination-button">
                             <i class="fa fa-arrow-right" aria-hidden="true"></i>
                         </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>

@@ -1,5 +1,5 @@
 import pandas as pd
-from flask import Blueprint, render_template, redirect, session
+from flask import Blueprint, flash, render_template, redirect, request, session
 
 from ...extensions import db
 from ...models import Record
@@ -16,7 +16,7 @@ blueprint_main = Blueprint(
 @blueprint_main.route("/")
 @blueprint_main.route("/home")
 def home() -> str:
-    """"""
+    """The home page of the application."""
     if not session.get("user_id"):
         return redirect("/login")
     return render_template("main/home.html")
@@ -25,12 +25,13 @@ def home() -> str:
 @blueprint_main.route("/records/<int:page_num>", defaults={"per_page": 10})
 @blueprint_main.route("/records/<int:page_num>/<int:per_page>")
 def records(page_num: int, per_page: int) -> str:
-    """"""
+    """Page that shows all records and allows the user to add new ones."""
 
-    # 
-    if not (user_id := session["user_id"]):
+    # Confirm that the user is logged in
+    if not (user_id := session.get("user_id", None)):
         return redirect("/login")
     
+    # Paginate the records to display in a table
     filtered_records = Record.query.filter_by(user_id=user_id)
     ordered_records = filtered_records.order_by(Record.mileage.desc())
     paginated_records = ordered_records.paginate(
@@ -39,36 +40,47 @@ def records(page_num: int, per_page: int) -> str:
         error_out=True,
     )
 
+    # Render the records page with the pagination
     return render_template(
         "main/records.html",
         records=paginated_records,
     )
 
-@blueprint_main.route("/_get_records", methods=["GET", "POST"])
-def _get_records() -> str:
-    # df = pd.DataFrame({
-    #     "A": [1, 2, 3],
-    #     "B": [4, 5, 6],
-    #     "C": [7, 8, 9],
-    # })
+@blueprint_main.route("/add_record", methods=["GET", "POST"])
+def add_record() -> str:
+    """Adds a record to the database."""
 
-    # user_id = session["user_id"]
-    # if not user_id:
-    if not (user_id := session["user_id"]):
+    # Confirm that the user is logged in
+    if not (user_id := session.get("user_id", None)):
         return redirect("/login")
     
-    records = Record.query.filter_by(user_id=user_id).order_by(Record.mileage.desc()).paginate(per_page=10, page=1, error_out=True)
-    # print(pd.DataFrame.from_records(item.__dict__ for item in records.items).columns)
-    df = pd.DataFrame.from_records(item.__dict__ for item in records.items)
-    # print(df.head())
-    df["date"] = pd.to_datetime(df["recorded_datetime"]).dt.date.astype("string")
-    df["time"] = pd.to_datetime(df["recorded_datetime"]).dt.time.astype("string")
-    df = df[["record_id", "date", "time", "mileage", "notes"]]
-    df = df.rename(columns={
-        "record_id": "ID",
-        "date": "Date",
-        "time": "Time",
-        "mileage": "Mileage",
-        "notes": "Notes",
-    })
-    return df.to_json(orient="split", index=False)
+    # Get the relevant information from the form
+    timestamp = request.form.get("timestamp")
+    mileage = int(request.form.get("mileage"))
+
+    # Check if any of the required values are blank
+    if any(value is None for value in [timestamp, mileage]):
+        flash("Please provide values for all required inputs.")
+        return redirect("/records")
+
+    # Determine the highest mileage recorded by the user
+    filtered_records = db.session.query(Record).filter_by(user_id=user_id)
+    ordered_records = filtered_records.order_by(Record.mileage.desc())
+    highest_record = ordered_records.limit(1).first()
+
+    # Check if the entered mileage is higher than the previous mileages
+    if highest_record and not (mileage >= highest_record.mileage):
+        flash("You cannot record a lower mileage than your previous records.")
+        return redirect("/records")
+
+    # Add the record to the database
+    db.session.add(Record(
+        user_id=user_id,
+        mileage=mileage,
+        recorded_datetime=timestamp,
+        notes=None,
+    ))
+    db.session.commit()
+
+    # Redirect back to the records page
+    return redirect("/records")

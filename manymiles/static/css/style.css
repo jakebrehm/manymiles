@@ -3,3 +3,13 @@
 :root {
     --primary: #5e35b1;
 }
+
+/* General */
+
+.thin-card {
+    padding: 2em;
+}
+
+.no-bottom-margin {
+    margin-bottom: 0;
+}
