@@ -1,0 +1,12 @@
+/* Colors */
+
+.deep-red {
+    background-color: rgb(197, 0, 0);
+}
+
+/* Record buttons */
+
+.record-button {
+    width: 30%;
+    padding: 5%;
+}

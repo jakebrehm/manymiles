@@ -1,6 +1,12 @@
 {% extends "main/index.html" %}
 
 {% block css %}
+        <!-- Font Awesome CSS stylesheets -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <!-- Blueprint-specific style -->
+        <link rel="stylesheet" href="{{ url_for('main.static', filename='css/style.css') }}">
+
 {% endblock %}
 
 {% block body %}
@@ -11,6 +17,44 @@
         <button id="table-button" onclick="renderRecordTable()">
             Table button
         </button>
+
+        {% if records %}
+        <div class="container">
+            <table role="grid">
+                <thead>
+                    <th style="width: 15%">Date</th>
+                    <th style="width: 15%">Time</th>
+                    <th style="width: 15%">Mileage</th>
+                    <th>Notes</th>
+                    <th style="width: 20%"></th>
+                </thead>
+            {% for record in records.items %}
+                <tr>
+                    <td>{{ record.recorded_datetime.strftime("%Y-%m-%d") }}</td>
+                    <td>{{ record.recorded_datetime.strftime("%-I:%M %p") }}</td>
+                    <td>{{ record.mileage }}</td>
+                    <td>{{ record.notes if record.notes else "" }}</td>
+                    <td>
+                        <a href="/update?record={{ record.record_id }}" class="record-button" role="button">
+                            <i class="fa fa-edit" aria-hidden="true"></i>
+                        </a>
+                        <a href="/delete_record?record={{ record.record_id }}" class="record-button deep-red" role="button">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </table>
+
+            {% for page in records.iter_pages(left_edge=3, right_edge=3, left_current=3, right_current=3) %}
+                {% if page %}
+                    <a href="{{ url_for('main.records', page_num=page, per_page=records.per_page) }}">{{page}}</a>
+                {% else %}
+                    ...
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
     </main>
 {% endblock %}
 
