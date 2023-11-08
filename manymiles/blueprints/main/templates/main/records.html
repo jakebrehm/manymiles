@@ -117,10 +117,28 @@
         {% if records.items %}
         {% for record in records.items %}
         <dialog id="modal-{{ record.record_id }}">
-            <article>
-                <a class="close" data-target="modal-{{ record.record_id }}" onClick="toggleModal(event)" aria-label="Close"></a>
-                <h3>Are you sure?</h3>
-                <p>Do you really want to delete this record?</p>
+            <article style="min-width: 75vw;">
+                <header>
+                    <a class="close" data-target="modal-{{ record.record_id }}" onClick="toggleModal(event)" aria-label="Close"></a>
+                    <hgroup>
+                        <h1>Are you sure?</h1>
+                        <h4>Do you really want to delete this record?</h4>
+                    </hgroup>
+                </header>
+                <table role="grid">
+                    <thead>
+                        <th style="width: 15%;">Date</th>
+                        <th style="width: 15%;">Time</th>
+                        <th style="width: 15%;">Mileage</th>
+                        <th style="width: 55%;" class="desktop-only">Notes</th>
+                    </thead>
+                    <tr>
+                        <td style="width: 15%;">{{ record.recorded_datetime.strftime("%Y-%m-%d") }}</td>
+                        <td style="width: 15%;">{{ record.recorded_datetime.strftime("%-I:%M %p") }}</td>
+                        <td style="width: 15%;">{{ record.mileage }}</td>
+                        <td style="width: 55%;" class="desktop-only">{{ record.notes if record.notes else "" }}</td>
+                    </tr>
+                </table>
                 <footer>
                     <a href="#cancel" class="secondary" role="button" data-target="modal-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Cancel">Cancel</a>
                     <a href="{{ url_for('main.delete_record', record_id=record.record_id, page_num=records.page, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}" role="button" data-target="modal-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Confirm">Confirm</a>
