@@ -68,9 +68,6 @@ function validateForm() {
     // Create an array of all required inputs
     const requiredInputs = [username, email, newPassword, confirmPassword];
 
-    console.log(username.value)
-    console.log(email.value)
-
     //
     passwordInputs.forEach((passwordInput) => {
         passwordInput.addEventListener(

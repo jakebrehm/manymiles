@@ -24,14 +24,14 @@
                     </div>
                     <div>
                         <label class="no-bottom-margin" for="mileage">Mileage
-                            <input class="no-bottom-margin" type="number" id="mileage" aria-label="Mileage" name="mileage" required>
+                            <input class="no-bottom-margin" type="number" id="mileage" min="1" aria-label="Mileage" name="mileage" required>
                         </label>
                     </div>
                 </div>
                 <label class="no-bottom-margin" for="notes">Notes*
                     <input class="no-bottom-margin" type="text" id="notes" placeholder="Add some optional notes here" aria-label="Notes" name="notes">
                 </label>
-                <button class="no-bottom-margin" style="margin-top: 10px;">Submit</button>
+                <button id="submit-new-record" class="no-bottom-margin" style="margin-top: 10px;" disabled>Submit</button>
             </form>
         </article>
 
@@ -39,16 +39,16 @@
             <div class="row">
                 <div class="col-md-4 col-lg-5">
                     <label class="no-bottom-margin" for="timestamp">Records from
-                        <input class="no-bottom-margin" type="datetime-local" id="timestamp" aria-label="Timestamp From" name="from" value="{{ from_timestamp }}">
+                        <input class="no-bottom-margin" type="datetime-local" id="from-timestamp" aria-label="Timestamp From" name="from" value="{{ from_timestamp }}">
                     </label>
                 </div>
                 <div class="col-md-4 col-lg-5">
                     <label class="no-bottom-margin" for="timestamp">Records until
-                        <input class="no-bottom-margin" type="datetime-local" id="timestamp" aria-label="Timestamp To" name="to" value="{{ to_timestamp }}">
+                        <input class="no-bottom-margin" type="datetime-local" id="to-timestamp" aria-label="Timestamp To" name="to" value="{{ to_timestamp }}">
                     </label>
                 </div>
                 <div class="col-md-4 col-lg-2" style="align-self: end !important">
-                    <button>Apply</button>
+                    <button id="apply-button">Apply</button>
                 </div>
             </div>
         </form>
@@ -117,5 +117,5 @@
 {% endblock %}
 
 {% block javascript %}
-    <script src="{{ url_for('main.static', filename='js/render_table.js') }}"></script>
+    <script src="{{ url_for('main.static', filename='js/records_validate.js') }}"></script>
 {% endblock %}
