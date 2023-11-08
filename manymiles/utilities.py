@@ -121,3 +121,39 @@ def is_valid_password(password: str) -> bool:
     
     expression = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{7,}$"
     return bool(re.match(expression, password))
+
+
+def get_datetime_from_string(
+    string: Optional[str],
+    format: Optional[str] = None,
+) -> dt.datetime:
+    """Converts a datetime string of the given format to a datetime object."""
+
+    # Set a default format if one is not provided
+    if format is None:
+        format = r"%Y-%m-%dT%H:%M"
+    
+    # If the string input is not valid, pass it through
+    if not string:
+        return string
+    
+    # Otherwise, convert to a datetime object and return
+    return dt.datetime.strptime(string, format)
+
+
+def get_string_from_datetime(
+    timestamp: Optional[dt.datetime],
+    format: Optional[str] = None,
+) -> dt.datetime:
+    """Converts a datetime object to a datetime string with a given format."""
+
+    # Set a default format if one is not provided
+    if format is None:
+        format = r"%Y-%m-%dT%H:%M"
+    
+    # If the string input is not valid, pass it through
+    if not timestamp:
+        return timestamp
+    
+    # Otherwise, convert to a datetime object and return
+    return timestamp.strftime(format)
