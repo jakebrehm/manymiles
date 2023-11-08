@@ -1,4 +1,3 @@
-import datetime as dt
 import math
 
 from flask import (
@@ -66,11 +65,11 @@ def records(page_num: int, per_page: int) -> str:
 
     # Order the records by descending mileage
     ordered_records = filtered_records.order_by(Record.mileage.desc())
-    
+
     # Determine the number of pages that should be paginated
     n_records = len(ordered_records.all())
     n_pages = math.ceil(n_records / per_page)
-    page_num = n_pages if (page_num > n_pages) else page_num
+    page_num = max(1, n_pages if (page_num > n_pages) else page_num)
 
     # Paginate the filtered and ordered records
     paginated_records = ordered_records.paginate(
