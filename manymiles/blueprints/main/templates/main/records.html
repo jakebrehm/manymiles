@@ -24,7 +24,7 @@
                     </div>
                     <div>
                         <label class="no-bottom-margin" for="mileage">Mileage
-                            <input class="no-bottom-margin" type="number" id="mileage" min="1" aria-label="Mileage" name="mileage" required>
+                            <input class="no-bottom-margin" type="number" id="mileage" min="0" aria-label="Mileage" name="mileage" required>
                         </label>
                     </div>
                 </div>
@@ -35,16 +35,16 @@
             </form>
         </article>
 
-        <form>
+        <form method="post" action="{{ url_for('main.filter_records') }}">
             <div class="row">
                 <div class="col-md-4 col-lg-5">
-                    <label class="no-bottom-margin" for="timestamp">Records from
-                        <input class="no-bottom-margin" type="datetime-local" id="from-timestamp" aria-label="Timestamp From" name="from" value="{{ from_timestamp }}">
+                    <label class="no-bottom-margin" for="from-timestamp">Records from
+                        <input class="no-bottom-margin" type="datetime-local" id="from-timestamp" aria-label="Timestamp From" name="from" {% if from_timestamp %}value="{{ from_timestamp }}"{% endif %}>
                     </label>
                 </div>
                 <div class="col-md-4 col-lg-5">
-                    <label class="no-bottom-margin" for="timestamp">Records until
-                        <input class="no-bottom-margin" type="datetime-local" id="to-timestamp" aria-label="Timestamp To" name="to" value="{{ to_timestamp }}">
+                    <label class="no-bottom-margin" for="to-timestamp">Records until
+                        <input class="no-bottom-margin" type="datetime-local" id="to-timestamp" aria-label="Timestamp To" name="to" {% if from_timestamp %}value="{{ to_timestamp }}"{% endif %}>
                     </label>
                 </div>
                 <div class="col-md-4 col-lg-2" style="align-self: end !important">
@@ -73,7 +73,7 @@
                         <a style="width: 50px" href="/update?record={{ record.record_id }}" class="record-button" role="button">
                             <i class="fa fa-edit" aria-hidden="true"></i>
                         </a>
-                        <a style="width: 50px" href="/delete_record?record={{ record.record_id }}" class="record-button deep-red" role="button">
+                        <a style="width: 50px" href="#" data-target="modal-{{ record.record_id }}" onclick="toggleModal(event)" class="record-button deep-red" role="button">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </a>
                     </td>
@@ -113,9 +113,26 @@
             </div>
         </div>
         {% endif %}
+
+        {% if records.items %}
+        {% for record in records.items %}
+        <dialog id="modal-{{ record.record_id }}">
+            <article>
+                <a class="close" href="#close" data-target="modal-{{ record.record_id }}" onClick="toggleModal(event)" aria-label="Close"></a>
+                <h3>Are you sure?</h3>
+                <p>Do you really want to delete this record?</p>
+                <footer>
+                    <a href="#cancel" class="secondary" role="button" data-target="modal-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Cancel">Cancel</a>
+                    <a href="{{ url_for('main.delete_record', record_id=record.record_id, page_num=records.page, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}" role="button" data-target="modal-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Confirm">Confirm</a>
+                </footer>
+            </article>
+        </dialog>
+        {% endfor %}
+        {% endif %}
     </main>
 {% endblock %}
 
 {% block javascript %}
+    <script src="{{ url_for('static', filename='js/modal.js') }}"></script>
     <script src="{{ url_for('main.static', filename='js/records_validate.js') }}"></script>
 {% endblock %}

@@ -79,9 +79,13 @@ function validateFilter() {
                 // Get the values of each filter
                 const fromTimestampValue = fromTimestampInput.value;
                 const toTimestampValue = toTimestampInput.value;
+                // Determine if both fields are filled out
+                const timestampsFilled = fromTimestampValue && toTimestampValue;
+                // Determine if the "from" timestamp is less than the "to"
+                const fromLessThan = fromTimestampValue <= toTimestampValue;
 
                 // 
-                if (fromTimestampValue > toTimestampValue) {
+                if (timestampsFilled && !fromLessThan) {
                     fromTimestampInput.setAttribute("aria-invalid", "true");
                     toTimestampInput.setAttribute("aria-invalid", "true");
                     applyButton.disabled = true;
