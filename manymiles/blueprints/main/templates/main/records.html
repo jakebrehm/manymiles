@@ -70,10 +70,10 @@
                     <td>{{ record.mileage }}</td>
                     <td style="width: 42%;" class="desktop-only">{{ record.notes if record.notes else "" }}</td>
                     <td style="width: 13%">
-                        <a style="width: 50px" href="/update?record={{ record.record_id }}" class="record-button" role="button">
+                        <a style="width: 50px" href="#" data-target="modal-update-{{ record.record_id }}" onclick="toggleModal(event)" class="record-button" role="button">
                             <i class="fa fa-edit" aria-hidden="true"></i>
                         </a>
-                        <a style="width: 50px" href="#" data-target="modal-{{ record.record_id }}" onclick="toggleModal(event)" class="record-button deep-red" role="button">
+                        <a style="width: 50px" href="#" data-target="modal-delete-{{ record.record_id }}" onclick="toggleModal(event)" class="record-button deep-red" role="button">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </a>
                     </td>
@@ -116,10 +116,55 @@
 
         {% if records.items %}
         {% for record in records.items %}
-        <dialog id="modal-{{ record.record_id }}">
+        <dialog id="modal-update-{{ record.record_id }}">
             <article style="min-width: 75vw;">
                 <header>
-                    <a class="close" data-target="modal-{{ record.record_id }}" onClick="toggleModal(event)" aria-label="Close"></a>
+                    <a class="close" data-target="modal-update-{{ record.record_id }}" onClick="toggleModal(event)" aria-label="Close"></a>
+                    <hgroup>
+                        <h1>Updating record</h1>
+                        <h4>What do you want to change?</h4>
+                    </hgroup>
+                </header>
+
+                <form id="update-form" method="post" action="{{ url_for('main.update_record', record_id=record.record_id, page_num=records.page, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}">
+                    <div class="grid">
+                        <div>
+                            <label class="no-bottom-margin" for="timestamp">Timestamp
+                                <input class="no-bottom-margin" type="datetime-local" id="update-timestamp" value="{{ record.recorded_datetime }}" aria-label="Timestamp" name="updated-timestamp" required>
+                            </label>
+                        </div>
+                        <div>
+                            <label class="no-bottom-margin" for="mileage">Mileage
+                                <input class="no-bottom-margin" type="number" id="update-mileage" min="0" value="{{ record.mileage }}" aria-label="Mileage" name="updated-mileage" required>
+                            </label>
+                        </div>
+                    </div>
+                    <label class="no-bottom-margin" for="notes">Notes*
+                        <input class="no-bottom-margin" type="text" id="update-notes" placeholder="Add some optional notes here" value="{{ record.notes if record.notes else "" }}" aria-label="Notes" name="updated-notes">
+                    </label>
+                </form>
+
+                <footer>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <button class="secondary no-bottom-margin" data-target="modal-update-{{ record.record_id }}" aria-label="Cancel" onclick="toggleModal(event)">Cancel</button>
+                        </div>
+                        <div class="col-lg-6">
+                            <button id="submit-update-record" class="no-bottom-margin" form="update-form" data-target="modal-update-{{ record.record_id }}" aria-label="Confirm" onclick="toggleModal(event)">Confirm</button>
+                        </div>
+                    </div>
+                </footer>
+            </article>
+        </dialog>
+        {% endfor %}
+        {% endif %}
+
+        {% if records.items %}
+        {% for record in records.items %}
+        <dialog id="modal-delete-{{ record.record_id }}">
+            <article style="min-width: 75vw;">
+                <header>
+                    <a class="close" data-target="modal-delete-{{ record.record_id }}" onClick="toggleModal(event)" aria-label="Close"></a>
                     <hgroup>
                         <h1>Are you sure?</h1>
                         <h4>Do you really want to delete this record?</h4>
@@ -140,8 +185,14 @@
                     </tr>
                 </table>
                 <footer>
-                    <a href="#" class="secondary" role="button" data-target="modal-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Cancel">Cancel</a>
-                    <a href="{{ url_for('main.delete_record', record_id=record.record_id, page_num=records.page, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}" role="button" data-target="modal-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Confirm">Confirm</a>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a href="#" class="secondary full-width" role="button" data-target="modal-delete-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Cancel">Cancel</a>
+                        </div>
+                        <div class="col-lg-6">
+                            <a class="full-width" href="{{ url_for('main.delete_record', record_id=record.record_id, page_num=records.page, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}" role="button" data-target="modal-deleted-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Confirm">Confirm</a>
+                        </div>
+                    </div>
                 </footer>
             </article>
         </dialog>

@@ -138,6 +138,33 @@ def add_record() -> str:
     # Redirect back to the records page
     return redirect("/records")
 
+@blueprint_main.route("/record/update/<int:record_id>", methods=["GET", "POST"])
+def update_record(record_id: int):
+    """Deletes a record from the database."""
+
+
+    # Confirm that the user is logged in
+    if not session.get("user_id", None):
+        return redirect("/login")
+    
+    print(request.form.to_dict())
+    print(request.args.to_dict())
+
+    # Get the values of the inputs on the form
+    updated_mileage = request.form.get("updated-mileage")
+    updated_recorded_datetime = request.form.get("updated-timestamp")
+    updated_notes = request.form.get("updated-notes")
+
+    # Update the existing record in the database
+    record = Record.query.filter_by(record_id=record_id).one()
+    record.mileage = updated_mileage
+    record.recorded_datetime = updated_recorded_datetime
+    record.notes = updated_notes
+    db.session.commit()
+
+    # Redirect back to the records page with all parameters intact
+    return redirect(url_for("main.records", **request.args.to_dict()))
+
 @blueprint_main.route("/record/delete/<int:record_id>", methods=["GET", "POST"])
 def delete_record(record_id: int):
     """Deletes a record from the database."""
