@@ -4,6 +4,15 @@
     --primary: #5e35b1;
 }
 
+/* Dropdowns */
+
+.divider {
+    height: 1px;
+    border: none;
+    color:var(--secondary);
+    background-color:var(--secondary);
+}
+
 /* General */
 
 .thin-card {

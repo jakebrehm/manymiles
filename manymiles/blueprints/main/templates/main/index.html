@@ -9,6 +9,9 @@
     <!-- Pico.css with bootstrap grid -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/pico-bootstrap-grid.min.css') }}">
 
+    <!-- Font Awesome CSS stylesheets -->
+    <script src="https://kit.fontawesome.com/206c131408.js" crossorigin="anonymous"></script>
+
     <!-- Universal style -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
@@ -37,7 +40,19 @@
             </li>
             <li><a href="/records">Records</a></li>
             {% if session["user_id"] %}
-            <li><a href="/logout" role="button">Log out</a></li>
+            <li>
+                <details role="list" dir="rtl">
+                    <summary aria-haspopup="listbox" role="button" style="align-items:center;">
+                        <i class="fa fa-user" aria-hidden="true" style="margin-right: 10px;"></i>
+                        {{ session["username"] }}
+                    </summary>
+                    <ul role="listbox">
+                        <li><a href="#">Settings</a></li>
+                        <li><hr class="divider"></li>
+                        <li><a href="/logout">Log out</a></li>
+                    </ul>
+                </details>
+            </li>
             {% else %}
             <li><a href="/login" role="button">Log in</a></li>
             <li><a href="/register" role="button" class="secondary">Sign up</a></li>
