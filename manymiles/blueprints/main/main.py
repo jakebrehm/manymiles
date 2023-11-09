@@ -90,11 +90,9 @@ def records(page_num: int, per_page: int) -> str:
 def filter_records() -> str:
     """Filters the records displayed on the application."""
 
-    print(request.form.to_dict())
     parameters = request.form.to_dict()
     if "page_num" in parameters:
         parameters["page_num"] = 1
-    print(request.form.to_dict())
 
     return redirect(url_for("main.records", **parameters))
 
@@ -117,7 +115,7 @@ def add_record() -> str:
         return redirect("/records")
 
     # Check if the mileage is below 0
-    if mileage < 0:
+    if (not mileage) or (mileage < 0):
         flash("Please enter a mileage that is greater than or equal to zero.")
         redirect("/records")
 
@@ -136,24 +134,32 @@ def add_record() -> str:
     db.session.commit()
 
     # Redirect back to the records page
-    return redirect("/records")
+    return redirect(url_for("main.records"))
 
 @blueprint_main.route("/record/update/<int:record_id>", methods=["GET", "POST"])
 def update_record(record_id: int):
     """Deletes a record from the database."""
 
-
     # Confirm that the user is logged in
     if not session.get("user_id", None):
         return redirect("/login")
-    
-    print(request.form.to_dict())
-    print(request.args.to_dict())
 
     # Get the values of the inputs on the form
     updated_mileage = request.form.get("updated-mileage")
     updated_recorded_datetime = request.form.get("updated-timestamp")
     updated_notes = request.form.get("updated-notes")
+
+    # TODO: verify that the inputs are valid via JavaScript
+
+    # Check if the mileage is below 0
+    if (not updated_mileage) or (updated_mileage < 0):
+        flash("Please enter a mileage that is greater than or equal to zero.")
+        redirect(url_for("main.records", **request.args.to_dict()))
+    
+    # Check that the timestamp isn't empty
+    if not updated_recorded_datetime:
+        flash("A timestamp value must be provided.")
+        redirect(url_for("main.records", **request.args.to_dict()))
 
     # Update the existing record in the database
     record = Record.query.filter_by(record_id=record_id).one()

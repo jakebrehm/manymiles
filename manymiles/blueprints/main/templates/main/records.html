@@ -52,7 +52,7 @@
                 </div>
             </div>
         </form>
-    
+
         {% if records.items %}
         <div class="container">
             <table role="grid">
@@ -70,10 +70,10 @@
                     <td>{{ record.mileage }}</td>
                     <td style="width: 42%;" class="desktop-only">{{ record.notes if record.notes else "" }}</td>
                     <td style="width: 13%">
-                        <a style="width: 50px" href="#" data-target="modal-update-{{ record.record_id }}" onclick="toggleModal(event)" class="record-button" role="button">
+                        <a style="width: 50px" href="javascript:void(0);" data-target="modal-update-{{ record.record_id }}" onclick="toggleModal(event)" class="record-button" role="button">
                             <i class="fa fa-edit" aria-hidden="true"></i>
                         </a>
-                        <a style="width: 50px" href="#" data-target="modal-delete-{{ record.record_id }}" onclick="toggleModal(event)" class="record-button deep-red" role="button">
+                        <a style="width: 50px" href="javascript:void(0);" data-target="modal-delete-{{ record.record_id }}" onclick="toggleModal(event)" class="record-button deep-red" role="button">
                             <i class="fa fa-trash-o" aria-hidden="true"></i>
                         </a>
                     </td>
@@ -119,7 +119,7 @@
         <dialog id="modal-update-{{ record.record_id }}">
             <article style="min-width: 75vw;">
                 <header>
-                    <a class="close" data-target="modal-update-{{ record.record_id }}" onClick="toggleModal(event)" aria-label="Close"></a>
+                    <a class="close" data-target="modal-update-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Close"></a>
                     <hgroup>
                         <h1>Updating record</h1>
                         <h4>What do you want to change?</h4>
@@ -187,10 +187,10 @@
                 <footer>
                     <div class="row">
                         <div class="col-lg-6">
-                            <a href="#" class="secondary full-width" role="button" data-target="modal-delete-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Cancel">Cancel</a>
+                            <a href="#cancel" class="secondary full-width" role="button" data-target="modal-delete-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Cancel">Cancel</a>
                         </div>
                         <div class="col-lg-6">
-                            <a class="full-width" href="{{ url_for('main.delete_record', record_id=record.record_id, page_num=records.page, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}" role="button" data-target="modal-deleted-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Confirm">Confirm</a>
+                            <a class="full-width" href="{{ url_for('main.delete_record', record_id=record.record_id, page_num=records.page, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}" role="button" data-target="modal-delete-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Confirm">Confirm</a>
                         </div>
                     </div>
                 </footer>
