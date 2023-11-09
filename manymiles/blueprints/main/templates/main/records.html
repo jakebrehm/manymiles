@@ -140,7 +140,7 @@
                     </tr>
                 </table>
                 <footer>
-                    <a href="#cancel" class="secondary" role="button" data-target="modal-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Cancel">Cancel</a>
+                    <a href="#" class="secondary" role="button" data-target="modal-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Cancel">Cancel</a>
                     <a href="{{ url_for('main.delete_record', record_id=record.record_id, page_num=records.page, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}" role="button" data-target="modal-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Confirm">Confirm</a>
                 </footer>
             </article>
