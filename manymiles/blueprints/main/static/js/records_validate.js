@@ -99,6 +99,89 @@ function validateFilter() {
     });
 }
 
+function validateUpdateForm() {
+    // Define the template used to identify each dialog and its buttons
+    const template = "modal-update-";
+    // Get handles to each update dialog
+    const updateDialogs = document.querySelectorAll(`[id^='${template}']`);
+
+    updateDialogs.forEach((updateDialog) =>{
+        // Get the unique identifier for each dialog
+        const identifier = updateDialog.id.replace(template, "");
+
+        // 
+        const timestampInput = document.getElementById(
+            `update-timestamp-${identifier}`
+        );
+        const mileageInput = document.getElementById(
+            `update-mileage-${identifier}`
+        );
+        const notesInput = document.getElementById(
+            `update-notes-${identifier}`
+        );
+
+        const submitButton = document.getElementById(
+            `submit-update-record-${identifier}`
+        );
+
+        // 
+        const requiredInputs = [timestampInput, mileageInput];
+
+        // 
+        timestampInput.addEventListener(
+            "input",
+            function () {
+                // Get the value of the timestamp input
+                const timestampValue = timestampInput.value;
+
+                // 
+                if (timestampValue) {
+                    timestampInput.setAttribute("aria-invalid", "false");
+                } else {
+                    timestampInput.removeAttribute("aria-invalid");
+                }
+            }
+        );
+
+        // 
+        mileageInput.addEventListener(
+            "input",
+            function () {
+                // Get the value of the mileage input
+                const mileageValue = mileageInput.value;
+                
+                // 
+                if (!mileageValue) {
+                    mileageInput.removeAttribute("aria-invalid");
+                } else if (mileageValue < 0) {
+                    mileageInput.setAttribute("aria-invalid", "true");
+                } else {
+                    mileageInput.setAttribute("aria-invalid", "false");
+                }
+            }
+        );
+
+        //
+        requiredInputs.forEach((requiredInput) => {
+            requiredInput.addEventListener(
+                "input",
+                function () {
+                    // Get the values of each input
+                    const timestampValue = timestampInput.value;
+                    const mileageValue = mileageInput.value;
+
+                    if (timestampValue && mileageValue && (mileageValue >= 0)) {
+                        submitButton.disabled = false;
+                    } else {
+                        submitButton.disabled = true;
+                    }
+                }
+            );
+        });
+    });
+}
+
 //
 validateNewRecord()
 validateFilter()
+validateUpdateForm()

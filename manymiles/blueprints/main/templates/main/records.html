@@ -130,17 +130,17 @@
                     <div class="grid">
                         <div>
                             <label class="no-bottom-margin" for="timestamp">Timestamp
-                                <input class="no-bottom-margin" type="datetime-local" id="update-timestamp" value="{{ record.recorded_datetime }}" aria-label="Timestamp" name="updated-timestamp" required>
+                                <input class="no-bottom-margin" type="datetime-local" id="update-timestamp-{{ record.record_id }}" value="{{ record.recorded_datetime }}" aria-label="Timestamp" name="updated-timestamp" required>
                             </label>
                         </div>
                         <div>
                             <label class="no-bottom-margin" for="mileage">Mileage
-                                <input class="no-bottom-margin" type="number" id="update-mileage" min="0" value="{{ record.mileage }}" aria-label="Mileage" name="updated-mileage" required>
+                                <input class="no-bottom-margin" type="number" id="update-mileage-{{ record.record_id }}" min="0" value="{{ record.mileage }}" aria-label="Mileage" name="updated-mileage" required>
                             </label>
                         </div>
                     </div>
                     <label class="no-bottom-margin" for="notes">Notes*
-                        <input class="no-bottom-margin" type="text" id="update-notes" placeholder="Add some optional notes here" value="{{ record.notes if record.notes else "" }}" aria-label="Notes" name="updated-notes">
+                        <input class="no-bottom-margin" type="text" id="update-notes-{{ record.record_id }}" placeholder="Add some optional notes here" value="{{ record.notes if record.notes else "" }}" aria-label="Notes" name="updated-notes">
                     </label>
                 </form>
 
@@ -150,7 +150,7 @@
                             <button class="secondary no-bottom-margin" data-target="modal-update-{{ record.record_id }}" aria-label="Cancel" onclick="toggleModal(event)">Cancel</button>
                         </div>
                         <div class="col-lg-6">
-                            <button id="submit-update-record" class="no-bottom-margin" form="update-form" data-target="modal-update-{{ record.record_id }}" aria-label="Confirm" onclick="toggleModal(event)">Confirm</button>
+                            <button id="submit-update-record-{{ record.record_id }}" class="no-bottom-margin" form="update-form" data-target="modal-update-{{ record.record_id }}" aria-label="Confirm" onclick="toggleModal(event)">Confirm</button>
                         </div>
                     </div>
                 </footer>
