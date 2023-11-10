@@ -1,6 +1,5 @@
 import math
 
-import sqlalchemy as sa
 from flask import (
     Blueprint, flash, render_template, redirect, request, session, url_for
 )
@@ -65,7 +64,7 @@ def records(page_num: int, per_page: int) -> str:
         )
 
     # Order the records by descending mileage
-    ordered_records = filtered_records.order_by(Record.mileage.desc())
+    ordered_records = filtered_records.order_by(Record.recorded_datetime.desc())
 
     # Determine the number of pages that should be paginated
     n_records = len(ordered_records.all())
@@ -166,7 +165,7 @@ def update_record(record_id: int):
     record.recorded_datetime = get_datetime_from_string(
         updated_recorded_datetime
     )
-    record.notes = updated_notes if updated_notes else sa.sql.null()
+    record.notes = updated_notes if updated_notes else None
     db.session.commit()
 
     # Redirect back to the records page with all parameters intact
