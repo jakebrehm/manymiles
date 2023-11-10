@@ -123,7 +123,7 @@
                     </hgroup>
                 </header>
 
-                <form id="update-form" method="post" action="{{ url_for('main.update_record', record_id=record.record_id, page_num=records.page, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}">
+                <form id="update-form-{{ record.record_id }}" method="post" action="{{ url_for('main.update_record', record_id=record.record_id, page_num=records.page, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}">
                     <div class="grid">
                         <div>
                             <label class="no-bottom-margin" for="timestamp">Timestamp
@@ -147,7 +147,7 @@
                             <button class="secondary no-bottom-margin" data-target="modal-update-{{ record.record_id }}" aria-label="Cancel" onclick="toggleModal(event)">Cancel</button>
                         </div>
                         <div class="col-lg-6">
-                            <button id="submit-update-record-{{ record.record_id }}" class="no-bottom-margin" form="update-form" data-target="modal-update-{{ record.record_id }}" aria-label="Confirm" onclick="toggleModal(event)">Confirm</button>
+                            <button id="submit-update-record-{{ record.record_id }}" class="no-bottom-margin" form="update-form-{{ record.record_id }}" data-target="modal-update-{{ record.record_id }}" aria-label="Confirm" onclick="toggleModal(event)">Confirm</button>
                         </div>
                     </div>
                 </footer>

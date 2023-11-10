@@ -1,5 +1,6 @@
 import math
 
+import sqlalchemy as sa
 from flask import (
     Blueprint, flash, render_template, redirect, request, session, url_for
 )
@@ -129,7 +130,7 @@ def add_record() -> str:
         user_id=user_id,
         mileage=mileage,
         recorded_datetime=timestamp,
-        notes=notes,
+        notes=notes if notes else None,
     ))
     db.session.commit()
 
@@ -145,14 +146,12 @@ def update_record(record_id: int):
         return redirect("/login")
 
     # Get the values of the inputs on the form
-    updated_mileage = request.form.get("updated-mileage")
+    updated_mileage = int(request.form.get("updated-mileage"))
     updated_recorded_datetime = request.form.get("updated-timestamp")
     updated_notes = request.form.get("updated-notes")
 
-    # TODO: verify that the inputs are valid via JavaScript
-
     # Check if the mileage is below 0
-    if (not updated_mileage) or (updated_mileage < 0):
+    if updated_mileage < 0:
         flash("Please enter a mileage that is greater than or equal to zero.")
         redirect(url_for("main.records", **request.args.to_dict()))
     
@@ -164,8 +163,10 @@ def update_record(record_id: int):
     # Update the existing record in the database
     record = Record.query.filter_by(record_id=record_id).one()
     record.mileage = updated_mileage
-    record.recorded_datetime = updated_recorded_datetime
-    record.notes = updated_notes
+    record.recorded_datetime = get_datetime_from_string(
+        updated_recorded_datetime
+    )
+    record.notes = updated_notes if updated_notes else sa.sql.null()
     db.session.commit()
 
     # Redirect back to the records page with all parameters intact
