@@ -4,8 +4,6 @@ import os
 import re
 from typing import Optional
 
-from sqlalchemy.orm.session import Session
-
 from .extensions import db
 from . import models
 

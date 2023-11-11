@@ -116,9 +116,6 @@ function validateUpdateForm() {
         const mileageInput = document.getElementById(
             `update-mileage-${identifier}`
         );
-        const notesInput = document.getElementById(
-            `update-notes-${identifier}`
-        );
 
         const submitButton = document.getElementById(
             `submit-update-record-${identifier}`

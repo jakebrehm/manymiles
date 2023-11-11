@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from flask import Flask
 
+from manymiles.blueprints.account.account import blueprint_account
 from manymiles.blueprints.main.main import blueprint_main
 from manymiles.blueprints.login.login import blueprint_login
 from manymiles.extensions import db
@@ -26,6 +27,7 @@ def create_app() -> Flask:
     db.init_app(app)
     
     # Register blueprints
+    app.register_blueprint(blueprint_account)
     app.register_blueprint(blueprint_main)
     app.register_blueprint(blueprint_login)
 
