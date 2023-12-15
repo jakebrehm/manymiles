@@ -116,8 +116,13 @@ def add_user():
         flash("The requested username has already been taken.")
         return redirect("/register")
 
+    # Confirm that the requested username is long enough
+    if len(username) >= 3:
+        flash("The username must be at least 3 characters long.")
+        return redirect("/register")
+
     # Confirm that the passwords are valid
-    if not (is_valid_password(password)):
+    if not is_valid_password(password):
         # Don't need to check other password since it needs to be the same
         flash(
             "The password you entered is not valid. "

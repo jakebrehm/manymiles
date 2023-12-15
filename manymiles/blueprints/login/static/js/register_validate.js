@@ -49,6 +49,16 @@ function validateEmail(email) {
 }
 
 /**
+ * [validateUsername description]
+ * Determines whether or not the username is valid.
+ * @param   {String}    username    The username to validate.
+ * @return  {Boolean}               Whether or not the email is valid.
+ */
+function validateUsername(username) {
+    return username.length >= 3;
+}
+
+/**
  * [validateForm description]
  * Adds event listeners to the password inputs on the page that changes
  * their "aria-invalid" attributes according to their values' validity.
@@ -124,6 +134,24 @@ function validateForm() {
     );
 
     // 
+    username.addEventListener(
+        "input",
+        function() {
+            // Get the value of the username input
+            const usernameValue = username.value;
+
+            // Modify the validity attribute for the username input
+            if (!usernameValue) {
+                username.removeAttribute("aria-invalid");
+            } else if (validateUsername(usernameValue)) {
+                username.setAttribute("aria-invalid", "false");
+            } else {
+                username.setAttribute("aria-invalid", "true");
+            }
+        }
+    );
+
+    // 
     requiredInputs.forEach((requiredInput) => {
         requiredInput.addEventListener(
             "input",
@@ -142,7 +170,7 @@ function validateForm() {
                 );
                 // Determine if the user information is valid
                 const validUserInfo = (
-                    usernameValue && validateEmail(emailValue)
+                    validateUsername(usernameValue) && validateEmail(emailValue)
                 );
 
                 // Toggle the submit button depending on the form's validity
