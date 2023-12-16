@@ -135,6 +135,10 @@ def get_datetime_from_string(
     if not string:
         return string
     
+    # Trim the datetime string if necessary
+    if len(string) >= 16:
+        string = string[:16]
+
     # Otherwise, convert to a datetime object and return
     return dt.datetime.strptime(string, format)
 

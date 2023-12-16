@@ -2,7 +2,7 @@
 
 {% block css %}
         <!-- Blueprint-specific style -->
-        <link rel="stylesheet" href="{{ url_for('main.static', filename='css/style.css') }}">
+        <link rel="stylesheet" href="{{ url_for('records.static', filename='css/style.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -32,7 +32,7 @@
             </form>
         </article>
 
-        <form method="post" action="{{ url_for('main.filter_records') }}">
+        <form method="post" action="{{ url_for('records.filter_records') }}">
             <div class="row">
                 <div class="col-md-4 col-lg-5">
                     <label class="no-bottom-margin" for="from-timestamp">Records from
@@ -41,7 +41,7 @@
                 </div>
                 <div class="col-md-4 col-lg-5">
                     <label class="no-bottom-margin" for="to-timestamp">Records until
-                        <input class="no-bottom-margin" type="datetime-local" id="to-timestamp" aria-label="Timestamp To" name="to" {% if from_timestamp %}value="{{ to_timestamp }}"{% endif %}>
+                        <input class="no-bottom-margin" type="datetime-local" id="to-timestamp" aria-label="Timestamp To" name="to" {% if to_timestamp %}value="{{ to_timestamp }}"{% endif %}>
                     </label>
                 </div>
                 <div class="col-md-4 col-lg-2" style="align-self: end !important">
@@ -85,7 +85,7 @@
                     Page {{ records.page }} of {{ records.pages }}: 
                     {% for page in records.iter_pages(left_edge=2, right_edge=2, left_current=2, right_current=2) %}
                         {% if page %}
-                        <a href="{{ url_for('main.records', page_num=page, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}" style="padding: 5px;">{{page}}</a>
+                        <a href="{{ url_for('records.records', page_num=page, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}" style="padding: 5px;">{{page}}</a>
                         {% else %}
                         ...
                         {% endif %}
@@ -96,12 +96,12 @@
                 <div class="col-sm-4">
                     <div style="float: right !important;">
                         {% if records.prev_num %}
-                        <a href="{{ url_for('main.records', page_num=records.prev_num, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}" role="button" class="secondary pagination-button">
+                        <a href="{{ url_for('records.records', page_num=records.prev_num, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}" role="button" class="secondary pagination-button">
                             <i class="fa fa-arrow-left" aria-hidden="true"></i>
                         </a>
                         {% endif %}
                         {% if records.next_num %}
-                        <a href="{{ url_for('main.records', page_num=records.next_num, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}" role="button" class="pagination-button">
+                        <a href="{{ url_for('records.records', page_num=records.next_num, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}" role="button" class="pagination-button">
                             <i class="fa fa-arrow-right" aria-hidden="true"></i>
                         </a>
                         {% endif %}
@@ -123,7 +123,7 @@
                     </hgroup>
                 </header>
 
-                <form id="update-form-{{ record.record_id }}" method="post" action="{{ url_for('main.update_record', record_id=record.record_id, page_num=records.page, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}">
+                <form id="update-form-{{ record.record_id }}" method="post" action="{{ url_for('records.update_record', record_id=record.record_id, page_num=records.page, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}">
                     <div class="grid">
                         <div>
                             <label class="no-bottom-margin" for="timestamp">Timestamp
@@ -187,7 +187,7 @@
                             <a href="#cancel" class="secondary full-width" role="button" data-target="modal-delete-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Cancel">Cancel</a>
                         </div>
                         <div class="col-lg-6">
-                            <a class="full-width" href="{{ url_for('main.delete_record', record_id=record.record_id, page_num=records.page, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}" role="button" data-target="modal-delete-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Confirm">Confirm</a>
+                            <a class="full-width" href="{{ url_for('records.delete_record', record_id=record.record_id, page_num=records.page, per_page=records.per_page, from=from_timestamp, to=to_timestamp) }}" role="button" data-target="modal-delete-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Confirm">Confirm</a>
                         </div>
                     </div>
                 </footer>
@@ -200,5 +200,5 @@
 
 {% block javascript %}
     <script src="{{ url_for('static', filename='js/modal.js') }}"></script>
-    <script src="{{ url_for('main.static', filename='js/records_validate.js') }}"></script>
+    <script src="{{ url_for('records.static', filename='js/records_validate.js') }}"></script>
 {% endblock %}

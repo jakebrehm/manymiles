@@ -17,7 +17,7 @@ blueprint_api = Blueprint(
 )
 
 
-def create_api(app: Flask):
+def create_api(app: Flask) -> None:
     """Creates the API instance so that it can be used from the main script.
     
     Encapsulating the contents of this function was required in order to avoid
@@ -96,7 +96,7 @@ class MostRecentRecordAPI(Resource):
         )
         return {
             "date": most_recent_record.recorded_datetime.strftime(r"%Y-%m-%d"),
-            "time": most_recent_record.recorded_datetime.strftime(r"%H:%M:%S"),
+            "time": most_recent_record.recorded_datetime.strftime(r"%H:%M"),
             "mileage": most_recent_record.mileage,
         }
     
@@ -111,15 +111,13 @@ class AddRecordAPI(Resource):
     put_args.add_argument("time", type=str, help="Time", required=False)
     put_args.add_argument("mileage", type=str, help="Mileage", required=True)
 
-    def put(self) -> reqparse.RequestParser:
+    def put(self) -> dict | reqparse.RequestParser:
         """PUT request for the API endpoint."""
 
         # Parse arguments of the API call
         args = self.put_args.parse_args()
         username = args["username"]
         password = args["password"]
-        # date = dt.datetime.strptime(args["date"], r"%y-%m-%d").date()
-        # time = dt.datetime.strptime(args["time"], r"%H:%M").time()
         date = args["date"]
         time = args["time"]
         mileage = int(args["mileage"])
@@ -132,8 +130,7 @@ class AddRecordAPI(Resource):
             date = now.date()
         
         if time:
-            # time = dt.datetime.strptime(time, r"%H:%M").time()
-            time = dt.datetime.strptime(time, r"%H:%M:%S").time()
+            time = dt.datetime.strptime(time, r"%H:%M").time()
         else:
             time = now.time()
         

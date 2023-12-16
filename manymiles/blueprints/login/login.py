@@ -31,7 +31,7 @@ def login() -> str:
     return render_template("login/login.html")
 
 @blueprint_login.route("/logout")
-def logout() -> str:
+def logout() -> Response:
     """Log the user out from their session."""
 
     # Clear the user's information from the session
@@ -89,7 +89,7 @@ def validate_login() -> Response:
     return redirect("/")
 
 @blueprint_login.route("/add_user", methods=["POST"])
-def add_user():
+def add_user() -> Response:
     """Creates an account and adds the user to the database."""
 
     # Get the relevant information from the form

@@ -15,7 +15,7 @@ blueprint_account = Blueprint(
 )
 
 @blueprint_account.route("/account")
-def account() -> str:
+def account() -> str | Response:
     """Page that allows the user to view and manage account information."""
     if not session.get("user_id"):
         return redirect("/login")
