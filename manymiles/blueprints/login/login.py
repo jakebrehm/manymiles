@@ -117,7 +117,7 @@ def add_user() -> Response:
         return redirect("/register")
 
     # Confirm that the requested username is long enough
-    if len(username) >= 3:
+    if len(username) < 3:
         flash("The username must be at least 3 characters long.")
         return redirect("/register")
 

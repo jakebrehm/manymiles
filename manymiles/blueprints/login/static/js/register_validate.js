@@ -45,7 +45,7 @@ function validatePassword(password) {
  * @return  {Boolean}               Whether or not the email is valid.
  */
 function validateEmail(email) {
-    return /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$/.test(email);
+    return /^[a-z0-9]+([\._]?[a-z0-9]+)*[@]\w+[.]\w{2,3}$/.test(email);
 }
 
 /**

@@ -114,7 +114,7 @@ def is_valid_email(email: str) -> bool:
     """Checks whether or not the provided email is valid."""
     
     # TODO: Find better way
-    expression = r"^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$"
+    expression = r"^[a-z0-9]+([\._]?[a-z0-9]+)*[@]\w+[.]\w{2,3}$"
     return bool(re.match(expression, email))
 
 
