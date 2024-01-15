@@ -4,7 +4,7 @@ from flask import (
 )
 
 from ...extensions import db
-from ...models import User
+from ...models import User, Password
 from ...utilities import get_all_records_for_user
 
 
@@ -21,13 +21,27 @@ def account() -> str | Response:
     """Page that allows the user to view and manage account information."""
 
     # Confirm that the user is logged in
-    if not session.get("user_id", None):
+    if not (user_id := session.get("user_id", None)):
         return redirect("/login")
 
-    # Otherwise, proceed to the user's account page
-    return render_template("/account/account.html")
+    # Get the user from the user id
+    user = User.query.filter_by(user_id=user_id).one()
 
-@blueprint_account.route("/export_data")
+    # Get the datetime of the last time the user's password was changed
+    password_id = user.password_id
+    password_history = db.session.query(Password).filter_by(user_id=user_id)
+    last_updated = password_history.order_by(Password.updated_datetime.desc())
+    last_updated = last_updated.one().updated_datetime
+    last_updated = last_updated.strftime(r"%B %-d, %Y %-I:%M:%S %p")
+
+    # Otherwise, proceed to the user's account page
+    return render_template(
+        "/account/account.html",
+        user=user,
+        password_changed=last_updated,
+    )
+
+@blueprint_account.route("/account/export_data")
 def export_data() -> Response:
     """Gets all of the user's records and downloads them as a csv file."""
 

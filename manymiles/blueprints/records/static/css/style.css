@@ -6,6 +6,10 @@
 
 /* Table */
 
+th {
+    font-weight: bold;
+}
+
 tr:hover {
     background: #80808022 !important;
 }

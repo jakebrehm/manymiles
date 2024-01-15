@@ -1,0 +1,19 @@
+/* Settings page */
+
+.edit-button {
+    text-align: right;
+}
+
+.settings-group div.setting ~ div.setting {
+    padding-top: 0.5em;
+    /* background-color: red; */
+}
+
+.container div.settings-group ~ div.settings-group {
+    margin-top: 2.625rem;
+}
+
+.danger {
+    background-color: red;
+    border-color: red;
+}

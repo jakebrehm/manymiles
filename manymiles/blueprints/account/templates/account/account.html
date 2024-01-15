@@ -1,18 +1,99 @@
 {% extends "index.html" %}
 
 {% block css %}
+    <!-- Custom style -->
+    <link rel="stylesheet" href="{{ url_for('account.static', filename='css/style.css') }}">
 {% endblock %}
 
 {% block body %}
     <!-- Main container -->
     <main class="container">
-        {% if session["username"] %}
-        <h2>Welcome, {{ session["first_name"] }}!</h2>
-        {% else %}
-        <h2>Welcome!</h2>
-        {% endif %}
+        <div class="settings-group">
+            <h1>Account Settings</h1>
 
-        <a href="/export_data" role="button">Export data</a>
+            <div class="grid setting">
+                <div>
+                    <b>Username</b><br>
+                    {{ user.username }}
+                </div>
+                <div class="edit-button">
+                    <a href="#" role="button">Edit</a>
+                </div>
+            </div>
+
+            <div class="grid setting">
+                <div>
+                    <b>First name</b><br>
+                    {% if user.first_name %}
+                        {{ user.first_name }}
+                    {% else %}
+                        <em>No first name provided</em>
+                    {% endif %}
+                </div>
+                <div class="edit-button">
+                    <a href="#" role="button">Edit</a>
+                </div>
+            </div>
+
+            <div class="grid setting">
+                <div>
+                    <b>Last name</b><br>
+                    {% if user.last_name %}
+                        {{ user.last_name }}
+                    {% else %}
+                        <em>No last name provided</em>
+                    {% endif %}
+                </div>
+                <div class="edit-button">
+                    <a href="#" role="button">Edit</a>
+                </div>
+            </div>
+
+            <div class="grid setting">
+                <div>
+                    <b>Email</b><br>
+                    {{ user.email }}
+                </div>
+                <div class="edit-button">
+                    <a href="#" role="button">Edit</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-group">
+            <h2>Account</h2>
+
+            <div class="grid setting">
+                <div>
+                    <b>Change password</b><br>
+                    <em>Last updated on {{ password_changed }}</em>
+                </div>
+                <div class="edit-button">
+                    <a href="#" role="button">Change password</a>
+                </div>
+            </div>
+
+            <div class="grid setting">
+                <div>
+                    <b>Export data</b><br>
+                    <em>Download your records</em>
+                </div>
+                <div class="edit-button">
+                    <a href="/account/export_data" role="button">Export data</a>
+                </div>
+            </div>
+
+            <div class="grid setting">
+                <div>
+                    <b>Delete account</b><br>
+                    <em>Sorry to see you go</em>
+                </div>
+                <div class="edit-button">
+                    <a href="#" role="button" class="danger">Delete account</a>
+                </div>
+            </div>
+        </div>
+
     </main>
 {% endblock %}
 
