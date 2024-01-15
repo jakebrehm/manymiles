@@ -32,9 +32,9 @@ def create_app() -> Flask:
     root_path = os.path.join(os.getcwd(), "manymiles")
     app = Flask(__name__, root_path=root_path)
     # Set the secret key
-    app.secret_key = os.environ.get("MM_SECRET_KEY")
+    app.secret_key = os.environ.get("MM_FLASK_SECRET")
     # Configure the database
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("MM_URI")
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("MM_DATABASE_URI")
 
     # Initialize the database
     db.init_app(app)
