@@ -14,8 +14,12 @@ blueprint_main = Blueprint(
 @blueprint_main.route("/home")
 def home() -> str | Response:
     """The home page of the application."""
-    if not session.get("user_id"):
+
+    # Confirm that the user is logged in
+    if not session.get("user_id", None):
         return redirect("/login")
+    
+    # Otherwise, proceed to the homepage
     return render_template("main/home.html")
 
 @blueprint_main.route("/get_daily_data")

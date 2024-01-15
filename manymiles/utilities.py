@@ -169,7 +169,7 @@ def get_string_from_datetime(
     return timestamp.strftime(format)
 
 
-def get_all_records_for_user(user: models.User) -> list[models.Record]:
+def get_all_records_for_user(user: models.User) -> pd.DataFrame:
     """Gets all records for the provided user and returns as a dataframe."""
 
     # Get all of the records for the provided user
