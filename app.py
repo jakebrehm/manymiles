@@ -55,7 +55,7 @@ if __name__ == "__main__":
     app = create_app()
     create_api(app)
     app.run(
-        host="0.0.0.0",
-        port=5000,
+        host=os.getenv("MM_FLASK_HOST"),
+        port=os.getenv("MM_FLASK_PORT"),
         debug=get_env_bool("MM_FLASK_DEBUG"),
     )
