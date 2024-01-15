@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 
 from dotenv import load_dotenv
 from flask import Flask
@@ -9,13 +10,23 @@ from manymiles.blueprints.main.main import blueprint_main
 from manymiles.blueprints.login.login import blueprint_login
 from manymiles.blueprints.records.records import blueprint_records
 from manymiles.extensions import db
+from manymiles.utilities import get_env_bool
+
+
+def load_config(env_path: Optional[str]=None) -> None:
+    """Loads environmental variables from the .env file."""
+
+    # Specify the path to the env file
+    if env_path is None:
+        env_path = r"cfg/.env"
+    
+    # Only attempt to load the environment variables if the file exists
+    if os.path.isfile(env_path):
+        load_dotenv(env_path, override=True)
 
 
 def create_app() -> Flask:
     """Creates and return the Flask application."""
-
-    # Load the configuration variables
-    load_dotenv(r"cfg/.env", override=True)
 
     # Create the application
     root_path = os.path.join(os.getcwd(), "manymiles")
@@ -40,6 +51,7 @@ def create_app() -> Flask:
 
 
 if __name__ == "__main__":
+    load_config()
     app = create_app()
     create_api(app)
-    app.run(debug=True)
+    app.run(debug=get_env_bool("MM_FLASK_DEBUG"))

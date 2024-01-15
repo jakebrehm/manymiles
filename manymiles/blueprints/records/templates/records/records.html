@@ -62,8 +62,8 @@
                 </thead>
             {% for record in records.items %}
                 <tr>
-                    <td>{{ record.recorded_datetime.strftime("%Y-%m-%d") }}</td>
-                    <td>{{ record.recorded_datetime.strftime("%-I:%M %p") }}</td>
+                    <td>{{ record.record_datetime.strftime("%Y-%m-%d") }}</td>
+                    <td>{{ record.record_datetime.strftime("%-I:%M %p") }}</td>
                     <td>{{ record.mileage }}</td>
                     <td style="width: 42%;" class="desktop-only">{{ record.notes if record.notes else "" }}</td>
                     <td style="width: 13%">
@@ -127,7 +127,7 @@
                     <div class="grid">
                         <div>
                             <label class="no-bottom-margin" for="timestamp">Timestamp
-                                <input class="no-bottom-margin" type="datetime-local" id="update-timestamp-{{ record.record_id }}" value="{{ record.recorded_datetime }}" aria-label="Timestamp" name="updated-timestamp" required>
+                                <input class="no-bottom-margin" type="datetime-local" id="update-timestamp-{{ record.record_id }}" value="{{ record.record_datetime }}" aria-label="Timestamp" name="updated-timestamp" required>
                             </label>
                         </div>
                         <div>
@@ -175,8 +175,8 @@
                         <th style="width: 55%;" class="desktop-only">Notes</th>
                     </thead>
                     <tr>
-                        <td style="width: 15%;">{{ record.recorded_datetime.strftime("%Y-%m-%d") }}</td>
-                        <td style="width: 15%;">{{ record.recorded_datetime.strftime("%-I:%M %p") }}</td>
+                        <td style="width: 15%;">{{ record.record_datetime.strftime("%Y-%m-%d") }}</td>
+                        <td style="width: 15%;">{{ record.record_datetime.strftime("%-I:%M %p") }}</td>
                         <td style="width: 15%;">{{ record.mileage }}</td>
                         <td style="width: 55%;" class="desktop-only">{{ record.notes if record.notes else "" }}</td>
                     </tr>

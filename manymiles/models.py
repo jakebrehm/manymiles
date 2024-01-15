@@ -48,7 +48,9 @@ class Record(db.Model):
         nullable=False,
     )
     mileage = Column("mileage", Integer, nullable=False)
-    recorded_datetime = Column("recorded_datetime", DateTime, nullable=False)
+    record_datetime = Column("record_datetime", DateTime, nullable=False)
+    create_datetime = Column("create_datetime", DateTime, nullable=True)
+    update_datetime = Column("update_datetime", DateTime, nullable=True)
     notes = Column("notes", Text, nullable=True)
 
     def __repr__(self) -> str:
@@ -56,7 +58,9 @@ class Record(db.Model):
             f"record_id={repr(self.record_id)}, "
             f"user_id={repr(self.user_id)}, "
             f"mileage={repr(self.mileage)}, "
-            f"recorded_datetime={repr(self.recorded_datetime)}, "
+            f"record_datetime={repr(self.record_datetime)}, "
+            f"create_datetime={repr(self.create_datetime)}, "
+            f"update_datetime={repr(self.update_datetime)}, "
             f"notes={repr(self.notes)}"
         ")")
 

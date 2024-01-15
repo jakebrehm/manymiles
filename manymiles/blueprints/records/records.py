@@ -1,3 +1,4 @@
+import datetime as dt
 import math
 
 from flask import (
@@ -28,7 +29,7 @@ def records(page_num: int, per_page: int) -> str:
     # Confirm that the user is logged in
     if not (user_id := session.get("user_id", None)):
         return redirect("/login")
-    print(request.args.to_dict())
+
     # Get any optional filters
     if (from_timestamp := request.args.get("from")):
         from_timestamp = get_datetime_from_string(from_timestamp)
@@ -48,15 +49,15 @@ def records(page_num: int, per_page: int) -> str:
     # Filter out records outside of the specified timeframe
     if from_timestamp:
         filtered_records = filtered_records.filter(
-            Record.recorded_datetime >= from_timestamp
+            Record.record_datetime >= from_timestamp
         )
     if to_timestamp:
         filtered_records = filtered_records.filter(
-            Record.recorded_datetime <= to_timestamp
+            Record.record_datetime <= to_timestamp
         )
 
     # Order the records by descending mileage
-    ordered_records = filtered_records.order_by(Record.recorded_datetime.desc())
+    ordered_records = filtered_records.order_by(Record.record_datetime.desc())
 
     # Determine the number of pages that should be paginated
     n_records = len(ordered_records.all())
@@ -71,8 +72,6 @@ def records(page_num: int, per_page: int) -> str:
     )
 
     # Render the records page with the pagination
-    print(get_string_from_datetime(from_timestamp))
-    print(get_string_from_datetime(to_timestamp))
     return render_template(
         "records/records.html",
         records=paginated_records,
@@ -122,7 +121,9 @@ def add_record() -> Response:
     db.session.add(Record(
         user_id=user_id,
         mileage=mileage,
-        recorded_datetime=timestamp,
+        record_datetime=timestamp,
+        create_datetime=dt.datetime.now(),
+        update_datetime=dt.datetime.now(),
         notes=notes if notes else None,
     ))
     db.session.commit()
@@ -140,7 +141,7 @@ def update_record(record_id: int) -> Response:
 
     # Get the values of the inputs on the form
     updated_mileage = int(request.form.get("updated-mileage"))
-    updated_recorded_datetime = request.form.get("updated-timestamp")
+    updated_record_datetime = request.form.get("updated-timestamp")
     updated_notes = request.form.get("updated-notes")
 
     # Check if the mileage is below 0
@@ -149,17 +150,18 @@ def update_record(record_id: int) -> Response:
         redirect(url_for("records.records", **request.args.to_dict()))
     
     # Check that the timestamp isn't empty
-    if not updated_recorded_datetime:
+    if not updated_record_datetime:
         flash("A timestamp value must be provided.")
         redirect(url_for("records.records", **request.args.to_dict()))
 
     # Update the existing record in the database
     record = Record.query.filter_by(record_id=record_id).one()
     record.mileage = updated_mileage
-    record.recorded_datetime = get_datetime_from_string(
-        updated_recorded_datetime
+    record.record_datetime = get_datetime_from_string(
+        updated_record_datetime
     )
     record.notes = updated_notes if updated_notes else None
+    record.update_datetime = dt.datetime.now()
     db.session.commit()
 
     # Redirect back to the records page with all parameters intact

@@ -2,10 +2,18 @@ import datetime as dt
 import hashlib
 import os
 import re
+from distutils.util import strtobool
 from typing import Optional
+
+import pandas as pd
 
 from .extensions import db
 from . import models
+
+
+def get_env_bool(name: str) -> bool:
+    """Reads an environmental variable as a boolean value."""
+    return bool(strtobool(os.getenv(name, default="False")))
 
 
 def generate_hash(
@@ -159,3 +167,17 @@ def get_string_from_datetime(
     
     # Otherwise, convert to a datetime object and return
     return timestamp.strftime(format)
+
+
+def get_all_records_for_user(user: models.User) -> list[models.Record]:
+    """Gets all records for the provided user and returns as a dataframe."""
+
+    # Get all of the records for the provided user
+    records = models.Record.query.filter_by(user_id=user.user_id)
+    records = [record.__dict__ for record in records.all()]
+    # Convert the data to a dataframe
+    df = pd.DataFrame.from_records(records)
+    # Drop the instance state column
+    df = df.drop(columns=["_sa_instance_state"])
+    # Return the dataframe
+    return df

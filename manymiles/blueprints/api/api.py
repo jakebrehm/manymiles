@@ -91,12 +91,12 @@ class MostRecentRecordAPI(Resource):
         most_recent_record = (
             db.session.query(Record)
             .filter_by(user_id=user.user_id)
-            .order_by(Record.recorded_datetime.desc())
+            .order_by(Record.record_datetime.desc())
             .first()
         )
         return {
-            "date": most_recent_record.recorded_datetime.strftime(r"%Y-%m-%d"),
-            "time": most_recent_record.recorded_datetime.strftime(r"%H:%M"),
+            "date": most_recent_record.record_datetime.strftime(r"%Y-%m-%d"),
+            "time": most_recent_record.record_datetime.strftime(r"%H:%M"),
             "mileage": most_recent_record.mileage,
         }
     
@@ -135,7 +135,7 @@ class AddRecordAPI(Resource):
             time = now.time()
         
         # Combine the date and time
-        recorded_datetime = dt.datetime.combine(date, time)
+        record_datetime = dt.datetime.combine(date, time)
 
         # Return nothing if no username or password was supplied
         if not username or not password:
@@ -156,7 +156,7 @@ class AddRecordAPI(Resource):
         db.session.add(Record(
             user_id=user.user_id,
             mileage=mileage,
-            recorded_datetime=recorded_datetime,
+            record_datetime=record_datetime,
             notes=None,
         ))
         db.session.commit()
