@@ -133,7 +133,7 @@ def add_record() -> Response:
 
 @blueprint_records.route("/record/update/<int:record_id>", methods=["GET", "POST"])
 def update_record(record_id: int) -> Response:
-    """Deletes a record from the database."""
+    """Updates a record in the database."""
 
     # Confirm that the user is logged in
     if not session.get("user_id", None):

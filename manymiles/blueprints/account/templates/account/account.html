@@ -55,7 +55,7 @@
                     {{ user.email }}
                 </div>
                 <div class="edit-button">
-                    <a href="#" role="button">Edit</a>
+                    <a href="javascript:void(0);" data-target="modal-change-email" onclick="toggleModal(event)" role="button">Edit</a>
                 </div>
             </div>
         </div>
@@ -69,7 +69,7 @@
                     <em>Last updated on {{ password_changed }}</em>
                 </div>
                 <div class="edit-button">
-                    <a href="#" role="button">Change password</a>
+                    <a href="javascript:void(0);" data-target="modal-change-password" onclick="toggleModal(event)" role="button">Change password</a>
                 </div>
             </div>
 
@@ -94,8 +94,77 @@
             </div>
         </div>
 
+
+
+
+
+
+
+
+
+        <dialog id="modal-change-email">
+            <article style="min-width: 75vw;">
+                <header>
+                    <a class="close" data-target="modal-change-email" onClick="toggleModal(event)" aria-label="Close"></a>
+                    <hgroup>
+                        <h1>Change your email</h1>
+                        <h4>What's your new email?</h4>
+                    </hgroup>
+                </header>
+                
+                <form id="change-email-form" method="post" action="{{ url_for('account.update_email', email='test') }}">
+                    <input id="new-email-input" type="email" name="new-email" placeholder="New Email" aria-label="New Email" autocomplete="email" required>
+                </form>
+
+                <footer>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <button class="secondary no-bottom-margin" data-target="modal-change-email" aria-label="Cancel" onclick="toggleModal(event)">Cancel</button>
+                        </div>
+                        <div class="col-lg-6">
+                            <button id="submit-modal-change-email" class="no-bottom-margin" form="change-email-form" data-target="modal-change-email" aria-label="Confirm" onclick="toggleModal(event)" disabled>Confirm</button>
+                        </div>
+                    </div>
+                </footer>
+            </article>
+        </dialog>
+
+
+
+        <dialog id="modal-change-password">
+            <article style="min-width: 75vw;">
+                <header>
+                    <a class="close" data-target="modal-change-password" onClick="toggleModal(event)" aria-label="Close"></a>
+                    <hgroup>
+                        <h1>Change your password</h1>
+                        <h4>What's your new password?</h4>
+                    </hgroup>
+                </header>
+                
+                <form id="change-password-form" method="post" action="{{ url_for('account.update_password', password='test') }}">
+                    <input id="old-password-input" type="password" name="old-password" placeholder="Old password" aria-label="Password" autocomplete="old-password" required>
+                    <input id="new-password-input" type="password" name="new-password" placeholder="New password" aria-label="Password" autocomplete="new-password" required>
+                    <input id="confirm-password-input" type="password" name="confirm-password" placeholder="Confirm Password" aria-label="Confirm Password" autocomplete="new-password" required>
+                </form>
+
+                <footer>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <button class="secondary no-bottom-margin" data-target="modal-change-password" aria-label="Cancel" onclick="toggleModal(event)">Cancel</button>
+                        </div>
+                        <div class="col-lg-6">
+                            <button id="submit-modal-change-password" class="no-bottom-margin" form="change-password-form" data-target="modal-change-password" aria-label="Confirm" onclick="toggleModal(event)" disabled>Confirm</button>
+                        </div>
+                    </div>
+                </footer>
+            </article>
+        </dialog>
+
     </main>
 {% endblock %}
 
 {% block javascript %}
+<script src="{{ url_for('static', filename='js/modal.js') }}"></script>
+<!-- Input validation Javascript -->
+<script src="{{ url_for('account.static', filename='js/account_validate.js') }}"></script>
 {% endblock %}
