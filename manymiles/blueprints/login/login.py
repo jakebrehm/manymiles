@@ -7,8 +7,8 @@ from flask import (
 from ...extensions import db
 from ...models import User
 from ...utilities import (
-    create_account, generate_hash, is_correct_password, is_username_available,
-    is_valid_email, is_valid_password, log_login,
+    create_account, generate_hash, get_user_from_username, is_correct_password,
+    is_username_available, is_valid_email, is_valid_password, log_login,
 )
 
 
@@ -54,7 +54,7 @@ def validate_login() -> Response:
     remember = request.form.get("remember")
 
     # Get the user object
-    user = db.session.query(User).filter_by(username=username).first()
+    user = get_user_from_username(username)
 
     # Check if any of the required values are blank
     if any(value is None for value in [username, password]):
@@ -69,10 +69,11 @@ def validate_login() -> Response:
     # Check if the username/password combination is correct
     if not is_correct_password(user, password):
         flash("The password entered does not match the one we have on file.")
+        log_login(user, successful=False)
         return redirect("/login")
     
     # Add login to the history table
-    log_login(user)
+    log_login(user, successful=True)
 
     # Store the user's details in the session
     session["user_id"] = user.user_id
@@ -117,8 +118,8 @@ def add_user() -> Response:
         return redirect("/register")
 
     # Confirm that the requested username is long enough
-    if len(username) < 3:
-        flash("The username must be at least 3 characters long.")
+    if (len(username) < 3) or (len(username) > 30):
+        flash("The username must be between 3 and 30 characters long.")
         return redirect("/register")
 
     # Confirm that the passwords are valid
@@ -146,14 +147,13 @@ def add_user() -> Response:
     hash, salt = generate_hash(password)
     user = User(
         username=username,
-        password_hash=hash,
         password_salt=salt,
         email=email,
         first_name=first_name,
         last_name=last_name,
         created=dt.datetime.now(),
     )
-    create_account(user)
+    create_account(user, hash)
 
     # Store the user's details in the session
     session["user_id"] = user.user_id

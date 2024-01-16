@@ -1,5 +1,5 @@
 from sqlalchemy import (
-    Column, DateTime, ForeignKey, Integer, LargeBinary, String, Text
+    Boolean, Column, DateTime, ForeignKey, Integer, LargeBinary, String, Text,
 )
 
 from .extensions import db
@@ -16,7 +16,6 @@ class User(db.Model):
         ForeignKey("password.id", name="fk_user_password"),
         nullable=True,
     )
-    password_hash = Column("password_hash", String(64), nullable=False)
     password_salt = Column("password_salt", LargeBinary, nullable=False)
     email = Column("email", String(319), nullable=False)
     first_name = Column("first_name", String(35), nullable=True)
@@ -28,7 +27,6 @@ class User(db.Model):
             f"user_id={repr(self.user_id)}, "
             f"username={repr(self.username)}, "
             f"password_id={repr(self.password_id)}, "
-            f"password_hash={repr(self.password_hash)}, "
             f"password_salt={repr(self.password_salt)}, "
             f"email={repr(self.email)}, "
             f"first_name={repr(self.first_name)}, "
@@ -76,6 +74,7 @@ class Login(db.Model):
         nullable=False,
     )
     login_datetime = Column("login_datetime", DateTime, nullable=False)
+    successful = Column("successful", Boolean, nullable=False, default=False)
 
     def __repr__(self) -> str:
         return (f"{self.__class__.__name__}("
