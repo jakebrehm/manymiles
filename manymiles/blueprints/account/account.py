@@ -6,8 +6,9 @@ from flask import (
 from ...extensions import db
 from ...models import User, Password
 from ...utilities import (
-    generate_hash, get_all_records_for_user, get_user_from_id, is_valid_email,
-    is_valid_password, update_current_password,
+    generate_hash, get_all_records_for_user, get_user_from_id,
+    get_password_from_id, is_valid_email, is_valid_password,
+    update_current_password,
 )
 
 
@@ -31,8 +32,8 @@ def account() -> str | Response:
     user = User.query.filter_by(user_id=user_id).one()
 
     # Get the datetime of the last time the user's password was changed
-    password = db.session.query(Password).filter_by(password_id=user.password_id)
-    last_updated = password.first().updated_datetime
+    password = get_password_from_id(password_id=user.password_id)
+    last_updated = password.updated_datetime
 
     # Otherwise, proceed to the user's account page
     return render_template(
