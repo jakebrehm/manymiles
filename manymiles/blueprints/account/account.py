@@ -31,17 +31,14 @@ def account() -> str | Response:
     user = User.query.filter_by(user_id=user_id).one()
 
     # Get the datetime of the last time the user's password was changed
-    password_id = user.password_id
-    password_history = db.session.query(Password).filter_by(user_id=user_id)
-    last_updated = password_history.order_by(Password.updated_datetime.desc())
-    last_updated = last_updated.first().updated_datetime
-    last_updated = last_updated.strftime(r"%B %-d, %Y %-I:%M:%S %p")
+    password = db.session.query(Password).filter_by(password_id=user.password_id)
+    last_updated = password.first().updated_datetime
 
     # Otherwise, proceed to the user's account page
     return render_template(
         "/account/account.html",
         user=user,
-        password_changed=last_updated,
+        password_changed=last_updated.strftime(r"%B %-d, %Y %-I:%M:%S %p"),
     )
 
 @blueprint_account.route("/account/export_data")
@@ -54,7 +51,12 @@ def export_data() -> Response:
     
     # Pull all of the user's records
     user = User.query.filter_by(user_id=user_id).one()
-    record_df = get_all_records_for_user(user)
+    try:
+        record_df = get_all_records_for_user(user)
+    except KeyError:
+        # If there was a KeyError, that means there is no data to export
+        flash("You have no records to export.")
+        return redirect("/account")
 
     # Specify the filename for the csv file
     filename = f"manymiles_{user.username}.csv"
