@@ -42,8 +42,6 @@ def generate_hash(
 def is_correct_password(user: models.User, password_to_verify: str) -> bool:
     """Returns whether or not the provided password is correct for the user."""
 
-    # TODO: verify after password changes
-
     # Get the user's current password information
     password = get_password_from_id(password_id=user.password_id)
 
@@ -102,7 +100,7 @@ def add_user_role(user: models.User, role: models.Role) -> None:
     db.session.commit()
 
 
-def log_current_password(user: models.User, password_hash: str) -> None:
+def update_current_password(user: models.User, password_hash: str) -> None:
     """Adds the user's current password to the password history table.
     
     Also updates the `password_id` column of the User record.
@@ -152,7 +150,7 @@ def create_account(
     db.session.commit()
 
     # Log the user's password in the password table
-    log_current_password(user, password_hash)
+    update_current_password(user, password_hash)
 
     # Log the user's successful login to the database
     log_login(user, successful=True)
