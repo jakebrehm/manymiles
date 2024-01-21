@@ -9,6 +9,16 @@ function validateEmail(email) {
 }
 
 /**
+ * [validateUsername description]
+ * Determines whether or not the username is valid.
+ * @param   {String}    username    The username to validate.
+ * @return  {Boolean}               Whether or not the email is valid.
+ */
+function validateUsername(username) {
+    return (username.length >= 3) && (username.length <= 30);
+}
+
+/**
  * [validatePassword description]
  * Determines whether or not the provided password is valid. The function
  * requires that the password has at least 7 characters, one character is a
@@ -24,6 +34,53 @@ function validatePassword(password) {
         && /[0-9]/.test(password)
         && /[^A-za-z0-9]/.test(password)
         && password.length >= 7
+    );
+}
+
+/**
+ * [validateUpdateUsernameForm description]
+ * Adds event listeners to the appropriate inputs on the page that changes
+ * their "aria-invalid" attributes according to their values' validity.
+ */
+function validateUpdateUsernameForm() {
+
+    // Get handles to the form submission button
+    const submitButton = document.getElementById("submit-modal-change-username");
+    // Get handles to the username inputs
+    const username = document.getElementById("new-username-input");
+
+    // Add an event listener to the username input
+    username.addEventListener(
+        "input",
+        function() {
+            // Get the value of the username input
+            const usernameValue = username.value;
+
+            // Modify the validity attribute for the username input
+            if (!usernameValue) {
+                username.removeAttribute("aria-invalid");
+            } else if (validateUsername(usernameValue)) {
+                username.setAttribute("aria-invalid", "false");
+            } else {
+                username.setAttribute("aria-invalid", "true");
+            }
+        }
+    );
+
+    // Add an event listener to the submit button
+    username.addEventListener(
+        "input",
+        function() {
+            // Get the values of each required input
+            const usernameValue = username.value;
+            
+            // Toggle the submit button depending on the form's validity
+            if (validateUsername(usernameValue)) {
+                submitButton.disabled = false;
+            } else {
+                submitButton.disabled = true;
+            }
+        }
     );
 }
 
@@ -157,4 +214,5 @@ function validateUpdatePasswordForm() {
 
 // Call the functions
 validateUpdateEmailForm()
+validateUpdateUsernameForm()
 validateUpdatePasswordForm()

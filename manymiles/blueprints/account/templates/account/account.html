@@ -17,7 +17,7 @@
                     {{ user.username }}
                 </div>
                 <div class="edit-button">
-                    <a href="#" role="button">Edit</a>
+                    <a href="javascript:void(0);" data-target="modal-change-username" onclick="toggleModal(event)" role="button">Edit</a>
                 </div>
             </div>
 
@@ -96,6 +96,33 @@
 
         <!-- Modals -->
 
+        <dialog id="modal-change-username">
+            <article style="min-width: 75vw;">
+                <header>
+                    <a class="close" data-target="modal-change-username" onClick="toggleModal(event)" aria-label="Close"></a>
+                    <hgroup>
+                        <h1>Change your username</h1>
+                        <h4>What's your new username?</h4>
+                    </hgroup>
+                </header>
+                
+                <form id="change-username-form" method="post" action="{{ url_for('account.update_username', username='test') }}">
+                    <input id="new-username-input" type="username" name="new-username" placeholder="New username" aria-label="New username" autocomplete="username" required>
+                </form>
+
+                <footer>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <button class="secondary no-bottom-margin" data-target="modal-change-username" aria-label="Cancel" onclick="toggleModal(event)">Cancel</button>
+                        </div>
+                        <div class="col-lg-6">
+                            <button id="submit-modal-change-username" class="no-bottom-margin" form="change-username-form" data-target="modal-change-username" aria-label="Confirm" onclick="toggleModal(event)" disabled>Confirm</button>
+                        </div>
+                    </div>
+                </footer>
+            </article>
+        </dialog>
+
         <dialog id="modal-change-email">
             <article style="min-width: 75vw;">
                 <header>
@@ -107,7 +134,7 @@
                 </header>
                 
                 <form id="change-email-form" method="post" action="{{ url_for('account.update_email', email='test') }}">
-                    <input id="new-email-input" type="email" name="new-email" placeholder="New Email" aria-label="New Email" autocomplete="email" required>
+                    <input id="new-email-input" type="email" name="new-email" placeholder="New email" aria-label="New email" autocomplete="email" required>
                 </form>
 
                 <footer>

@@ -4,11 +4,11 @@ from flask import (
 )
 
 from ...extensions import db
-from ...models import User, Password
+from ...models import User
 from ...utilities import (
     generate_hash, get_all_records_for_user, get_user_from_id,
-    get_password_from_id, is_valid_email, is_valid_password,
-    update_current_password,
+    get_password_from_id, is_username_available, is_valid_email,
+    is_valid_password, is_valid_username, update_current_password,
 )
 
 
@@ -75,6 +75,37 @@ def export_data() -> Response:
     response.headers["Content-Disposition"] = f"attachment; filename={filename}"
     response.headers["Content-Type"] = "text/csv"
     return response
+
+@blueprint_account.route("/account/update_username", methods=["POST"])
+def update_username() -> Response:
+    """Updates a user's username in the database."""
+
+    # Confirm that the user is logged in
+    if not (user_id := session.get("user_id", None)):
+        return redirect("/login")
+    
+    # Get the relevant information from the form
+    new_username = request.form.get("new-username")
+
+    # Confirm that the username is valid
+    if not is_valid_username(new_username):
+        flash("The username provided is not valid.")
+        return redirect("/account")
+
+    # Confirm that the username is valid
+    if not is_username_available(new_username):
+        flash("The username provided is not available.")
+        return redirect("/account")
+    
+    # Get the user with the associated user id
+    user = get_user_from_id(user_id)
+
+    # Change the user's email and commit the changes
+    user.username = new_username
+    db.session.commit()
+
+    # Redirect back to the account page
+    return redirect(url_for("account.account"))
 
 @blueprint_account.route("/account/update_email", methods=["POST"])
 def update_email() -> Response:

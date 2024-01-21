@@ -55,7 +55,7 @@ function validateEmail(email) {
  * @return  {Boolean}               Whether or not the email is valid.
  */
 function validateUsername(username) {
-    return username.length >= 3;
+    return (username.length >= 3) && (username.length <= 30);
 }
 
 /**

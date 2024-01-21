@@ -8,7 +8,8 @@ from ...extensions import db
 from ...models import User
 from ...utilities import (
     create_account, generate_hash, get_user_from_username, is_correct_password,
-    is_username_available, is_valid_email, is_valid_password, log_login,
+    is_username_available, is_valid_email, is_valid_password, is_valid_username,
+    log_login,
 )
 
 
@@ -118,7 +119,7 @@ def add_user() -> Response:
         return redirect("/register")
 
     # Confirm that the requested username is long enough
-    if (len(username) < 3) or (len(username) > 30):
+    if not is_valid_username(username):
         flash("The username must be between 3 and 30 characters long.")
         return redirect("/register")
 

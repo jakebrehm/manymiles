@@ -169,6 +169,11 @@ def is_username_available(username: str) -> bool:
     return matches.first() is None
 
 
+def is_valid_username(username: str) -> bool:
+    """Checks whether or not the provided username is valid."""
+    return (3 <= len(username) <= 30)
+
+
 def is_valid_email(email: str) -> bool:
     """Checks whether or not the provided email is valid."""
     
