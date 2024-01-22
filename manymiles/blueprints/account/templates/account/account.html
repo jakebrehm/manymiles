@@ -89,7 +89,7 @@
                     <em>Sorry to see you go</em>
                 </div>
                 <div class="edit-button">
-                    <a href="#" role="button" class="danger">Delete account</a>
+                    <a href="javascript:void(0);" data-target="modal-delete-account" onclick="toggleModal(event); enableDeleteAccountConfirm()" role="button" class="danger">Delete account</a>
                 </div>
             </div>
         </div>
@@ -173,6 +173,35 @@
                         </div>
                         <div class="col-lg-6">
                             <button id="submit-modal-change-password" class="no-bottom-margin" form="change-password-form" data-target="modal-change-password" aria-label="Confirm" onclick="toggleModal(event)" disabled>Confirm</button>
+                        </div>
+                    </div>
+                </footer>
+            </article>
+        </dialog>
+
+        <dialog id="modal-delete-account">
+            <article style="min-width: 75vw;">
+                <header>
+                    <a class="close" data-target="modal-delete-account" onClick="toggleModal(event)" aria-label="Close"></a>
+                    <hgroup>
+                        <h1>Delete your account</h1>
+                        <h4>Do you really want to delete your account?</h4>
+                    </hgroup>
+                </header>
+                
+                This process is <b>irreversible</b>. Are you <b>certain</b> you want to delete your account and all associated data forever?
+                <br><br>
+                The confirmation button will be enabled within 5 seconds.
+
+                <footer>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <a id="confirm-href-delete-account" href="javascript:void(0);">
+                                <button id="confirm-modal-delete-account" class="danger no-bottom-margin" data-target="modal-delete-account" aria-label="Yes" onclick="toggleModal(event)" disabled>Yes</button>
+                            </a>
+                        </div>
+                        <div class="col-lg-6">
+                            <button class="secondary no-bottom-margin" data-target="modal-delete-account" aria-label="No" onclick="toggleModal(event)">No</button>
                         </div>
                     </div>
                 </footer>

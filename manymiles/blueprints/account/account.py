@@ -6,7 +6,7 @@ from flask import (
 from ...extensions import db
 from ...models import User
 from ...utilities import (
-    generate_hash, get_all_records_for_user, get_user_from_id,
+    delete_account, generate_hash, get_all_records_for_user, get_user_from_id,
     get_password_from_id, is_username_available, is_valid_email,
     is_valid_password, is_valid_username, update_current_password,
 )
@@ -171,3 +171,18 @@ def update_password() -> Response:
 
     # Redirect back to the account page
     return redirect(url_for("account.account"))
+
+@blueprint_account.route("/account/delete_account")
+def delete_user_account() -> Response:
+    """Delete's all traces of a user's account from the database."""
+
+    # Confirm that the user is logged in
+    if not (user_id := session.get("user_id", None)):
+        return redirect("/login")
+    
+    # Get the user and delete their account
+    user = get_user_from_id(user_id=user_id)
+    delete_account(user)
+
+    # Redirect back to the account page
+    return redirect(url_for("login.register"))

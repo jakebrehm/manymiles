@@ -6,7 +6,7 @@
 {% block body %}
     <!-- Main container -->
     <main class="container">
-        {% if session["username"] %}
+        {% if session["first_name"] %}
         <h2>Welcome, {{ session["first_name"] }}!</h2>
         {% else %}
         <h2>Welcome!</h2>

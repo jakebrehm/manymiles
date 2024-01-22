@@ -6,6 +6,7 @@ from distutils.util import strtobool
 from typing import Optional
 
 import pandas as pd
+import sqlalchemy as sa
 
 from .extensions import db
 from . import models
@@ -136,10 +137,10 @@ def log_login(user: models.User, successful: bool) -> None:
 
 
 def create_account(
-        user: models.User,
-        password_hash: str,
-        role_id: Optional[int] = 3,
-    ) -> models.User:
+    user: models.User,
+    password_hash: str,
+    role_id: Optional[int] = 3,
+) -> models.User:
     """Creates an account and adds it to the database.
     
     Also adds a record to the password history table.
@@ -158,6 +159,45 @@ def create_account(
     # Give the user the specified role
     role = get_role_by_id(role_id)
     add_user_role(user, role)
+
+
+def delete_account(
+    user: models.User,
+) -> None:
+    """Deletes all traces of a user's account from the database."""
+    
+    # Get the user's id
+    user_id = user.user_id
+
+    # Set the user's password id to null to avoid integrity errors
+    user.password_id = sa.null()
+    db.session.commit()
+
+    # Delete all of the user's data in the login table
+    logins = models.Login.query.filter_by(user_id=user_id).all()
+    for login in logins:
+        db.session.delete(login)
+
+    # Delete the user's data in the user-role table
+    user_roles = models.UserRole.query.filter_by(user_id=user_id).all()
+    for user_role in user_roles:
+        db.session.delete(user_role)
+
+    # Delete all of the user's data in the record table
+    records = models.Record.query.filter_by(user_id=user_id).all()
+    for record in records:
+        db.session.delete(record)
+
+    # Delete all of the user's data in the password table
+    passwords = models.Password.query.filter_by(user_id=user_id).all()
+    for password in passwords:
+        db.session.delete(password)
+
+    # Delete the user's data in the user table
+    db.session.delete(user)
+
+    # Commit the previous transactions
+    db.session.commit()
 
 
 def is_username_available(username: str) -> bool:

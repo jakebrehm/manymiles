@@ -212,6 +212,31 @@ function validateUpdatePasswordForm() {
     });
 }
 
+/**
+ * [enableDeleteAccountConfirm() description]
+ * Toggles the confirmation button for account deletion a specified number
+ * of milliseconds after being called.
+ * @param   {Number}    timeout    The number of seconds to wait to toggle.
+ */
+function enableDeleteAccountConfirm(timeout=5000) {
+
+    // Get handles to the form submission button
+    const confirmButton = document.getElementById("confirm-modal-delete-account");
+    const confirmHref = document.getElementById("confirm-href-delete-account");
+
+    // Disabled the button to begin
+    confirmButton.disabled = true;
+
+    // Disable the functionality of the href
+    confirmHref.href = "javascript:void(0);";
+
+    // Re-enable the button after the specified amount of time has passed
+    setTimeout(function() {
+        confirmButton.disabled = false;
+        confirmHref.href = "/account/delete_account";
+    }, timeout);
+}
+
 // Call the functions
 validateUpdateEmailForm()
 validateUpdateUsernameForm()
