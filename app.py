@@ -6,6 +6,7 @@ from flask import Flask
 
 from manymiles.blueprints.account.account import blueprint_account
 from manymiles.blueprints.api.api import blueprint_api, create_api
+from manymiles.blueprints.errors.errors import blueprint_errors
 from manymiles.blueprints.main.main import blueprint_main
 from manymiles.blueprints.login.login import blueprint_login
 from manymiles.blueprints.records.records import blueprint_records
@@ -42,6 +43,7 @@ def create_app() -> Flask:
     # Register blueprints
     app.register_blueprint(blueprint_account)
     app.register_blueprint(blueprint_api)
+    app.register_blueprint(blueprint_errors)
     app.register_blueprint(blueprint_main)
     app.register_blueprint(blueprint_login)
     app.register_blueprint(blueprint_records)

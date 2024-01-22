@@ -1,0 +1,19 @@
+{% extends "index.html" %}
+
+{% block css %}
+{% endblock %}
+
+{% block body %}
+    <!-- Main container -->
+    <main class="container">
+    <h1>Page not found</h1>
+    <p>
+        Sorry! We couldn't find the page you were looking for.
+        <br><br>
+        Click <a href="{{ url_for('main.home') }}">here</a> to go to the homepage.
+    </p>
+    </main>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}
