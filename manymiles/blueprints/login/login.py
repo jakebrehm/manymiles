@@ -36,11 +36,8 @@ def logout() -> Response:
     """Log the user out from their session."""
 
     # Clear the user's information from the session
-    session.pop("user_id", None)
-    session.pop("username", None)
-    session.pop("first_name", None)
-    session.pop("last_name", None)
-    session.pop("email", None)
+    for key in list(session.keys()):
+        session.pop(key)
 
     # Redirect the user to the homepage
     return redirect("/")
@@ -120,7 +117,10 @@ def add_user() -> Response:
 
     # Confirm that the requested username is long enough
     if not is_valid_username(username):
-        flash("The username must be between 3 and 30 characters long.")
+        flash(
+            "The username must be between 3 and 30 characters long, "
+            "and the first character must not be a number."
+        )
         return redirect("/register")
 
     # Confirm that the passwords are valid

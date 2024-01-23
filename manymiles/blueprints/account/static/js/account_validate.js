@@ -1,6 +1,6 @@
 /**
  * [validateEmail description]
- * Determines whether or not the email is valid.
+ * Determines whether or not an email is valid.
  * @param   {String}    email       The email to validate.
  * @return  {Boolean}               Whether or not the email is valid.
  */
@@ -10,12 +10,37 @@ function validateEmail(email) {
 
 /**
  * [validateUsername description]
- * Determines whether or not the username is valid.
+ * Determines whether or not a username is valid.
  * @param   {String}    username    The username to validate.
  * @return  {Boolean}               Whether or not the email is valid.
  */
 function validateUsername(username) {
-    return (username.length >= 3) && (username.length <= 30);
+    // Validate the length of the username
+    const validLength = (username.length >= 3) && (username.length <= 30);
+    // Validate that the first character is a letter
+    const usernameExpression = /^[A-Za-z]/;
+    const validFirstCharacter = usernameExpression.test(username.charAt(0));
+    // Validate that all characters are alphanumeric
+    const alphanumericExpression = /^[A-Za-z0-9]*$/;
+    const noSpecialCharacters = alphanumericExpression.test(username);
+    // Return whether or not both of these conditions were met
+    return validLength && validFirstCharacter && noSpecialCharacters;
+}
+
+/**
+ * [validateName description]
+ * Determines whether or not a name is valid.
+ * @param   {String}    name    The name to validate.
+ * @return  {Boolean}               Whether or not the email is valid.
+ */
+function validateName(name) {
+    // Validate the length of the name
+    const validLength = (name.length <= 64);
+    // Validate that all characters are letters
+    const nameExpression = /^[A-Za-z\s]*$/;
+    const validLetters = nameExpression.test(name);
+    // Return whether or not both of these conditions were met
+    return (validLength && validLetters) || !name;
 }
 
 /**
@@ -82,6 +107,67 @@ function validateUpdateUsernameForm() {
             }
         }
     );
+}
+
+/**
+ * [validateUpdateNameForm description]
+ * Adds event listeners to the appropriate inputs on the page that changes
+ * their "aria-invalid" attributes according to their values' validity.
+ */
+function validateUpdateNameForm() {
+
+    // Get handles to the form submission button
+    const submitButton = document.getElementById("submit-modal-change-name");
+    // Get handles to the name inputs
+    const firstName = document.getElementById("new-first-name-input");
+    const lastName = document.getElementById("new-last-name-input");
+    // Create an array of all required inputs
+    const nameInputs = [firstName, lastName];
+
+    // Add event listeners to each of the name inputs
+    nameInputs.forEach((nameInput) => {
+        nameInput.addEventListener(
+            "input",
+            function() {
+                // Get the value of the input
+                const nameValue = nameInput.value;
+
+                // Determine if the names are valid
+                namesValid = validateName(nameValue);
+
+                // Modify the validity attribute for the name input
+                if (!nameValue) {
+                    nameInput.removeAttribute("aria-invalid");
+                } else if (namesValid) {
+                    nameInput.setAttribute("aria-invalid", "false");
+                } else {
+                    nameInput.setAttribute("aria-invalid", "true");
+                }
+            }
+        );
+    });
+
+    // Add event listeners to each of the name inputs
+    nameInputs.forEach((nameInput) => {
+        nameInput.addEventListener(
+            "input",
+            function() {
+                // Get the value of the input
+                const firstValue = firstName.value;
+                const lastValue = lastName.value;
+
+                // Determine if the names are valid
+                namesValid = validateName(firstValue) && validateName(lastValue);
+
+                // Toggle the submit button depending on the form's validity
+                if (namesValid) {
+                    submitButton.disabled = false;
+                } else {
+                    submitButton.disabled = true;
+                }
+            }
+        );
+    });
 }
 
 /**
@@ -238,6 +324,7 @@ function enableDeleteAccountConfirm(timeout=5000) {
 }
 
 // Call the functions
-validateUpdateEmailForm()
 validateUpdateUsernameForm()
+validateUpdateNameForm()
+validateUpdateEmailForm()
 validateUpdatePasswordForm()

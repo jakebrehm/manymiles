@@ -1,3 +1,4 @@
+import sqlalchemy as sa
 from flask import (
     Blueprint, flash, make_response, render_template, redirect, request,
     Response, session, url_for
@@ -7,7 +8,7 @@ from ...extensions import db
 from ...models import User
 from ...utilities import (
     delete_account, generate_hash, get_all_records_for_user, get_user_from_id,
-    get_password_from_id, is_username_available, is_valid_email,
+    get_password_from_id, is_username_available, is_valid_email, is_valid_name,
     is_valid_password, is_valid_username, update_current_password,
 )
 
@@ -87,21 +88,66 @@ def update_username() -> Response:
     # Get the relevant information from the form
     new_username = request.form.get("new-username")
 
+    # Get the user with the associated user id
+    user = get_user_from_id(user_id)
+
+    # Confirm that the requested username does not match the current one
+    if new_username == user.username:
+        flash(
+            "The username you requested is the same as your current username."
+        )
+        return redirect("/account")
+
     # Confirm that the username is valid
     if not is_valid_username(new_username):
-        flash("The username provided is not valid.")
+        flash(
+            "The new username must be between 3 and 30 characters long, "
+            "and the first character must not be a number."
+        )
         return redirect("/account")
 
     # Confirm that the username is valid
     if not is_username_available(new_username):
-        flash("The username provided is not available.")
+        flash("The requested username has already been taken.")
         return redirect("/account")
+
+    # Change the user's email and commit the changes
+    user.username = new_username
+    db.session.commit()
+
+    # Redirect back to the account page
+    return redirect(url_for("account.account"))
+
+@blueprint_account.route("/account/update_name", methods=["POST"])
+def update_name() -> Response:
+    """Updates a user's first and last name in the database."""
+
+    # Confirm that the user is logged in
+    if not (user_id := session.get("user_id", None)):
+        return redirect("/login")
+    
+    # Get the relevant information from the form
+    new_first_name = request.form.get("new-first-name")
+    new_last_name = request.form.get("new-last-name")
+
+    # Confirm that the names are valid
+    if not is_valid_name(new_first_name):
+        flash("The first name provided is not valid.")
+        return redirect("/account")
+    elif not is_valid_name(new_last_name):
+        flash("The last name provided is not valid.")
+        return redirect("/account")
+    
+    # Replace values with nulls if left blank
+    new_first_name = new_first_name if new_first_name else sa.null()
+    new_last_name = new_last_name if new_last_name else sa.null()
     
     # Get the user with the associated user id
     user = get_user_from_id(user_id)
 
-    # Change the user's email and commit the changes
-    user.username = new_username
+    # Change the user's first and last names and commit the changes
+    user.first_name = new_first_name
+    user.last_name = new_last_name
     db.session.commit()
 
     # Redirect back to the account page
@@ -183,6 +229,13 @@ def delete_user_account() -> Response:
     # Get the user and delete their account
     user = get_user_from_id(user_id=user_id)
     delete_account(user)
+
+    # Clear the user's information from the session
+    for key in list(session.keys()):
+        session.pop(key)
+
+    # Flash a goodbye message
+    flash("")
 
     # Redirect back to the account page
     return redirect(url_for("login.register"))

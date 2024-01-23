@@ -31,7 +31,7 @@
                     {% endif %}
                 </div>
                 <div class="edit-button">
-                    <a href="#" role="button">Edit</a>
+                    <a href="javascript:void(0);" data-target="modal-change-name" onclick="toggleModal(event)" role="button">Edit</a>
                 </div>
             </div>
 
@@ -45,7 +45,7 @@
                     {% endif %}
                 </div>
                 <div class="edit-button">
-                    <a href="#" role="button">Edit</a>
+                    <a href="javascript:void(0);" data-target="modal-change-name" onclick="toggleModal(event)" role="button">Edit</a>
                 </div>
             </div>
 
@@ -117,6 +117,40 @@
                         </div>
                         <div class="col-lg-6">
                             <button id="submit-modal-change-username" class="no-bottom-margin" form="change-username-form" data-target="modal-change-username" aria-label="Confirm" onclick="toggleModal(event)" disabled>Confirm</button>
+                        </div>
+                    </div>
+                </footer>
+            </article>
+        </dialog>
+
+        <dialog id="modal-change-name">
+            <article style="min-width: 75vw;">
+                <header>
+                    <a class="close" data-target="modal-change-name" onClick="toggleModal(event)" aria-label="Close"></a>
+                    <hgroup>
+                        <h1>Change your name</h1>
+                        <h4>What's your new name?</h4>
+                    </hgroup>
+                </header>
+                
+                <form id="change-name-form" method="post" action="{{ url_for('account.update_name', name='test') }}">
+                    <div class="grid tight">
+                        <div class="tight">
+                            <input id="new-first-name-input" type="text" name="new-first-name" placeholder="First Name" {% if user.first_name %}value="{{ user.first_name }}"{% endif %} aria-label="First Name" autocomplete="given-name">
+                        </div>
+                        <div class="tight">
+                            <input id="new-last-name-input" type="text" name="new-last-name" placeholder="Last Name" {% if user.last_name %}value="{{ user.last_name }}"{% endif %} aria-label="Last Name" autocomplete="family-name">
+                        </div>
+                    </div>
+                </form>
+
+                <footer>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <button class="secondary no-bottom-margin" data-target="modal-change-name" aria-label="Cancel" onclick="toggleModal(event)">Cancel</button>
+                        </div>
+                        <div class="col-lg-6">
+                            <button id="submit-modal-change-name" class="no-bottom-margin" form="change-name-form" data-target="modal-change-name" aria-label="Confirm" onclick="toggleModal(event)">Confirm</button>
                         </div>
                     </div>
                 </footer>

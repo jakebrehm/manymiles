@@ -40,7 +40,7 @@ function validatePassword(password) {
 
 /**
  * [validateEmail description]
- * Determines whether or not the email is valid.
+ * Determines whether or not an email is valid.
  * @param   {String}    email       The email to validate.
  * @return  {Boolean}               Whether or not the email is valid.
  */
@@ -50,18 +50,43 @@ function validateEmail(email) {
 
 /**
  * [validateUsername description]
- * Determines whether or not the username is valid.
+ * Determines whether or not a username is valid.
  * @param   {String}    username    The username to validate.
  * @return  {Boolean}               Whether or not the email is valid.
  */
 function validateUsername(username) {
-    return (username.length >= 3) && (username.length <= 30);
+    // Validate the length of the username
+    const validLength = (username.length >= 3) && (username.length <= 30);
+    // Validate that the first character is a letter
+    const usernameExpression = /^[A-Za-z]/;
+    const validFirstCharacter = usernameExpression.test(username.charAt(0));
+    // Validate that all characters are alphanumeric
+    const alphanumericExpression = /^[A-Za-z0-9]*$/;
+    const noSpecialCharacters = alphanumericExpression.test(username);
+    // Return whether or not both of these conditions were met
+    return validLength && validFirstCharacter && noSpecialCharacters;
+}
+
+/**
+ * [validateName description]
+ * Determines whether or not a name is valid.
+ * @param   {String}    name    The name to validate.
+ * @return  {Boolean}               Whether or not the email is valid.
+ */
+function validateName(name) {
+    // Validate the length of the name
+    const validLength = (name.length <= 64);
+    // Validate that all characters are letters
+    const nameExpression = /^[A-Za-z\s]*$/;
+    const validLetters = nameExpression.test(name);
+    // Return whether or not both of these conditions were met
+    return (validLength && validLetters) || !name;
 }
 
 /**
  * [validateForm description]
- * Adds event listeners to the password inputs on the page that changes
- * their "aria-invalid" attributes according to their values' validity.
+ * Adds event listeners to the inputs on the page that changes their respective
+ * "aria-invalid" attributes according to their values' validity.
  */
 function validateForm() {
 
@@ -70,13 +95,48 @@ function validateForm() {
     // Get handles to the username and email inputs
     const username = document.getElementById("username-input");
     const email = document.getElementById("email-input");
+    // Get handles to each of the name inputs
+    const firstName = document.getElementById("first-name-input");
+    const lastName = document.getElementById("last-name-input");
     // Get handles to each of the password inputs
     const newPassword = document.getElementById("new-password-input");
     const confirmPassword = document.getElementById("confirm-password-input");
-    // Create an array of these two password inputs
+    // Create an array of the two name inputs
+    const nameInputs = [firstName, lastName];
+    // Create an array of the two password inputs
     const passwordInputs = [newPassword, confirmPassword];
     // Create an array of all required inputs
-    const requiredInputs = [username, email, newPassword, confirmPassword];
+    const allInputs = [
+        username,
+        email,
+        firstName,
+        lastName,
+        newPassword,
+        confirmPassword
+    ];
+
+    // Add event listeners to each of the name inputs
+    nameInputs.forEach((nameInput) => {
+        nameInput.addEventListener(
+            "input",
+            function() {
+                // Get the value of the input
+                const nameValue = nameInput.value;
+
+                // Determine if the names are valid
+                namesValid = validateName(nameValue);
+
+                // Modify the validity attribute for the name input
+                if (!nameValue) {
+                    nameInput.removeAttribute("aria-invalid");
+                } else if (namesValid) {
+                    nameInput.setAttribute("aria-invalid", "false");
+                } else {
+                    nameInput.setAttribute("aria-invalid", "true");
+                }
+            }
+        );
+    });
 
     //
     passwordInputs.forEach((passwordInput) => {
@@ -152,13 +212,15 @@ function validateForm() {
     );
 
     // 
-    requiredInputs.forEach((requiredInput) => {
-        requiredInput.addEventListener(
+    allInputs.forEach((allInput) => {
+        allInput.addEventListener(
             "input",
             function() {
                 // Get the values of each required input
                 const newValue = newPassword.value;
                 const confirmValue = confirmPassword.value;
+                const firstValue = firstName.value;
+                const lastValue = lastName.value;
                 const usernameValue = username.value;
                 const emailValue = email.value;
 
@@ -168,13 +230,17 @@ function validateForm() {
                 const valuesValid = (
                     validatePassword(newValue) && validatePassword(confirmValue)
                 );
+                // Determine if the names are valid
+                const namesValid = (
+                    validateName(firstValue) && validateName(lastValue)
+                );
                 // Determine if the user information is valid
                 const validUserInfo = (
                     validateUsername(usernameValue) && validateEmail(emailValue)
                 );
 
                 // Toggle the submit button depending on the form's validity
-                if (valuesValid && valuesMatch && validUserInfo) {
+                if (valuesValid && valuesMatch && namesValid && validUserInfo) {
                     submitButton.disabled = false;
                 } else {
                     submitButton.disabled = true;

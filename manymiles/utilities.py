@@ -204,20 +204,26 @@ def is_username_available(username: str) -> bool:
     """Checks whether or not the provided username is available."""
     
     # See if there are any matches for the username in the database
-    matches = db.session.query(models.User.user_id).filter_by(username=username)
-    # If the username is available, there should have been no match
-    return matches.first() is None
+    matched = db.session.query(models.User).filter_by(username=username).first()
+    # Return if the username is available
+    return (username != matched.username) if matched else True
 
 
 def is_valid_username(username: str) -> bool:
     """Checks whether or not the provided username is valid."""
-    return (3 <= len(username) <= 30)
+    valid_length = (3 <= len(username) <= 30)
+    first_character = (not username[0].isnumeric())
+    no_special_characters = username.isalnum()
+    return valid_length and first_character and no_special_characters
+
+
+def is_valid_name(name: str) -> bool:
+    """Checks whether or not the provided name is valid."""
+    return (name.isalpha() and (len(name) <= 64)) or not name
 
 
 def is_valid_email(email: str) -> bool:
     """Checks whether or not the provided email is valid."""
-    
-    # TODO: Find better way
     expression = r"^[a-z0-9]+([\._]?[a-z0-9]+)*[@]\w+[.]\w{2,3}$"
     return bool(re.match(expression, email))
 
