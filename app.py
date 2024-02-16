@@ -5,7 +5,9 @@ from dotenv import load_dotenv
 from flask import Flask
 
 from manymiles.blueprints.account.account import blueprint_account
-from manymiles.blueprints.api.api import blueprint_api, create_api
+from manymiles.blueprints.api.api import (
+    blueprint_api, blueprint_api_docs, create_api
+)
 from manymiles.blueprints.errors.errors import blueprint_errors
 from manymiles.blueprints.main.main import blueprint_main
 from manymiles.blueprints.login.login import blueprint_login
@@ -31,7 +33,7 @@ def create_app() -> Flask:
 
     # Create the application
     root_path = os.path.join(os.getcwd(), "manymiles")
-    app = Flask(__name__, root_path=root_path)
+    app = Flask("ManyMiles", root_path=root_path)
     # Set the secret key
     app.secret_key = os.environ.get("MM_FLASK_SECRET")
     # Configure the database
@@ -43,6 +45,7 @@ def create_app() -> Flask:
     # Register blueprints
     app.register_blueprint(blueprint_account)
     app.register_blueprint(blueprint_api)
+    app.register_blueprint(blueprint_api_docs)
     app.register_blueprint(blueprint_errors)
     app.register_blueprint(blueprint_main)
     app.register_blueprint(blueprint_login)

@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, jsonify, render_template, redirect, session, Response
+    Blueprint, render_template, redirect, session, Response
 )
 
 blueprint_main = Blueprint(
@@ -21,11 +21,3 @@ def home() -> str | Response:
     
     # Otherwise, proceed to the homepage
     return render_template("main/home.html")
-
-@blueprint_main.route("/get_daily_data")
-def get_daily_data() -> Response:
-    """"""
-
-    return jsonify({
-        "data": [1, 2, 4, 6, 7, 8, 10],
-    })

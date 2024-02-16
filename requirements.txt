@@ -6,6 +6,7 @@ cryptography==41.0.5
 Flask==2.3.3
 Flask-RESTful==0.3.10
 Flask-SQLAlchemy==3.1.1
+flask-swagger-ui==4.11.1
 itsdangerous==2.1.2
 Jinja2==3.1.2
 MarkupSafe==2.1.3
