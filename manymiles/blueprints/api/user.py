@@ -26,7 +26,7 @@ class UserIDAPI(Resource):
             return make_response(jsonify({
                 "code": "FAILED",
                 "message": "No user exists with that username",
-            }), 404)
+            }), 401)
         
         # Otherwise, return the ID of the user
         return make_response(jsonify({

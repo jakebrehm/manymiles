@@ -31,14 +31,14 @@ def authenticate_user(
         return False, make_response(jsonify({
             "code": "FAILED",
             "message": "No user exists with that username",
-        }), 404)
+        }), 401)
 
     # Abort if the user could not be authenticated
     if not is_correct_password(user, password):
         return False, make_response(jsonify({
             "code": "FAILED",
             "message": "Incorrect password",
-        }), 404)
+        }), 401)
     
     # Otherwise, simply return that the operation was successful
     return True, user
