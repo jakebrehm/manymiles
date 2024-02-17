@@ -317,7 +317,7 @@
         }
       }
     },
-    "/add_record": {
+    "/record": {
       "post": {
         "tags": [
           "record"
