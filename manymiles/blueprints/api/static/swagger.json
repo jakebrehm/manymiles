@@ -249,7 +249,7 @@
         "tags": [
           "record"
         ],
-        "summary": "Deletes user's most recent record",
+        "summary": "Delete user's most recent record",
         "description": "Deletes the currently authenticated user's most recently recorded mileage.",
         "parameters": [
           {
