@@ -1,0 +1,176 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "ManyMiles API",
+    "description": "This is the documentation for the ManyMiles API.\n",
+    "version": "1.0.0",
+    "contact": {
+      "email": "mail@jakebrehm.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://manymiles.app/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "user",
+      "description": "Access to information relevant to user accounts"
+    },
+    {
+      "name": "record",
+      "description": "Access to record data"
+    }
+  ],
+  "paths": {
+    "/user_id/{username}": {
+      "get": {
+        "tags": [
+          "user"
+        ],
+        "summary": "Get user ID",
+        "description": "Get a user's unique identification number from their username.",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The username of the user.",
+            "schema": {
+              "$ref": "#/components/schemas/username"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/most_recent_record/{username}&{password}": {
+      "get": {
+        "tags": [
+          "record"
+        ],
+        "summary": "Get user's most recent record",
+        "description": "Gets the specified user's most recently recorded mileage.",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "The username of the user.",
+            "schema": {
+              "$ref": "#/components/schemas/username"
+            },
+            "required": true
+          },
+          {
+            "name": "password",
+            "in": "path",
+            "description": "The password of the user.",
+            "schema": {
+              "$ref": "#/components/schemas/password"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    },
+    "/add_record": {
+      "put": {
+        "tags": [
+          "record"
+        ],
+        "summary": "Add a new record",
+        "description": "Adds a new mileage record for the specified user.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/record"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "user_id": {
+        "type": "integer",
+        "description": "unique identification number of the user"
+      },
+      "username": {
+        "type": "string",
+        "minLength": 3,
+        "maxLength": 20,
+        "description": "username of the user"
+      },
+      "password": {
+        "type": "string",
+        "format": "password",
+        "minLength": 7,
+        "description": "password of the user"
+      },
+      "user": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "$ref": "#/components/schemas/username"
+          },
+          "password": {
+            "$ref": "#/components/schemas/password"
+          }
+        }
+      },
+      "date": {
+        "type": "string",
+        "format": "date",
+        "description": "date of a record"
+      },
+      "time": {
+        "type": "string",
+        "format": "time",
+        "description": "time of a record"
+      },
+      "mileage": {
+        "type": "integer",
+        "description": "the mileage value to be recorded"
+      },
+      "record": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "$ref": "#/components/schemas/username"
+          },
+          "password": {
+            "$ref": "#/components/schemas/password"
+          },
+          "date": {
+            "$ref": "#/components/schemas/date"
+          },
+          "time": {
+            "$ref": "#/components/schemas/time"
+          },
+          "mileage": {
+            "$ref": "#/components/schemas/mileage"
+          }
+        }
+      }
+    }
+  }
+}

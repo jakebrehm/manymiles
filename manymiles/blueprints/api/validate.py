@@ -1,4 +1,8 @@
-from flask import jsonify, make_response, Response
+from functools import wraps
+from typing import Any, Callable
+
+import jwt
+from flask import current_app, jsonify, make_response, Response, request
 
 from ...extensions import db
 from ...models import User
@@ -42,4 +46,57 @@ def authenticate_user(
     
     # Otherwise, simply return that the operation was successful
     return True, user
-    
+
+def token_required(original) -> Callable:
+    @wraps(original)
+    def wrapper(*args, **kwargs) -> Any | Response:
+        """Wraps the decorated with a check for a valid API token."""
+
+        # Abort if there was no token sent in the request json
+        if not (token := request.headers.get("api-token")):
+            return make_response(jsonify({
+                "code": "FAILED",
+                "message": "API token is missing.",
+            }), 403)
+        
+        # If the token is able to be decoded, then the token is valid
+        try:
+            decoded = jwt.decode(
+                jwt=token,
+                key=current_app.config["SECRET_KEY"],
+                algorithms=["HS256"],
+            )
+        # Abort if the token was not able to be decoded
+        except jwt.DecodeError:
+            return make_response(jsonify({
+                "code": "FAILED",
+                "message": "API token is invalid.",
+            }), 403)
+        # Abort if the token has expired
+        except jwt.ExpiredSignatureError:
+            return make_response(jsonify({
+                "code": "FAILED",
+                "message": "API token signature has expired.",
+            }), 403)
+        # Abort if there was some other unhandled error
+        except:
+            return make_response(jsonify({
+                "code": "FAILED",
+                "message": "Unhandled error occurred while decoding API token.",
+            }), 403)
+        
+        # Get the current user from user id stored in the payload
+        user_id = decoded["user_id"]
+        current_user = User.query.filter_by(user_id=user_id).first()
+        # Check that the user actually exists
+        if not current_user:
+            return make_response(jsonify({
+                "code": "FAILED",
+                "message": "User could not be found",
+            }), 401)
+
+        # If there were no issues decoding, execute the wrapped function
+        return original(*args, **kwargs, current_user=current_user)
+
+    # Return the decorated function
+    return wrapper
