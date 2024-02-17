@@ -3,7 +3,7 @@ from flask_restful import Api
 from flask_swagger_ui import get_swaggerui_blueprint
 
 from .user import UserAPI
-from .login import AuthenticateAPI
+from .authenticate import AuthenticateAPI
 from .records import MostRecentRecordAPI, RecordAPI
 
 blueprint_api = Blueprint(

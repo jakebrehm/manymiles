@@ -86,6 +86,7 @@ class MostRecentRecordAPI(Resource):
         # Create the dictionary and return
         return {
             "mileage": record.mileage,
+            "notes": record.notes,
             "recorded": record.record_datetime.strftime(datetime_format),
             "created": record.create_datetime.strftime(datetime_format),
             "updated": record.update_datetime.strftime(datetime_format),

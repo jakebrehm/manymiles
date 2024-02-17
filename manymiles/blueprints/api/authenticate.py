@@ -57,5 +57,6 @@ class AuthenticateAPI(Resource):
         # Return the token to the user
         return make_response(jsonify({
             "code": "SUCCESS",
+            "message": "API token successfully generated",
             "token": token,
         }), 200)

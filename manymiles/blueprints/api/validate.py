@@ -83,7 +83,7 @@ def token_required(original) -> Callable:
             return make_response(jsonify({
                 "code": "FAILED",
                 "message": "Unhandled error occurred while decoding API token.",
-            }), 403)
+            }), 400)
         
         # Get the current user from user id stored in the payload
         user_id = decoded["user_id"]
