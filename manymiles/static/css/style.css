@@ -13,6 +13,8 @@
 
 body {
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Navigation bar */
@@ -28,6 +30,15 @@ nav ul {
 nav ul li:first-child {
     /* First child is typically the logo */
     margin-right: auto;
+}
+
+nav ul li.hide-on-mobile:not(:first-child):not(:last-child) {
+    padding-right: 2.5rem;
+}
+
+nav ul li.hide-on-mobile:has(details) {
+    margin: 0;
+    padding: 0;
 }
 
 .sidebar {
@@ -105,4 +116,26 @@ nav ul li:first-child {
 
 .full-width {
     width: 100%;
+}
+
+/* Footer */
+
+.footer {
+    margin-top: auto;
+    --block-spacing-vertical: 1rem;
+    border-top: var(--primary);
+}
+
+.footer .footer-links {
+    text-align: center;
+}
+
+.footer .footer-links div.row > div {
+    padding-bottom: 0;
+}
+
+@media(max-width: 767px) {
+    .footer .footer-links div.row > div {
+        padding-bottom: 1rem;
+    }
 }

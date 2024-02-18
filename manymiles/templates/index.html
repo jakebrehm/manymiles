@@ -39,7 +39,6 @@
                     </ul>
                 </details>
             </li>
-            <li><a href="https://docs.manymiles.app/">API Docs</a></li>
             {% if session["user_id"] %}
             <li><a href="/records">Records</a></li>
             <li>
@@ -77,12 +76,11 @@
                     </ul>
                 </details>
             </li>
-            <li class="hide-on-mobile"><a href="https://docs.manymiles.app/">API Docs</a></li>
             {% if session["user_id"] %}
             <li class="hide-on-mobile"><a href="/records">Records</a></li>
-            <li class="hide-on-mobile">
+            <li class="hide-on-mobile" style="padding-right: 0;">
                 <details role="list" dir="rtl">
-                    <summary aria-haspopup="listbox" role="button" style="align-items:center;">
+                    <summary aria-haspopup="listbox" role="button" style="align-items: center;">
                         <i class="fa fa-user" aria-hidden="true" style="margin-right: 10px;"></i>
                         {{ session["username"] }}
                     </summary>
@@ -105,6 +103,24 @@
         </ul>
     </nav>
     {% block body %}{% endblock %}
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-links">
+            <div class="row" style="margin: 0;">
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <a href="https://github.com/jakebrehm/manymiles">
+                        <i class="fa fa-github" aria-hidden="true"></i>
+                    </a>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <a href="https://docs.manymiles.app/">API Documentation</a>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-12">
+                    <a href="#">Contact</a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <!-- Theme-switching Javascript -->
     <script src="{{ url_for('static', filename='js/navigate.js') }}"></script>
