@@ -39,6 +39,7 @@
                     </ul>
                 </details>
             </li>
+            <li><a href="https://docs.manymiles.app/">API Docs</a></li>
             {% if session["user_id"] %}
             <li><a href="/records">Records</a></li>
             <li>
@@ -76,6 +77,7 @@
                     </ul>
                 </details>
             </li>
+            <li class="hide-on-mobile"><a href="https://docs.manymiles.app/">API Docs</a></li>
             {% if session["user_id"] %}
             <li class="hide-on-mobile"><a href="/records">Records</a></li>
             <li class="hide-on-mobile">
@@ -95,7 +97,7 @@
             <li class="hide-on-mobile"><a href="/login" role="button">Log in</a></li>
             <li class="hide-on-mobile"><a href="/register" role="button" class="secondary">Sign up</a></li>
             {% endif %}
-            <li class="menu-button" onclick=toggleSidebar()>
+            <li class="menu-button" onclick=toggleSidebar() id="open-sidebar">
                 <a href="#">
                     <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="24"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
                 </a>
