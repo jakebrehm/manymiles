@@ -20,12 +20,13 @@
 <body>
     <!-- Navigation bar -->
     <nav class="container-fluid">
-        <ul>
-            <li>
-                <a href="/" class="contrast"><strong>ManyMiles</strong></a>
+        <!-- Create version of the navigation bar that is hidden behind the hamburger menu -->
+        <ul class="sidebar" id="sidebar">
+            <li onclick=toggleSidebar()>
+                <a href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+                </a>
             </li>
-        </ul>
-        <ul>
             <li>
                 <details role="list" dir="rtl">
                     <summary aria-haspopup="listbox" role="link" class="secondary">
@@ -58,10 +59,53 @@
             <li><a href="/register" role="button" class="secondary">Sign up</a></li>
             {% endif %}
         </ul>
+        <!-- Create version of the navigation bar that is shown on larger devices -->
+        <ul>
+            <li>
+                <a href="/" class="contrast"><strong>ManyMiles</strong></a>
+            </li>
+            <li class="hide-on-mobile">
+                <details role="list" dir="rtl">
+                    <summary aria-haspopup="listbox" role="link" class="secondary">
+                        Theme
+                    </summary>
+                    <ul role="listbox">
+                        <li><a href="#" data-theme-handler="auto">Auto</a></li>
+                        <li><a href="#" data-theme-handler="light">Light</a></li>
+                        <li><a href="#" data-theme-handler="dark">Dark</a></li>
+                    </ul>
+                </details>
+            </li>
+            {% if session["user_id"] %}
+            <li class="hide-on-mobile"><a href="/records">Records</a></li>
+            <li class="hide-on-mobile">
+                <details role="list" dir="rtl">
+                    <summary aria-haspopup="listbox" role="button" style="align-items:center;">
+                        <i class="fa fa-user" aria-hidden="true" style="margin-right: 10px;"></i>
+                        {{ session["username"] }}
+                    </summary>
+                    <ul role="listbox">
+                        <li><a href="/account">Account</a></li>
+                        <li><hr class="divider"></li>
+                        <li><a href="/logout">Log out</a></li>
+                    </ul>
+                </details>
+            </li>
+            {% else %}
+            <li class="hide-on-mobile"><a href="/login" role="button">Log in</a></li>
+            <li class="hide-on-mobile"><a href="/register" role="button" class="secondary">Sign up</a></li>
+            {% endif %}
+            <li class="menu-button" onclick=toggleSidebar()>
+                <a href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="24"><path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"/></svg>
+                </a>
+            </li>
+        </ul>
     </nav>
     {% block body %}{% endblock %}
 
     <!-- Theme-switching Javascript -->
+    <script src="{{ url_for('static', filename='js/navigate.js') }}"></script>
     <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
     {% block javascript %}{% endblock %}
 </body>

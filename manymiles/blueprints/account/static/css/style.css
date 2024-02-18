@@ -6,7 +6,6 @@
 
 .settings-group div.setting ~ div.setting {
     padding-top: 0.5em;
-    /* background-color: red; */
 }
 
 .container div.settings-group ~ div.settings-group {
