@@ -17,6 +17,10 @@ article div {
     padding: 1rem;
 }
 
+div.flashes article div.row {
+    padding: 0;
+}
+
 @media (min-width: 768px) {
     body > main {
         padding: 1.5rem 0;

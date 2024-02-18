@@ -23,12 +23,12 @@ blueprint_login = Blueprint(
 
 @blueprint_login.route("/register")
 def register() -> str:
-    """"""
+    """Route to the register page."""
     return render_template("login/register.html")
 
 @blueprint_login.route("/login")
 def login() -> str:
-    """"""
+    """Route to the login page."""
     return render_template("login/login.html")
 
 @blueprint_login.route("/logout")
