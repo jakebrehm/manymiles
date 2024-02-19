@@ -120,9 +120,6 @@ function createDayOfWeekHistogram(canvasId, endpoint) {
                         label: "Count",
                         data: data["values"],
                         backgroundColor: cssVariable("--primary"),
-                        // fill: false,
-                        // borderColor: cssVariable("--primary"),
-                        // lineTension: 0.1
                 }],
             },
             options: {

@@ -115,6 +115,9 @@ def update_username() -> Response:
     user.username = new_username
     db.session.commit()
 
+    # Change the user's username in the session
+    session["username"] = new_username
+
     # Redirect back to the account page
     return redirect(url_for("account.account"))
 
@@ -138,17 +141,17 @@ def update_name() -> Response:
         flash("The last name provided is not valid.")
         return redirect("/account")
     
-    # Replace values with nulls if left blank
-    new_first_name = new_first_name if new_first_name else sa.null()
-    new_last_name = new_last_name if new_last_name else sa.null()
-    
     # Get the user with the associated user id
     user = get_user_from_id(user_id)
 
     # Change the user's first and last names and commit the changes
-    user.first_name = new_first_name
-    user.last_name = new_last_name
+    user.first_name = new_first_name if new_first_name else sa.null()
+    user.last_name = new_last_name if new_last_name else sa.null()
     db.session.commit()
+
+    # Change the user's name in the session
+    session["first_name"] = new_first_name
+    session["last_name"] = new_last_name
 
     # Redirect back to the account page
     return redirect(url_for("account.account"))
@@ -175,6 +178,9 @@ def update_email() -> Response:
     # Change the user's email and commit the changes
     user.email = new_email
     db.session.commit()
+
+    # Change the user's email in the session
+    session["email"] = new_email
 
     # Redirect back to the account page
     return redirect(url_for("account.account"))
@@ -235,7 +241,7 @@ def delete_user_account() -> Response:
         session.pop(key)
 
     # Flash a goodbye message
-    flash("")
+    flash("Your account has been deleted. Thanks for using ManyMiles!")
 
     # Redirect back to the account page
     return redirect(url_for("login.register"))

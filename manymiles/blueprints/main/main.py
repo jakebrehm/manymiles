@@ -25,23 +25,21 @@ def home() -> str | Response:
     if not (user_id := session.get("user_id", None)):
         return redirect("/login")
     
-    # Determine the unique days that the user has make records on
-    columns = ["record_datetime", "mileage"]
-    df = utilities.get_all_records_for_user(user_id)[columns]
-    df.index = pd.to_datetime(df["record_datetime"]).dt.date
-    df = df.groupby(df.index).max()
-    
-
-    # test = calculations.create_day_of_week_histogram_dataframe(user_id)
-    # print(test.head())
-    # print(test.columns)
-
+    try:
+        # Determine the unique days that the user has make records on
+        columns = ["record_datetime", "mileage"]
+        df = utilities.get_all_records_for_user(user_id)[columns]
+        df.index = pd.to_datetime(df["record_datetime"]).dt.date
+        df = df.groupby(df.index).max()
+        show_visualizations = (len(df) >= 3)
+    except KeyError:
+        show_visualizations = False
 
     # Otherwise, proceed to the homepage
     return render_template(
         "main/home.html",
         user=utilities.get_user_from_id(user_id),
-        show_visualizations=(len(df) >= 3),
+        show_visualizations=show_visualizations,
     )
 
 
@@ -53,8 +51,11 @@ def get_record_timeline() -> Response:
     if not (user_id := session.get("user_id", None)):
         return redirect("/login")
 
-    # Grab the data used for making the record timeline visualization
-    df = calculations.create_record_timeline_dataframe(user_id)
+    try:
+        # Grab the data used for making the record timeline visualization
+        df = calculations.create_record_timeline_dataframe(user_id)
+    except KeyError:
+        return jsonify({"valid": False})
 
     # Separate the records in the record dates and mileage values
     labels = [date.strftime(r"%m-%d-%Y") for date in df.index.tolist()]
@@ -72,8 +73,11 @@ def get_day_of_week_histogram() -> Response:
     if not (user_id := session.get("user_id", None)):
         return redirect("/login")
 
-    # Grab the data used for making the record timeline visualization
-    df = calculations.create_day_of_week_histogram_dataframe(user_id)
+    try:
+        # Grab the data used for making the record timeline visualization
+        df = calculations.create_day_of_week_histogram_dataframe(user_id)
+    except KeyError:
+        return jsonify({"valid": False})
 
     # Separate the records in the record dates and mileage values
     labels = df["Day Name"].tolist()
