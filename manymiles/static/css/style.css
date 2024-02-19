@@ -160,6 +160,14 @@ article.alert div.row div {
     padding-bottom: 0;
 }
 
+.footer .footer-links a {
+    color: var(--secondary);
+}
+
+.footer .footer-links a:hover {
+    color: var(--primary);
+}
+
 @media(max-width: 768px) {
     .footer .footer-links div.row > div {
         padding-bottom: 1rem;
