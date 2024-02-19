@@ -34,6 +34,7 @@ def home() -> str | Response:
     # Otherwise, proceed to the homepage
     return render_template(
         "main/home.html",
+        user=utilities.get_user_from_id(user_id),
         show_visualizations=(len(df) >= 3),
     )
 

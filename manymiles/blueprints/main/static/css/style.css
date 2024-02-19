@@ -5,3 +5,9 @@
     height: 50vh;
     min-height: 400px;
 }
+
+/* Alerts */
+
+article.alert {
+    background-color: rgba(16, 149, 194, 0.15);
+}
