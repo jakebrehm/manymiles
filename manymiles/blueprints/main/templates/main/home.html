@@ -11,8 +11,8 @@
 {% block body %}
     <!-- Main container -->
     <main class="container">
-        {% if user.first_name %}
-        <h2>Hi, {{ user.first_name }}!</h2>
+        {% if session["first_name"] %}
+        <h2>Hi, {{ session["first_name"] }}!</h2>
         {% else %}
         <h2>Welcome!</h2>
         {% endif %}
@@ -31,7 +31,10 @@
         </article>
         {% else %}
         <div class="visualization">
-            <canvas id="line-chart"></canvas>
+            <canvas id="record-timeline"></canvas>
+        </div>
+        <div class="visualization">
+            <canvas id="day-of-week-histogram"></canvas>
         </div>
         {% endif %}
     </main>

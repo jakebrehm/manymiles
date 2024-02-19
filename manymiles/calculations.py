@@ -40,3 +40,28 @@ def create_record_timeline_dataframe(user: User | int) -> pd.DataFrame:
 
     # Return the fully constructed dataframe
     return df
+
+
+def create_day_of_week_histogram_dataframe(user: User | int) -> pd.DataFrame:
+    """Creates the dataframe that is used for the day of week histogram."""
+
+    # Get all records for the specified user
+    columns = ["record_datetime", "mileage"]
+    df = utilities.get_all_records_for_user(user)[columns]
+
+    # Consolidate the records to only the highest value for each day
+    df.index = pd.to_datetime(df["record_datetime"]).dt.date
+    df = df.groupby(df.index).max()
+
+    # Create columns for day of week number and name
+    df["Day Number"] = pd.to_datetime(df["record_datetime"]).dt.dayofweek
+    df["Day Name"] = pd.to_datetime(df["record_datetime"]).dt.day_name()
+
+    # Count the number of records for each day of the week
+    df = df.groupby(["Day Number", "Day Name"]).size().reset_index(name="Count")
+
+    # Ensure that the days are in the correct order
+    df = df.sort_values(by="Day Number", ascending=True)
+    
+    # Return the fully constructed dataframe
+    return df

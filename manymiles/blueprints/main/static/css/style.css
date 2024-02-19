@@ -6,6 +6,10 @@
     min-height: 400px;
 }
 
+.visualization:not(:last-child) {
+    margin-bottom: var(--block-spacing-vertical);
+}
+
 /* Alerts */
 
 article.alert {
