@@ -74,6 +74,9 @@ function createRecordTimeline(canvasId) {
                                 size: 14,
                             },
                         },
+                        grid: {
+                            color: cssVariable("--muted-border-color"),
+                        },
                     },
                     y: {
                         title: {
@@ -83,6 +86,9 @@ function createRecordTimeline(canvasId) {
                             font: {
                                 size: 14,
                             },
+                        },
+                        grid: {
+                            color: cssVariable("--muted-border-color"),
                         },
                     },
                 },
