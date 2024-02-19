@@ -19,6 +19,11 @@ body {
 
 /* Navigation bar */
 
+nav {
+    background-color: rgba(75, 75, 75, 0.025);
+    border-bottom: 1px solid rgba(75, 75, 75, 0.2);
+}
+
 nav ul {
     width: 100%;
     list-style: none;
@@ -143,7 +148,8 @@ article.alert div.row div {
 .footer {
     margin-top: auto;
     --block-spacing-vertical: 1rem;
-    border-top: var(--primary);
+    background-color: rgba(75, 75, 75, 0.025);
+    border-top: 1px solid rgba(75, 75, 75, 0.2);
 }
 
 .footer .footer-links {
