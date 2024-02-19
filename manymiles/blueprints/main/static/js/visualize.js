@@ -62,6 +62,9 @@ function createRecordTimeline(canvasId) {
                             size: 20,
                         },
                         align: "start",
+                        padding: {
+                            bottom: 30,
+                        },
                     },
                     legend: {
                         display: false,
