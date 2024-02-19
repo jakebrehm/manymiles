@@ -279,11 +279,28 @@ def get_string_from_datetime(
     return timestamp.strftime(format)
 
 
-def get_all_records_for_user(user: models.User) -> pd.DataFrame:
-    """Gets all records for the provided user and returns as a dataframe."""
+def get_number_of_records_for_user(user: models.User | int) -> int:
+    """Gets the number of records for the specified user.
+    
+    The `user` input can be the user object or the user id.
+    """
 
+    # Extract the user id from the input
+    user_id = user if isinstance(user, int) else user.user_id
+    # Get the count of all records for the provided user
+    return models.Record.query.filter_by(user_id=user_id).count()
+
+
+def get_all_records_for_user(user: models.User | int) -> pd.DataFrame:
+    """Gets all records for the provided user and returns as a dataframe.
+    
+    The `user` input can be the user object or the user id.
+    """
+
+    # Extract the user id from the input
+    user_id = user if isinstance(user, int) else user.user_id
     # Get all of the records for the provided user
-    records = models.Record.query.filter_by(user_id=user.user_id)
+    records = models.Record.query.filter_by(user_id=user_id)
     records = [record.__dict__ for record in records.all()]
     # Convert the data to a dataframe
     df = pd.DataFrame.from_records(records)

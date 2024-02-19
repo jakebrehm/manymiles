@@ -1,18 +1,36 @@
 {% extends "index.html" %}
 
 {% block css %}
+<!-- Blueprint-specific style -->
+<link rel="stylesheet" href="{{ url_for('main.static', filename='css/style.css') }}">
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% endblock %}
 
 {% block body %}
     <!-- Main container -->
     <main class="container">
         {% if session["first_name"] %}
-        <h2>Welcome, {{ session["first_name"] }}!</h2>
+        <h2>Hi, {{ session["first_name"] }}!</h2>
         {% else %}
         <h2>Welcome!</h2>
+        {% endif %}
+
+        {% if not show_visualizations %}
+        <p>
+            We only start making your visualizations once you've had at least five records.
+            <br><br>
+            Keep on tracking!
+        </p>
+        {% else %}
+        <div class="visualization">
+            <canvas id="line-chart"></canvas>
+        </div>
         {% endif %}
     </main>
 {% endblock %}
 
 {% block javascript %}
+<script src="{{ url_for('main.static', filename='js/visualize.js') }}"></script>
 {% endblock %}
