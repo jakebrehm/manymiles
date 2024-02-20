@@ -32,18 +32,6 @@
                     <svg xmlns="http://www.w3.org/2000/svg" height="26" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
                 </a>
             </li>
-            <li>
-                <details role="list" dir="rtl">
-                    <summary aria-haspopup="listbox" role="link" class="secondary">
-                        Theme
-                    </summary>
-                    <ul role="listbox">
-                        <li><a href="#" data-theme-handler="auto">Auto</a></li>
-                        <li><a href="#" data-theme-handler="light">Light</a></li>
-                        <li><a href="#" data-theme-handler="dark">Dark</a></li>
-                    </ul>
-                </details>
-            </li>
             {% if session["user_id"] %}
             <li><a href="/records">Records</a></li>
             <li>
@@ -68,18 +56,6 @@
         <ul>
             <li>
                 <a href="/" class="contrast"><strong>ManyMiles</strong></a>
-            </li>
-            <li class="hide-on-mobile">
-                <details role="list" dir="rtl">
-                    <summary aria-haspopup="listbox" role="link" class="secondary">
-                        Theme
-                    </summary>
-                    <ul role="listbox">
-                        <li><a href="#" data-theme-handler="auto">Auto</a></li>
-                        <li><a href="#" data-theme-handler="light">Light</a></li>
-                        <li><a href="#" data-theme-handler="dark">Dark</a></li>
-                    </ul>
-                </details>
             </li>
             {% if session["user_id"] %}
             <li class="hide-on-mobile"><a href="/records">Records</a></li>

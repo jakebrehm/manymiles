@@ -8,8 +8,11 @@
 {% block body %}
     <!-- Main container -->
     <main class="container">
+
+        <h1>Account Settings</h1>
+
         <div class="settings-group">
-            <h1>Account Settings</h1>
+            <h2>Your details</h2>
 
             <div class="grid setting">
                 <div>
@@ -61,7 +64,30 @@
         </div>
 
         <div class="settings-group">
-            <h2>Account</h2>
+            <h2>Appearance</h2>
+
+            <div class="grid setting">
+                <div>
+                    <b>Theme</b><br>
+                    <em>Change your theme</em>
+                </div>
+                <div class="theme-setting">
+                    <details role="list" dir="rtl">
+                        <summary aria-haspopup="listbox" role="button">
+                            Theme
+                        </summary>
+                        <ul role="listbox">
+                            <li><a href="#" data-theme-handler="auto">Auto</a></li>
+                            <li><a href="#" data-theme-handler="light">Light</a></li>
+                            <li><a href="#" data-theme-handler="dark">Dark</a></li>
+                        </ul>
+                    </details>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-group">
+            <h2>Privacy & security</h2>
 
             <div class="grid setting">
                 <div>
