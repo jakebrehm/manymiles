@@ -12,9 +12,9 @@
     <!-- Main container -->
     <main class="container">
         {% if session["first_name"] %}
-        <h2>Hi, {{ session["first_name"] }}!</h2>
+        <h1 class="primary-gradient">Hi, {{ session["first_name"] }}!</h1>
         {% else %}
-        <h2>Welcome!</h2>
+        <h1 class="primary-gradient">Welcome!</h1>
         {% endif %}
 
         {% if not show_visualizations %}
