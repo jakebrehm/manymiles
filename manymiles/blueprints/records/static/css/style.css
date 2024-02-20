@@ -29,6 +29,14 @@ tr:hover td {
 .record-button {
     width: 50%;
     padding: 5%;
+    border: none;
+    margin-top: 0;
+}
+
+@media(max-width: 768px) {
+    .record-button:not(:first-child) {
+        margin-top: 0.25rem;
+    }
 }
 
 .pagination-button {

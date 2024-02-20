@@ -16,6 +16,7 @@ blueprint_main = Blueprint(
     static_url_path="/main/static",
 )
 
+
 @blueprint_main.route("/")
 @blueprint_main.route("/home")
 def home() -> str | Response:
