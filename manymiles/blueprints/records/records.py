@@ -79,7 +79,6 @@ def records(page_num: int, per_page: int) -> str:
     return render_template(
         "records/records.html",
         records=paginated_records,
-        current_datetime=dt.datetime.now().strftime(r"%Y-%m-%d %H:%M"),
         to_timestamp=get_string_from_datetime(to_timestamp),
         from_timestamp=get_string_from_datetime(from_timestamp),
     )
