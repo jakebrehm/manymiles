@@ -4,13 +4,18 @@ https://codesandbox.io/s/github/picocss/examples/tree/master/v1
 */
 
 const themeHandler = {
-    // Configuration
+    // General configuration
     _theme: "auto",
     menuTarget: "details[role='list']",
     buttonsTarget: "a[data-theme-handler]",
     buttonAttribute: "data-theme-handler",
     rootAttribute: "data-theme",
     localStorageKey: "picoPreferredTheme",
+
+    // Logo configuration
+    logoId: null,
+    logoLight: null,
+    logoDark:null,
 
     // Initialize the theme handler
     initialize() {
@@ -71,6 +76,15 @@ const themeHandler = {
     applyTheme() {
         const html = document.querySelector("html")
         html.setAttribute(this.rootAttribute, this.theme)
+        // Change the logo
+        if (this.logoId !== null) {
+            var logo = document.getElementById(this.logoId);
+            if (this.theme == "light") {
+                logo.src = this.logoLight;
+            } else {
+                logo.src = this.logoDark;
+            };
+        };
     },
 
     // Get the current theme

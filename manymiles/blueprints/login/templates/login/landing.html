@@ -24,7 +24,9 @@
     <nav class="container-fluid" style="padding-right: 0;">
         <ul>
             <li>
-                <a href="/" class="contrast"><strong>ManyMiles</strong></a>
+                <a href="/" class="brand-logo">
+                    <img id="brand-logo" src="{{ url_for('static', filename='img/logo-light.png') }}" alt="ManyMiles Logo">
+                </a>
             </li>
             <li>
                 <details role="list" dir="rtl">
@@ -45,6 +47,12 @@
 
     <!-- Theme-switching Javascript -->
     <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <script>
+        themeHandler.logoId = "brand-logo";
+        themeHandler.logoLight = "{{ url_for('static', filename='img/logo-light.png') }}";
+        themeHandler.logoDark = "{{ url_for('static', filename='img/logo-dark.png') }}";
+        themeHandler.applyTheme();
+    </script>
     {% block javascript %}{% endblock %}
 </body>
 </html>

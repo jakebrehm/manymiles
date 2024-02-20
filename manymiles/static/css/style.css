@@ -47,6 +47,10 @@ nav ul li.hide-on-mobile:has(details) {
     padding: 0;
 }
 
+.brand-logo {
+    width: 9rem;
+}
+
 .sidebar {
     position: fixed;
     top: 0;

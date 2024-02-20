@@ -25,6 +25,7 @@
 <body>
     <!-- Navigation bar -->
     <nav class="container-fluid">
+
         <!-- Create version of the navigation bar that is hidden behind the hamburger menu -->
         <ul class="sidebar" id="sidebar">
             <li onclick=toggleSidebar()>
@@ -52,10 +53,13 @@
             <li><a href="/register" role="button" class="secondary">Sign up</a></li>
             {% endif %}
         </ul>
+
         <!-- Create version of the navigation bar that is shown on larger devices -->
         <ul>
             <li>
-                <a href="/" class="contrast"><strong>ManyMiles</strong></a>
+                <a href="/" class="brand-logo">
+                    <img id="brand-logo" src="{{ url_for('static', filename='img/logo-light.png') }}" alt="ManyMiles Logo">
+                </a>
             </li>
             {% if session["user_id"] %}
             <li class="hide-on-mobile"><a href="/records">Records</a></li>
@@ -83,7 +87,10 @@
             </li>
         </ul>
     </nav>
+
+    <!-- Body -->
     {% block body %}{% endblock %}
+
     <!-- Footer -->
     <footer class="footer">
         <div class="footer-links">
@@ -106,6 +113,12 @@
     <!-- Theme-switching Javascript -->
     <script src="{{ url_for('static', filename='js/navigate.js') }}"></script>
     <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <script>
+        themeHandler.logoId = "brand-logo";
+        themeHandler.logoLight = "{{ url_for('static', filename='img/logo-light.png') }}";
+        themeHandler.logoDark = "{{ url_for('static', filename='img/logo-dark.png') }}";
+        themeHandler.applyTheme();
+    </script>
     {% block javascript %}{% endblock %}
 </body>
 </html>
