@@ -33,11 +33,19 @@ tr:hover td {
     margin-top: 0;
 }
 
-@media(max-width: 768px) {
+@media only screen and (max-width: 768px) {
     .record-button:not(:first-child) {
         margin-top: 0.25rem;
     }
 }
+
+@media only screen and (min-width: 900px) and (max-width: 1200px) {
+    .record-button:not(:first-child) {
+        margin-top: 0.25rem;
+    }
+}
+
+/* General records */
 
 .pagination-button {
     width: 80px;

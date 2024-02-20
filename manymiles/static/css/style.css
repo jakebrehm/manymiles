@@ -147,6 +147,15 @@ article.alert div.row div {
     width: 100%;
 }
 
+
+/* Modals */
+
+@media(max-width: 992px) {
+    div.two-button-modal div:not(:first-child) {
+        margin-top: 0.5rem;
+    }
+}
+
 /* Footer */
 
 .footer {

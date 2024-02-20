@@ -84,8 +84,8 @@
                     <td>{{ record.record_datetime.strftime("%Y-%m-%d") }}</td>
                     <td>{{ record.record_datetime.strftime("%-I:%M %p") }}</td>
                     <td>{{ record.mileage }}</td>
-                    <td style="width: 42%;" class="desktop-only">{{ record.notes if record.notes else "" }}</td>
-                    <td style="width: 13%">
+                    <td style="width: 35%;" class="desktop-only">{{ record.notes if record.notes else "" }}</td>
+                    <td style="width: 20%">
                         <a style="width: 50px" href="javascript:void(0);" data-target="modal-update-{{ record.record_id }}" onclick="toggleModal(event)" class="record-button" role="button">
                             <i class="fa fa-edit" aria-hidden="true"></i>
                         </a>
@@ -161,7 +161,7 @@
                 </form>
 
                 <footer>
-                    <div class="row">
+                    <div class="row two-button-modal">
                         <div class="col-lg-6">
                             <button class="secondary no-bottom-margin" data-target="modal-update-{{ record.record_id }}" aria-label="Cancel" onclick="toggleModal(event)">Cancel</button>
                         </div>
@@ -201,7 +201,7 @@
                     </tr>
                 </table>
                 <footer>
-                    <div class="row">
+                    <div class="row two-button-modal">
                         <div class="col-lg-6">
                             <a href="#cancel" class="secondary full-width" role="button" data-target="modal-delete-{{ record.record_id }}" onclick="toggleModal(event)" aria-label="Cancel">Cancel</a>
                         </div>
