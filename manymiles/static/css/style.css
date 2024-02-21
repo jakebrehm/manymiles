@@ -203,3 +203,11 @@ article.alert div.row div {
         padding-bottom: 1rem;
     }
 }
+
+/* Alignment */
+
+.centered-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

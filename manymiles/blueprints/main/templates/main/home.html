@@ -30,12 +30,28 @@
             </div>
         </article>
         {% else %}
-        <div class="visualization">
-            <canvas id="record-timeline"></canvas>
+        
+        <!-- Record timeline visualization -->
+        <div class="grid visualization-row">
+            <div class="visualization">
+                <canvas id="record-timeline"></canvas>
+            </div>
         </div>
-        <div class="visualization">
-            <canvas id="day-of-week-histogram"></canvas>
+
+        <!-- Day of week visualization -->
+        <div class="grid visualization-row">
+            <div class="visualization">
+                <canvas id="day-of-week-histogram"></canvas>
+            </div>
         </div>
+
+        <!-- Month visualization -->
+        <div class="grid visualization-row">
+            <div id="test" class="visualization">
+                <canvas id="month-histogram"></canvas>
+            </div>
+        </div>
+
         {% endif %}
     </main>
 {% endblock %}

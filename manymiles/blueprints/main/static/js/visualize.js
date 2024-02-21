@@ -34,7 +34,7 @@ function createRecordTimeline(canvasId, endpoint) {
         }
         
         var ctx = canvas.getContext("2d");
-        var lineChart = new Chart(ctx, {
+        new Chart(ctx, {
             type: "line",
             data: {
                 labels: data["labels"],
@@ -99,7 +99,7 @@ function createRecordTimeline(canvasId, endpoint) {
     })
 }
 
-function createDayOfWeekHistogram(canvasId, endpoint) {
+function createHistogram(canvasId, endpoint, title, xLabel, yLabel="Count") {
     // Get a handle to the canvas that will be used for the visualization
     const canvas = document.getElementById(canvasId);
     // Asynchronously end a GET reqest to fetch the data
@@ -112,7 +112,7 @@ function createDayOfWeekHistogram(canvasId, endpoint) {
         }
         
         var ctx = canvas.getContext("2d");
-        var dayOfWeekHistogram = new Chart(ctx, {
+        new Chart(ctx, {
             type: "bar",
             data: {
                 labels: data["labels"],
@@ -128,7 +128,7 @@ function createDayOfWeekHistogram(canvasId, endpoint) {
                 plugins: {
                     title: {
                         display: true,
-                        text: "Records by day of week",
+                        text: title,
                         color: cssVariable("--contrast"),
                         font: {
                             size: 20,
@@ -146,7 +146,7 @@ function createDayOfWeekHistogram(canvasId, endpoint) {
                     x: {
                         title: {
                             display: true,
-                            text: "Day of week",
+                            text: xLabel,
                             color: cssVariable("--contrast"),
                             font: {
                                 size: 14,
@@ -159,7 +159,7 @@ function createDayOfWeekHistogram(canvasId, endpoint) {
                     y: {
                         title: {
                             display: true,
-                            text: "Count",
+                            text: yLabel,
                             color: cssVariable("--contrast"),
                             font: {
                                 size: 14,
@@ -175,6 +175,21 @@ function createDayOfWeekHistogram(canvasId, endpoint) {
     })
 };
 
-// Create the visualization
+// Create the record timeline visualization
 createRecordTimeline("record-timeline", "/data/record-timeline");
-createDayOfWeekHistogram("day-of-week-histogram", "/data/day-of-week-histogram");
+
+// Create the day of week histogram
+createHistogram(
+    canvasId="day-of-week-histogram",
+    endpoint="/data/day-of-week-histogram",
+    title="Records by day of week",
+    xLabel="Day of week",
+);
+
+// Create the month histogram
+createHistogram(
+    canvasId="month-histogram",
+    endpoint="/data/month-histogram",
+    title="Records by month",
+    xLabel="Month",
+);

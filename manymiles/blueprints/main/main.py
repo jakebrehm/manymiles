@@ -86,3 +86,25 @@ def get_day_of_week_histogram() -> Response:
 
     # Return the data as a json
     return jsonify({"valid": True, "labels": labels, "values": values})
+
+
+@blueprint_main.route("/data/month-histogram", methods=["GET"])
+def get_month_histogram() -> Response:
+    """Gets the data necessary to create the day of week histogram."""
+
+    # Confirm that the user is logged in
+    if not (user_id := session.get("user_id", None)):
+        return redirect("/login")
+
+    try:
+        # Grab the data used for making the record timeline visualization
+        df = calculations.create_month_histogram_dataframe(user_id)
+    except KeyError:
+        return jsonify({"valid": False})
+
+    # Separate the records in the record dates and mileage values
+    labels = df["Month Name"].tolist()
+    values = df["Count"].tolist()
+
+    # Return the data as a json
+    return jsonify({"valid": True, "labels": labels, "values": values})

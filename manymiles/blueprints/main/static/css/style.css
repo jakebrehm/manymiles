@@ -1,13 +1,17 @@
 /* Visualization */
 
+.visualization-row {
+    margin-bottom: 0;
+}
+
+.visualization-row:not(:last-child) {
+    margin-bottom: var(--block-spacing-vertical);
+}
+
 .visualization {
     width: 100%;
     height: 50vh;
     min-height: 400px;
-}
-
-.visualization:not(:last-child) {
-    margin-bottom: var(--block-spacing-vertical);
 }
 
 /* Alerts */
