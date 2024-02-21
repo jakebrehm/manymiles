@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://github.com/jakebrehm/manymiles/blob/master/img/banner.png" alt="ManyMiles Banner" style="width: 100%;"/>
+<img src="https://github.com/jakebrehm/manymiles/blob/master/img/banner.png" alt="ManyMiles Banner" style="height: 150px;"/>
 
 <br>
 
