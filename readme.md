@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://github.com/jakebrehm/manymiles/blob/master/img/banner.png" alt="ManyMiles Banner" style="height: 150px;"/>
+<img src="https://raw.githubusercontent.com/jakebrehm/manymiles/master/img/banner.png" alt="ManyMiles Banner" style="width: 400px;"/>
 
 <br>
 
@@ -8,8 +8,8 @@
 
 <br>
 
-<a href="https://github.com/jakebrehm/demesstify"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/jakebrehm/manymiles?color=blue&logo=Git&logoColor=white&style=for-the-badge"></a>
-<a href="https://github.com/jakebrehm/demesstify/blob/master/license.txt"><img alt="GitHub license" src="https://img.shields.io/github/license/jakebrehm/manymiles?color=blue&style=for-the-badge"></a>
+<a href="https://github.com/jakebrehm/manymiles"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/jakebrehm/manymiles?color=blue&logo=Git&logoColor=white&style=for-the-badge"></a>
+<a href="https://raw.githubusercontent.com/jakebrehm/manymiles/master/license.txt"><img alt="GitHub license" src="https://img.shields.io/github/license/jakebrehm/manymiles?color=blue&style=for-the-badge"></a>
 <a href="https://railway.app/"><img src="https://img.shields.io/badge/Hosted%20on-Railway-blue?style=for-the-badge&logo=Railway&logoColor=white" alt="Hosted on Railway"></img></a>
 
 <br>
@@ -19,7 +19,7 @@
     <a href="https://manymiles.app/"><strong>ManyMiles</strong></a> is a minimalistic website that teaches you about your driving habits.
 </p>
 
-<img src="https://github.com/jakebrehm/manymiles/blob/master/img/divider.png" alt="ManyMiles Section Divider" style="width: 100%;"/>
+<img src="https://raw.githubusercontent.com/jakebrehm/manymiles/master/img/divider.png" alt="ManyMiles Section Divider" style="width: 100%;"/>
 
 ## Table of contents
 
@@ -31,7 +31,7 @@
 * [Contributors](#contributors)
 * [Acknowledgements](#acknowledgements)
 
-<img src="https://github.com/jakebrehm/manymiles/blob/master/img/divider.png" alt="ManyMiles Section Divider" style="width: 100%;"/>
+<img src="https://raw.githubusercontent.com/jakebrehm/manymiles/master/img/divider.png" alt="ManyMiles Section Divider" style="width: 100%;"/>
 
 ## Main features
 
@@ -148,6 +148,8 @@ A few Siri Shortcuts are available for iOS and MacOS devices to make recording y
 - Provide more metrics and visualizations
 - Set up an admin dashboard
 - Incorporate extensive unit testing
+
+<img src="https://raw.githubusercontent.com/jakebrehm/manymiles/master/img/divider.png" alt="ManyMiles Section Divider" style="width: 100%;"/>
 
 ## Contributors
 
