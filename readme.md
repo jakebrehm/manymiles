@@ -31,7 +31,7 @@
 * [Contributors](#contributors)
 * [Acknowledgements](#acknowledgements)
 
-<img src="https://github.com/jakebrehm/manymiles/blob/master/img/banner.png" alt="ManyMiles Section Divider" style="width: 100%;"/>
+<img src="https://github.com/jakebrehm/manymiles/blob/master/img/divider.png" alt="ManyMiles Section Divider" style="width: 100%;"/>
 
 ## Main features
 
