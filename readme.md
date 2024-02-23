@@ -21,7 +21,7 @@
 
 <img src="https://raw.githubusercontent.com/jakebrehm/manymiles/master/img/divider.png" alt="ManyMiles Section Divider" style="width: 100%;"/>
 
-<img src="https://raw.githubusercontent.com/jakebrehm/manymiles/readme/img/demo-border.gif" alt="ManyMiles Section Divider" style="width: 100%;"/>
+<img src="https://raw.githubusercontent.com/jakebrehm/manymiles/master/img/demo-border.gif" alt="ManyMiles Section Divider" style="width: 100%;"/>
 
 ## Table of contents
 
