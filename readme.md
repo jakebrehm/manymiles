@@ -19,7 +19,7 @@
     <a href="https://manymiles.app/"><strong>ManyMiles</strong></a> is a minimalistic website that teaches you about your driving habits.
 </p>
 
-<hr>
+<img src="https://github.com/jakebrehm/manymiles/blob/master/img/divider.png" alt="ManyMiles Section Divider" style="width: 100%;"/>
 
 ## Table of contents
 
@@ -31,7 +31,7 @@
 * [Contributors](#contributors)
 * [Acknowledgements](#acknowledgements)
 
-<hr>
+<img src="https://github.com/jakebrehm/manymiles/blob/master/img/banner.png" alt="ManyMiles Section Divider" style="width: 100%;"/>
 
 ## Main features
 
