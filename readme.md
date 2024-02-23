@@ -36,14 +36,99 @@
 ## Main features
 
 - Create secure user accounts, with the ability to delete them as well
-- Track their driving habits using a sleek, minimal interface
+- Track their driving habits using a sleek, responsive interface
 - Download their records to a csv file for storage and analysis
 - Learn about their driving habits via metrics and visualizations
 - Interact with their data from anywhere using an API
 
 ## Getting set up
 
-The source code can be viewed on Github [here](https://github.com/jakebrehm/manymiles).
+The source code can be viewed on Github [here](https://github.com/jakebrehm/manymiles). Keep in mind that **ManyMiles** was not built with the intention of being run locally, so there are a few hoops to jump through if you want to do so.
+
+Before you start, you're going to need to have a local instance of MySQL installed on your machine. I recommend using [MySQL Workbench](https://dev.mysql.com/downloads/workbench/), although I won't be going into too much detail about how to work with it here.
+
+### Cloning the repository
+
+The first step to setting up a local version of **ManyMiles** is to clone this repository. To do this, open a command line instance and change your working directory to the directory you'd like to clone the repository to.
+
+```bash
+cd path/to/clone/repository/to
+```
+
+Then, use the following command to clone the repository.
+
+```
+git clone https://github.com/jakebrehm/manymiles.git
+```
+
+Once that's done, change your working directory to the directory you just cloned.
+
+```bash
+cd manymiles
+```
+
+### Creating the virtual environment
+
+Optionally, create a virtual environment to run the project in.
+
+```
+python3 -m venv env
+```
+
+If you chose to create the virtual environment, you need to activate it using `source env/bin/activate` (Unix) or `.\env\Scripts\activate` (Windows). You can deactivate the environment using `deactivate` whenever you'd like.
+
+### Installing dependencies
+
+Now you can install all of the dependencies required to properly get **ManyMiles** up and running.
+
+```
+pip3 install -r requirements.txt
+```
+
+### Creating the database
+
+Next, you'll need to actually create a database in MySQL, which is relatively simple if you run this query in MySQL Workbench. We can call the database `manymiles`.
+
+```sql
+CREATE DATABASE `manymiles`;
+```
+
+Then, you'll need to grab the host, port, username, and password in order to create the connection string, which should have the following format for our purposes. Replace the values in brackets with the appropriate values (get rid of the brackets too).
+
+```
+mysql+pymysql://{username}:{password}@{host}:{port}/{database}
+```
+
+You'll add this connection string to the configuration file in the following steps.
+
+
+### Write the configuration file
+
+There is a file in the `cfg` directory named `.env.example` that is intended to be a template for your configuration file. Create a copy of this file, rename it to `.env`, and open it in a text editor.
+
+Two of the configuration variables are already filled in for you. You *do not* need to change these unless you have a good reason to do so.
+- `MM_FLASK_DEBUG` tells the application whether or not to run in debug mode (`True`/`False`).
+- `PORT` is an environmental variable used by Flask to determine what port to host the application on.
+
+The other two variables, however, you *do* need to change.
+- `MM_FLASK_SECRET` is the value that Flask uses to protect the user session. This should ideally be a lengthy and completely random string.
+- `MM_DATABASE_URI` is the connection string that you constructed in [Creating the database](#creating-the-database).
+
+
+### Initialize the database
+
+```bash
+python3 create.py
+```
+
+
+### Run the application
+
+Now you should finally be able to use the following command to run **ManyMiles** locally.
+
+```
+python3 app.py
+```
 
 ## API documentation
 

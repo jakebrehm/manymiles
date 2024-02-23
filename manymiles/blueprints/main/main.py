@@ -30,9 +30,11 @@ def home() -> str | Response:
         # Determine the unique days that the user has make records on
         columns = ["record_datetime", "mileage"]
         df = utilities.get_all_records_for_user(user_id)[columns]
+        n_records = len(df)
         df.index = pd.to_datetime(df["record_datetime"]).dt.date
         df = df.groupby(df.index).max()
-        show_visualizations = (len(df) >= 3)
+        n_days = len(df)
+        show_visualizations = (n_records >= 2) and (n_days >= 2)
     except KeyError:
         show_visualizations = False
 
