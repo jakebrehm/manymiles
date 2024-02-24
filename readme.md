@@ -26,14 +26,13 @@
 * [Main features](#main-features)
 * [Getting set up](#getting-set-up)
 * [API documentation](#api-documentation)
-    * [Siri shortcuts](#siri-shortcuts)
 * [Future improvements](#future-improvements)
 * [Contributors](#contributors)
 * [Acknowledgements](#acknowledgements)
 
 <img src="https://raw.githubusercontent.com/jakebrehm/manymiles/master/img/divider.png" alt="ManyMiles Section Divider" style="width: 100%;"/>
 
-<img src="https://raw.githubusercontent.com/jakebrehm/manymiles/master/img/demo-border.gif" alt="ManyMiles Section Divider" style="width: 100%;"/>
+<img src="https://raw.githubusercontent.com/jakebrehm/manymiles/master/img/demo-border.gif" alt="ManyMiles Demo GIF" style="width: 100%;"/>
 
 ## Main features
 
@@ -142,6 +141,12 @@ A few Siri Shortcuts are available for iOS and MacOS devices to make recording y
 - ["Let's record my mileage"](https://www.icloud.com/shortcuts/b931a703983349c18b90ab9bf52cd695)
 - ["What was my last record?"](https://www.icloud.com/shortcuts/d59656250b4847b9af0cb4dd9de11858)
 - ["Delete my last record"](https://www.icloud.com/shortcuts/c3129bd6cad64d8780a7cca88606a7a4)
+
+## Database schema
+
+For anyone curious, an entity relationship diagram for the database is included below.
+
+<img src="https://raw.githubusercontent.com/jakebrehm/manymiles/master/img/er-diagram.png" alt="ManyMiles ER Diagram" style="width: 100%;"/>
 
 ## Future improvements
 
