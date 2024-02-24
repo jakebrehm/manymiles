@@ -26,6 +26,7 @@
 * [Main features](#main-features)
 * [Getting set up](#getting-set-up)
 * [API documentation](#api-documentation)
+* [Database schema](#database-schema)
 * [Future improvements](#future-improvements)
 * [Contributors](#contributors)
 * [Acknowledgements](#acknowledgements)
@@ -144,9 +145,9 @@ A few Siri Shortcuts are available for iOS and MacOS devices to make recording y
 
 ## Database schema
 
-For anyone curious, an entity relationship diagram for the database is included below.
+For anyone curious to see how the database was modeled, an entity relationship diagram is included below.
 
-<img src="https://raw.githubusercontent.com/jakebrehm/manymiles/master/img/er-diagram.png" alt="ManyMiles ER Diagram" style="width: 100%;"/>
+<img src="https://raw.githubusercontent.com/jakebrehm/manymiles/master/img/er-diagram-border.png" alt="ManyMiles ER Diagram" style="width: 100%;"/>
 
 ## Future improvements
 
