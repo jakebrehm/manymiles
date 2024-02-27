@@ -109,19 +109,23 @@ You'll add this connection string to the configuration file in the following ste
 There is a file in the `cfg` directory named `.env.example` that is intended to be a template for your configuration file. Create a copy of this file, rename it to `.env`, and open it in a text editor.
 
 Two of the configuration variables are already filled in for you. You *do not* need to change these unless you have a good reason to do so.
-- `MM_FLASK_DEBUG` tells the application whether or not to run in debug mode (`True`/`False`).
+- `DEBUG` tells the application whether or not to run in debug mode (`True`/`False`).
 - `PORT` is an environmental variable used by Flask to determine what port to host the application on.
 
 The other two variables, however, you *do* need to change.
-- `MM_FLASK_SECRET` is the value that Flask uses to protect the user session. This should ideally be a lengthy and completely random string.
-- `MM_DATABASE_URI` is the connection string that you constructed in [Creating the database](#creating-the-database).
+- `SECRET_KEY` is the value that Flask uses to protect the user session. This should ideally be a lengthy and completely random string.
+- `DATABASE_URI` is the connection string that you constructed in [Creating the database](#creating-the-database).
 
 
 ### Initialize the database
 
+Almost there! Now that you've updated the configuration file, you can initialize the database by running `create.py`, which will create all of the necessary tables and preemptively fill out any tables that require it.
+
 ```bash
 python3 create.py
 ```
+
+**Note** that you can reverse this process and delete the local database by running `delete.py` in the same way.
 
 
 ### Run the application
