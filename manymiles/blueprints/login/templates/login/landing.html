@@ -47,7 +47,8 @@
     </nav>
 
     {% block body %}{% endblock %}
-
+    <!-- Input validation Javascript -->
+    <script src="{{ url_for('static', filename='js/validate.js') }}"></script>
     <!-- Theme-switching Javascript -->
     <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
     <script>
