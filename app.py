@@ -42,9 +42,9 @@ def create_app() -> Flask:
     root_path = os.path.join(os.getcwd(), "manymiles")
     app = Flask("ManyMiles", root_path=root_path)
     # Set the secret key
-    app.secret_key = os.environ.get("MM_FLASK_SECRET")
+    app.secret_key = os.environ.get("SECRET_KEY")
     # Configure the database
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("MM_DATABASE_URI")
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URI")
 
     # Initialize the database
     db.init_app(app)
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     app = create_app()
     create_api(app)
     app.run(
-        host=os.getenv("MM_FLASK_HOST"),
+        host=os.getenv("HOST"),
         port=os.getenv("PORT"),
-        debug=get_env_bool("MM_FLASK_DEBUG"),
+        debug=get_env_bool("DEBUG"),
     )
