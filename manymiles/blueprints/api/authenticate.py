@@ -1,3 +1,8 @@
+"""
+Contains code for all authentication-related API endpoints.
+"""
+
+
 import datetime as dt
 
 import jwt

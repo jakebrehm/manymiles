@@ -1,8 +1,12 @@
+"""
+Contains code for all user-related API endpoints.
+"""
+
+
 from flask import jsonify, make_response, Response
 from flask_restful import Resource
 
 from .validate import token_required
-from ...models import User
 
 
 class UserAPI(Resource):

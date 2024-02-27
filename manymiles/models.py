@@ -1,3 +1,8 @@
+"""
+Contains all models for the application's database.
+"""
+
+
 from sqlalchemy import (
     Boolean, Column, DateTime, ForeignKey, Integer, LargeBinary, String, Text,
 )

@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+
+"""
+The main entry point for the application. Execute the script to run it.
+"""
+
+
 import os
 from typing import Optional
 

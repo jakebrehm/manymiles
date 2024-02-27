@@ -1,3 +1,8 @@
+"""
+Contains code related to the creation of the RESTful API.
+"""
+
+
 from flask import Blueprint, Flask
 from flask_restful import Api
 from flask_swagger_ui import get_swaggerui_blueprint
@@ -5,6 +10,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from .user import UserAPI
 from .authenticate import AuthenticateAPI
 from .records import MostRecentRecordAPI, RecordAPI
+
 
 blueprint_api = Blueprint(
     "api",
@@ -14,10 +20,12 @@ blueprint_api = Blueprint(
     static_url_path="/api/static",
 )
 
+
 blueprint_api_docs = get_swaggerui_blueprint(
     base_url="/api/docs",
     api_url="/api/static/swagger.json",
 )
+
 
 def create_api(app: Flask) -> None:
     """Creates the API instance so that it can be used from the main script.

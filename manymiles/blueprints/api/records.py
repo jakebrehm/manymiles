@@ -1,3 +1,8 @@
+"""
+Contains code for all record-related API endpoints.
+"""
+
+
 import datetime as dt
 from typing import Optional
 

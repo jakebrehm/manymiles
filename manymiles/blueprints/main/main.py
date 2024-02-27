@@ -1,3 +1,9 @@
+"""
+Contains routes for the main portion of the application, i.e., the homepage and
+related/required pages.
+"""
+
+
 from flask import (
     Blueprint, jsonify, render_template, redirect, session, Response
 )

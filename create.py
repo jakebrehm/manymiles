@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+
+"""
+Creates the database for use in the application.
+"""
+
+
 from flask_sqlalchemy import SQLAlchemy
 
 from app import load_config, create_app

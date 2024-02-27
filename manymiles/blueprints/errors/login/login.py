@@ -1,15 +1,10 @@
-"""
-Contains routes for the portion of the application related to logging in or
-registering an account.
-"""
-
-
 import datetime as dt
 
 from flask import (
     Blueprint, flash, render_template, redirect, request, Response, session
 )
 
+from ...extensions import db
 from ...models import User
 from ...utilities import (
     create_account, generate_hash, get_user_from_username, is_correct_password,
@@ -26,18 +21,15 @@ blueprint_login = Blueprint(
     static_url_path="/login/static",
 )
 
-
 @blueprint_login.route("/register")
 def register() -> str:
     """Route to the register page."""
     return render_template("login/register.html")
 
-
 @blueprint_login.route("/login")
 def login() -> str:
     """Route to the login page."""
     return render_template("login/login.html")
-
 
 @blueprint_login.route("/logout")
 def logout() -> Response:
@@ -49,7 +41,6 @@ def logout() -> Response:
 
     # Redirect the user to the homepage
     return redirect("/")
-
 
 @blueprint_login.route("/validate_login", methods=["POST"])
 def validate_login() -> Response:
@@ -95,7 +86,6 @@ def validate_login() -> Response:
     
     # Send the user to the homepage
     return redirect("/")
-
 
 @blueprint_login.route("/add_user", methods=["POST"])
 def add_user() -> Response:

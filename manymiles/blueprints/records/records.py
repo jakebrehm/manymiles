@@ -1,3 +1,8 @@
+"""
+Contains routes for the portion of the application that relates to records.
+"""
+
+
 import datetime as dt
 import math
 
@@ -83,6 +88,7 @@ def records(page_num: int, per_page: int) -> str:
         from_timestamp=get_string_from_datetime(from_timestamp),
     )
 
+
 @blueprint_records.route("/record/filter", methods=["GET", "POST"])
 def filter_records() -> Response:
     """Filters the records displayed on the application."""
@@ -92,6 +98,7 @@ def filter_records() -> Response:
         parameters["page_num"] = 1
 
     return redirect(url_for("records.records", **parameters))
+
 
 @blueprint_records.route("/record/add", methods=["GET", "POST"])
 def add_record() -> Response:
@@ -135,6 +142,7 @@ def add_record() -> Response:
     # Redirect back to the records page
     return redirect(url_for("records.records"))
 
+
 @blueprint_records.route("/record/update/<int:record_id>", methods=["GET", "POST"])
 def update_record(record_id: int) -> Response:
     """Updates a record in the database."""
@@ -170,6 +178,7 @@ def update_record(record_id: int) -> Response:
 
     # Redirect back to the records page with all parameters intact
     return redirect(url_for("records.records", **request.args.to_dict()))
+
 
 @blueprint_records.route("/record/delete/<int:record_id>", methods=["GET", "POST"])
 def delete_record(record_id: int) -> Response:

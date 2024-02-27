@@ -1,3 +1,8 @@
+"""
+Contains miscellaneous utility and helper functions for use in the project.
+"""
+
+
 import datetime as dt
 import hashlib
 import os

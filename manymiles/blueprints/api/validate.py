@@ -1,3 +1,8 @@
+"""
+Contains API-related helper functions.
+"""
+
+
 from functools import wraps
 from typing import Any, Callable
 
@@ -46,6 +51,7 @@ def authenticate_user(
     
     # Otherwise, simply return that the operation was successful
     return True, user
+
 
 def token_required(original) -> Callable:
     @wraps(original)

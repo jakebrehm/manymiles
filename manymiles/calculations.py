@@ -1,24 +1,12 @@
-import datetime as dt
+"""
+Performs calculations and operations related to metrics and visualizations.
+"""
+
 
 import pandas as pd
 
 from . import utilities
-from .extensions import db
-from .models import Record, User
-
-
-# def get_average_mileage(df: pd.DataFrame) -> int:
-#     """Calculates the average mileage from the first record to now."""
-
-#     # Get the mileage and datetime of the earliest record
-#     start_mileage = df["recorded_datetime"]
-#     start_datetime = ...
-
-#     # Get the mileage of the most recent record
-#     end_mileage = ...
-
-#     # Get the current datetime
-#     end_datetime = ...
+from .models import User
 
 
 def create_record_timeline_dataframe(user: User | int) -> pd.DataFrame:

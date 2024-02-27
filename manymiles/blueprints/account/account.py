@@ -1,3 +1,9 @@
+"""
+Contains all application routes related to the account settings page, where the
+user can change their username, password, delete their account, etc.
+"""
+
+
 import sqlalchemy as sa
 from flask import (
     Blueprint, flash, make_response, render_template, redirect, request,
@@ -21,6 +27,7 @@ blueprint_account = Blueprint(
     static_url_path="/account/static",
 )
 
+
 @blueprint_account.route("/account")
 def account() -> str | Response:
     """Page that allows the user to view and manage account information."""
@@ -42,6 +49,7 @@ def account() -> str | Response:
         user=user,
         password_changed=last_updated.strftime(r"%B %-d, %Y %-I:%M:%S %p"),
     )
+
 
 @blueprint_account.route("/account/export_data")
 def export_data() -> Response:
@@ -76,6 +84,7 @@ def export_data() -> Response:
     response.headers["Content-Disposition"] = f"attachment; filename={filename}"
     response.headers["Content-Type"] = "text/csv"
     return response
+
 
 @blueprint_account.route("/account/update_username", methods=["POST"])
 def update_username() -> Response:
@@ -121,6 +130,7 @@ def update_username() -> Response:
     # Redirect back to the account page
     return redirect(url_for("account.account"))
 
+
 @blueprint_account.route("/account/update_name", methods=["POST"])
 def update_name() -> Response:
     """Updates a user's first and last name in the database."""
@@ -156,6 +166,7 @@ def update_name() -> Response:
     # Redirect back to the account page
     return redirect(url_for("account.account"))
 
+
 @blueprint_account.route("/account/update_email", methods=["POST"])
 def update_email() -> Response:
     """Updates a user's email in the database."""
@@ -184,6 +195,7 @@ def update_email() -> Response:
 
     # Redirect back to the account page
     return redirect(url_for("account.account"))
+
 
 @blueprint_account.route("/account/update_password", methods=["POST"])
 def update_password() -> Response:
@@ -223,6 +235,7 @@ def update_password() -> Response:
 
     # Redirect back to the account page
     return redirect(url_for("account.account"))
+
 
 @blueprint_account.route("/account/delete_account")
 def delete_user_account() -> Response:
