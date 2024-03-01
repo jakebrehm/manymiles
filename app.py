@@ -36,7 +36,7 @@ def load_config(env_path: Optional[str]=None) -> None:
 
 
 def create_app() -> Flask:
-    """Creates and return the Flask application."""
+    """Creates and returns the Flask application."""
 
     # Create the application
     root_path = os.path.join(os.getcwd(), "manymiles")
