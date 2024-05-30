@@ -138,7 +138,7 @@ python3 app.py
 
 ## API documentation
 
-**ManyMiles** features an API that allows users to perform operations such as add a new record or delete their most recent record. The main documentation lives [here](https://docs.manymiles.app), but you can also view the [Swagger UI](https://manymiles.app/api/docs) version as well.
+**ManyMiles** features an API that allows users to perform operations such as add a new record or delete their most recent record. The main documentation lives [here](https://docs.manymiles.app), but you can view the [Swagger UI](https://manymiles.app/api/docs) version as well.
 
 ### Siri shortcuts
 
