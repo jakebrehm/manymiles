@@ -10,7 +10,7 @@ import jwt
 from flask import current_app, jsonify, make_response, Response, request
 
 from ...extensions import db
-from ...models import User
+from ...models import User, UserRole
 from ...utilities import is_correct_password
 
 
@@ -106,3 +106,11 @@ def token_required(original) -> Callable:
 
     # Return the decorated function
     return wrapper
+
+
+def has_admin_rights(user: User) -> bool:
+    """Returns whether or not the user has admin rights."""
+
+    # Make sure the user has at least a minimum of admin rights
+    user_role = UserRole.query.filter_by(user_id=user.user_id).first()
+    return user_role.role_id in (1, 2)

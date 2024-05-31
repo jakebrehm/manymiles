@@ -60,35 +60,35 @@ def is_correct_password(user: models.User, password_to_verify: str) -> bool:
     return (password.password_hash == h.hexdigest())
 
 
-def get_user_from_id(user_id: int) -> models.User:
+def get_user_from_id(user_id: int) -> models.User | None:
     """Gets a user from a user id."""
 
     # Return the password row that matches the provided id
     return models.User.query.filter_by(user_id=user_id).first()
 
 
-def get_user_from_username(username: int) -> models.User:
+def get_user_from_username(username: int) -> models.User | None:
     """Gets a user from a username."""
 
     # Return the password row that matches the provided username
     return models.User.query.filter_by(username=username).first()
 
 
-def get_password_from_id(password_id: int) -> models.Password:
+def get_password_from_id(password_id: int) -> models.Password | None:
     """Gets a user's password from a password id."""
 
     # Return the password row that matches the provided id
     return models.Password.query.filter_by(password_id=password_id).first()
 
 
-def get_role_by_id(role_id: int) -> models.Role:
+def get_role_by_id(role_id: int) -> models.Role | None:
     """Gets a role by an id number."""
 
     # Return the role row that matches the provided id
     return models.Role.query.filter_by(role_id=role_id).first()
 
 
-def get_role_by_name(role_name: str) -> models.Role:
+def get_role_by_name(role_name: str) -> models.Role | None:
     """Gets a role by role name."""
 
     # Return the role row that matches the provided id
