@@ -161,7 +161,7 @@ def create_account(
     user: models.User,
     password_hash: str,
     role_id: Optional[int] = 3,
-) -> models.User:
+) -> None:
     """Creates an account and adds it to the database.
     
     Also adds a record to the password history table.

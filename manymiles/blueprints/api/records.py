@@ -15,6 +15,26 @@ from ...models import Record, User
 from ...utilities import log_api_request
 
 
+def get_record_payload(
+    record: Record,
+    datetime_format: Optional[str] = None,
+) -> dict:
+    """Converts a record object to a json-serializable dictionary."""
+
+    # Set a default value for the datetime format string
+    if not datetime_format:
+        datetime_format = r"%Y-%m-%d %H:%M"
+
+    # Create the dictionary and return
+    return {
+        "mileage": record.mileage,
+        "notes": record.notes,
+        "recorded": record.record_datetime.strftime(datetime_format),
+        "created": record.create_datetime.strftime(datetime_format),
+        "updated": record.update_datetime.strftime(datetime_format),
+    }
+
+
 class MostRecentRecordAPI(Resource):
     """API endpoint for getting a user's most recent record."""
 
@@ -50,7 +70,7 @@ class MostRecentRecordAPI(Resource):
         return make_response(jsonify({
             "code": "SUCCESS",
             "message": "Record successfully retrieved",
-            "data": self.get_record_payload(record),
+            "data": get_record_payload(record),
         }), status)
     
     @token_required
@@ -89,7 +109,7 @@ class MostRecentRecordAPI(Resource):
         return make_response(jsonify({
             "code": "SUCCESS",
             "message": "Record successfully deleted",
-            "data": self.get_record_payload(record),
+            "data": get_record_payload(record),
         }), status)
 
     def get_most_recent_record(self, user: User) -> Record:
@@ -100,25 +120,6 @@ class MostRecentRecordAPI(Resource):
             .order_by(Record.record_datetime.desc())
             .first()
         )
-
-    def get_record_payload(self,
-        record: Record,
-        datetime_format: Optional[str] = None,
-    ) -> dict:
-        """Converts a record object to a json-serializable dictionary."""
-
-        # Set a default value for the datetime format string
-        if not datetime_format:
-            datetime_format = r"%Y-%m-%d %H:%M"
-
-        # Create the dictionary and return
-        return {
-            "mileage": record.mileage,
-            "notes": record.notes,
-            "recorded": record.record_datetime.strftime(datetime_format),
-            "created": record.create_datetime.strftime(datetime_format),
-            "updated": record.update_datetime.strftime(datetime_format),
-        }
 
 
 class RecordAPI(Resource):
@@ -200,15 +201,18 @@ class RecordAPI(Resource):
         # Combine the date and time
         record_datetime = dt.datetime.combine(date, time)
 
-        # Create the record
-        db.session.add(Record(
+        # Create the new record
+        new_record = Record(
             user_id=user.user_id,
             mileage=mileage,
             record_datetime=record_datetime,
             create_datetime=current_datetime,
             update_datetime=current_datetime,
             notes=notes if notes else None,
-        ))
+        )
+
+        # Add the record to the database
+        db.session.add(new_record)
         db.session.commit()
 
         # Record the API request in the appropriate table
@@ -218,11 +222,5 @@ class RecordAPI(Resource):
         return make_response(jsonify({
             "code": "SUCCESS",
             "message": "Record successfully created",
-            "data": {
-                "mileage": mileage,
-                "notes": notes,
-                "recorded": record_datetime,
-                "created": current_datetime,
-                "updated": current_datetime,
-            },
+            "data": get_record_payload(new_record),
         }), status)
