@@ -12,6 +12,7 @@ from typing import Optional
 
 import pandas as pd
 import sqlalchemy as sa
+from flask import Request
 
 from .extensions import db
 from . import models
@@ -132,12 +133,27 @@ def log_login(user: models.User, successful: bool) -> None:
     """Records the user's successful login in the login history table."""
 
     # Add the login to the database
-    login = models.Login(
+    row = models.Login(
         user_id=user.user_id,
         login_datetime=dt.datetime.now(),
         successful=successful,
     )
-    db.session.add(login)
+    db.session.add(row)
+    db.session.commit()
+
+
+def log_api_request(user: models.User, request: Request, status: int) -> None:
+    """Records an API request in the API Request table."""
+
+    # Add the API request to the database
+    row = models.ApiRequest(
+        user_id=user.user_id,
+        endpoint=request.path,
+        method=request.method,
+        status=status,
+        request_datetime=dt.datetime.now(),
+    )
+    db.session.add(row)
     db.session.commit()
 
 
