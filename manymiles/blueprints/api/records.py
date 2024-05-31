@@ -6,12 +6,13 @@ Contains code for all record-related API endpoints.
 import datetime as dt
 from typing import Optional
 
-from flask import jsonify, make_response, Response
+from flask import jsonify, make_response, request, Response
 from flask_restful import Resource, reqparse
 
 from .validate import token_required
 from ...extensions import db
 from ...models import Record, User
+from ...utilities import log_api_request
 
 
 class MostRecentRecordAPI(Resource):
@@ -21,29 +22,43 @@ class MostRecentRecordAPI(Resource):
     def get(self, **kwargs) -> Response:
         """Handles GET requests for the API endpoint."""
 
+        # Initialize the status for the response
+        status = 200
+
         # Get the current user
         user = kwargs["current_user"]
 
         # Get the most recent record for the user
         record = self.get_most_recent_record(user)
 
-        # Abort if there are no records to be deleted
+        # Check if there are records to be retrieved
         if not record:
+            # Change the response code
+            status = 400
+            # Record the API request in the appropriate table
+            log_api_request(user, request, status)
+            # Form and return the response
             return make_response(jsonify({
                 "code": "FAILED",
                 "message": "The user has no records to retrieve."
-            }), 400)
-
+            }), status)
+        
+        # Record the API request in the appropriate table
+        log_api_request(user, request, status)
+    
         # Return the metadata of the user's most recent record
         return make_response(jsonify({
             "code": "SUCCESS",
             "message": "Record successfully retrieved",
             "data": self.get_record_payload(record),
-        }), 200)
+        }), status)
     
     @token_required
     def delete(self, **kwargs) -> Response:
         """Handles DELETE requests for the API endpoint."""
+
+        # Initialize the status for the response
+        status = 200
 
         # Get the current user
         user = kwargs["current_user"]
@@ -51,23 +66,31 @@ class MostRecentRecordAPI(Resource):
         # Get the most recent record for the user
         record = self.get_most_recent_record(user)
 
-        # Abort if there are no records to be deleted
+        # Check if there are records to be deleted
         if not record:
+            # Change the response code
+            status = 400
+            # Record the API request in the appropriate table
+            log_api_request(user, request, status)
+            # Form and return the response
             return make_response(jsonify({
                 "code": "FAILED",
                 "message": "The user has no records to delete."
-            }), 400)
-
+            }), status)
+        
         # Delete the record from the database
         db.session.delete(record)
         db.session.commit()
 
-        # Return the metadata of the deleted record
+        # Record the API request in the appropriate table
+        log_api_request(user, request, status)
+
+        # Return the response
         return make_response(jsonify({
             "code": "SUCCESS",
             "message": "Record successfully deleted",
             "data": self.get_record_payload(record),
-        }), 200)
+        }), status)
 
     def get_most_recent_record(self, user: User) -> Record:
         """Gets the most recently recorded record of the provided user."""
@@ -104,6 +127,9 @@ class RecordAPI(Resource):
     @token_required
     def post(self, **kwargs) -> Response:
         """Handles POST requests for the API endpoint."""
+
+        # Initialize the status for the response
+        status = 200
 
         # Get the current user
         user = kwargs["current_user"]
@@ -147,10 +173,15 @@ class RecordAPI(Resource):
 
         # Abort if no mileage value was supplied
         if not mileage:
+            # Change the response code
+            status = 400
+            # Record the API request in the appropriate table
+            log_api_request(user, request, status)
+            # Form and return the response
             return make_response(jsonify({
                 "code": "FAILED",
                 "message": "A mileage value must be supplied",
-            }), 400)
+            }), status)
         
         # Get the current datetime
         current_datetime = dt.datetime.now()
@@ -180,6 +211,9 @@ class RecordAPI(Resource):
         ))
         db.session.commit()
 
+        # Record the API request in the appropriate table
+        log_api_request(user, request, status)
+
         # Return the metadata of the newly created record
         return make_response(jsonify({
             "code": "SUCCESS",
@@ -191,4 +225,4 @@ class RecordAPI(Resource):
                 "created": current_datetime,
                 "updated": current_datetime,
             },
-        }), 200)
+        }), status)

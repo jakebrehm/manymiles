@@ -147,3 +147,29 @@ class UserRole(db.Model):
             f"user_id={repr(self.user_id)}, "
             f"role_id={repr(self.role_id)}"
         ")")
+
+
+class ApiRequest(db.Model):
+
+    __tablename__ = "api_request"
+
+    request_id = Column("id", Integer, primary_key=True)
+    user_id = Column(
+        "user_id",
+        ForeignKey("user.id", name="fk_api_request_user"),
+        nullable=True,
+    )
+    endpoint = Column("endpoint", String(200), nullable=False)
+    method = Column("method", String(30), nullable=False)
+    status = Column("status", Integer, nullable=False)
+    request_datetime = Column("request_datetime", DateTime, nullable=False)
+
+    def __repr__(self) -> str:
+        return (f"{self.__class__.__name__}("
+            f"request_id={repr(self.request_id)}, "
+            f"user_id={repr(self.user_id)}, "
+            f"endpoint={repr(self.endpoint)}, "
+            f"method={repr(self.method)}, "
+            f"status={repr(self.status)}, "
+            f"request_datetime={repr(self.request_datetime)}"
+        ")")
