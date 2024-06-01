@@ -258,7 +258,7 @@ class UserAPI(Resource):
         # Check if the user exists
         if not target_user:
             # Change the response code
-            status = 400
+            status = 404
             # Record the API request in the appropriate table
             log_api_request(user, request, status)
             # Form and return the response
