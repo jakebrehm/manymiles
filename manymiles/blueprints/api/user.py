@@ -244,6 +244,7 @@ class UserAPI(Resource):
             "user_id",
             type=int,
             help="User ID of the new user",
+            location="args",
             required=False,
         )
 
