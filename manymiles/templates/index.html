@@ -26,6 +26,13 @@
     {% block css %}{% endblock %}
 </head>
 <body>
+    <!-- Theme-switching Javascript -->
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <!-- Switch to the appropriate theme -->
+    <script>
+        themeHandler.applyTheme();
+    </script>
+    
     <!-- Navigation bar -->
     <nav class="container-fluid">
 
@@ -91,6 +98,14 @@
         </ul>
     </nav>
 
+    <!-- Change the logo to the appropriate theme -->
+    <script>
+        themeHandler.logoId = "brand-logo";
+        themeHandler.logoLight = "{{ url_for('static', filename='img/logo-light.png') }}";
+        themeHandler.logoDark = "{{ url_for('static', filename='img/logo-dark.png') }}";
+        themeHandler.changeLogo();
+    </script>
+
     <!-- Body -->
     {% block body %}{% endblock %}
 
@@ -117,14 +132,6 @@
     <script src="{{ url_for('static', filename='js/validate.js') }}"></script>
     <!-- Navigation Javascript -->
     <script src="{{ url_for('static', filename='js/navigate.js') }}"></script>
-    <!-- Theme-switching Javascript -->
-    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
-    <script>
-        themeHandler.logoId = "brand-logo";
-        themeHandler.logoLight = "{{ url_for('static', filename='img/logo-light.png') }}";
-        themeHandler.logoDark = "{{ url_for('static', filename='img/logo-dark.png') }}";
-        themeHandler.applyTheme();
-    </script>
     {% block javascript %}{% endblock %}
 </body>
 </html>

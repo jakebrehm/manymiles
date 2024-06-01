@@ -6,7 +6,7 @@ https://codesandbox.io/s/github/picocss/examples/tree/master/v1
 const themeHandler = {
     // General configuration
     _theme: "auto",
-    menuTarget: "details[role='list']",
+    menuTarget: "theme-switcher",
     buttonsTarget: "a[data-theme-handler]",
     buttonAttribute: "data-theme-handler",
     rootAttribute: "data-theme",
@@ -15,14 +15,12 @@ const themeHandler = {
     // Logo configuration
     logoId: null,
     logoLight: null,
-    logoDark:null,
+    logoDark: null,
 
     // Initialize the theme handler
     initialize() {
         // Pull the desired theme from local storage if possible
         this.theme = this.themeFromLocalStorage;
-        // Initialize the appropriate buttons
-        this.initializeSwitchers();
     },
 
     // Store theme in local storage
@@ -64,7 +62,7 @@ const themeHandler = {
                     // Set the theme
                     this.theme = button.getAttribute(this.buttonAttribute);
                     // Close the dropdown menu
-                    const menu = document.querySelector(this.menuTarget)
+                    const menu = document.getElementById(this.menuTarget);
                     menu.removeAttribute("open");
                 },
                 false
@@ -76,15 +74,18 @@ const themeHandler = {
     applyTheme() {
         const html = document.querySelector("html")
         html.setAttribute(this.rootAttribute, this.theme)
-        // Change the logo
-        if (this.logoId !== null) {
-            var logo = document.getElementById(this.logoId);
+    },
+
+    // Change the logo
+    changeLogo() {
+        var logo = document.getElementById(this.logoId);
+        if (this.logoId !== null & logo !== null) {
             if (this.theme == "light") {
                 logo.src = this.logoLight;
             } else {
                 logo.src = this.logoDark;
             };
-        };
+        }
     },
 
     // Get the current theme
@@ -108,6 +109,7 @@ const themeHandler = {
         }
         // Apply the theme and save the choice to local storage
         this.applyTheme();
+        this.changeLogo();
         this.themeToLocalStorage();
     },
 };

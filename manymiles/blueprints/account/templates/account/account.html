@@ -72,7 +72,7 @@
                     <em>Change your theme</em>
                 </div>
                 <div class="theme-setting">
-                    <details role="list" dir="rtl">
+                    <details role="list" dir="rtl" id="theme-switcher">
                         <summary aria-haspopup="listbox" role="button">
                             Theme
                         </summary>
@@ -272,7 +272,12 @@
 {% endblock %}
 
 {% block javascript %}
+<!-- Model JavaScript -->
 <script src="{{ url_for('static', filename='js/modal.js') }}"></script>
-<!-- Input validation Javascript -->
+<!-- Input validation JavaScript -->
 <script src="{{ url_for('account.static', filename='js/account_validate.js') }}"></script>
+<!-- Initialize the theme switcher dropdown -->
+<script>
+    themeHandler.initializeSwitchers();
+</script>
 {% endblock %}
