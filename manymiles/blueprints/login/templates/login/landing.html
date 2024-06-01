@@ -23,6 +23,13 @@
     {% block css %}{% endblock %}
 </head>
 <body>
+    <!-- Theme-switching Javascript -->
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <!-- Switch to the appropriate theme -->
+    <script>
+        themeHandler.applyTheme();
+    </script>
+
     <!-- Navigation bar -->
     <nav class="container-fluid" style="padding-right: 0;">
         <ul>
@@ -32,7 +39,7 @@
                 </a>
             </li>
             <li>
-                <details role="list" dir="rtl">
+                <details role="list" dir="rtl" id="theme-switcher">
                     <summary aria-haspopup="listbox" role="link" class="secondary">
                         Theme
                     </summary>
@@ -46,16 +53,20 @@
         </ul>
     </nav>
 
-    {% block body %}{% endblock %}
-    <!-- Input validation Javascript -->
-    <script src="{{ url_for('static', filename='js/validate.js') }}"></script>
-    <!-- Theme-switching Javascript -->
-    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <!-- Change the logo to the appropriate theme -->
     <script>
         themeHandler.logoId = "brand-logo";
         themeHandler.logoLight = "{{ url_for('static', filename='img/logo-light.png') }}";
         themeHandler.logoDark = "{{ url_for('static', filename='img/logo-dark.png') }}";
-        themeHandler.applyTheme();
+        themeHandler.changeLogo();
+    </script>
+    
+    {% block body %}{% endblock %}
+    <!-- Input validation Javascript -->
+    <script src="{{ url_for('static', filename='js/validate.js') }}"></script>
+    <!-- Initialize the theme switcher dropdown -->
+    <script>
+        themeHandler.initializeSwitchers();
     </script>
     {% block javascript %}{% endblock %}
 </body>
