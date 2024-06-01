@@ -54,7 +54,7 @@ class MostRecentRecordAPI(Resource):
         # Check if there are records to be retrieved
         if not record:
             # Change the response code
-            status = 400
+            status = 404
             # Record the API request in the appropriate table
             log_api_request(user, request, status)
             # Form and return the response
@@ -89,7 +89,7 @@ class MostRecentRecordAPI(Resource):
         # Check if there are records to be deleted
         if not record:
             # Change the response code
-            status = 400
+            status = 404
             # Record the API request in the appropriate table
             log_api_request(user, request, status)
             # Form and return the response
@@ -181,8 +181,42 @@ class RecordAPI(Resource):
             # Form and return the response
             return make_response(jsonify({
                 "code": "FAILED",
-                "message": "A mileage value must be supplied",
+                "message": "A mileage value must be supplied.",
             }), status)
+
+        # Abort if provided date is invalid
+        if date:
+            try:
+                dt.datetime.strptime(date, r"%Y-%m-%d")
+            except:
+                # Change the response code
+                status = 400
+                # Record the API request in the appropriate table
+                log_api_request(user, request, status)
+                # Form and return the response
+                return make_response(jsonify({
+                    "code": "FAILED",
+                    "message": (
+                        r"A valid date should be provided in format %Y-%m-%d."
+                    ),
+                }), status)
+
+        # Abort if provided time is invalid
+        if time:
+            try:
+                dt.datetime.strptime(time, r"%H:%M")
+            except:
+                # Change the response code
+                status = 400
+                # Record the API request in the appropriate table
+                log_api_request(user, request, status)
+                # Form and return the response
+                return make_response(jsonify({
+                    "code": "FAILED",
+                    "message": (
+                        r"A valid time should be provided in format %H:%M."
+                    ),
+                }), status)
         
         # Get the current datetime
         current_datetime = dt.datetime.now()

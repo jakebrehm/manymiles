@@ -68,7 +68,7 @@
             }
           },
           "400": {
-            "description": "username and/or password not supplied",
+            "description": "user associated with token does not exist; unspecified error",
             "content": {
               "application/json": {
                 "schema": {
@@ -78,17 +78,7 @@
             }
           },
           "401": {
-            "description": "authentication failed or user not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/failed_response"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "API token is missing, invalid, or has expired",
+            "description": "API token is missing, invalid, or has expired; authentication failed because username and/or password were invalid or not supplied",
             "content": {
               "application/json": {
                 "schema": {
@@ -141,7 +131,7 @@
             }
           },
           "400": {
-            "description": "unhandled error",
+            "description": "unspecified error",
             "content": {
               "application/json": {
                 "schema": {
@@ -151,16 +141,6 @@
             }
           },
           "401": {
-            "description": "user not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/failed_response"
-                }
-              }
-            }
-          },
-          "403": {
             "description": "API token is missing, invalid, or has expired",
             "content": {
               "application/json": {
@@ -222,7 +202,7 @@
             }
           },
           "400": {
-            "description": "unhandled error",
+            "description": "email is invalid; username is invalid or unavailable; password is invalid; role id is out of range; unspecified error",
             "content": {
               "application/json": {
                 "schema": {
@@ -232,7 +212,7 @@
             }
           },
           "401": {
-            "description": "user not found",
+            "description": "API token is missing, invalid, or has expired",
             "content": {
               "application/json": {
                 "schema": {
@@ -242,7 +222,7 @@
             }
           },
           "403": {
-            "description": "API token is missing, invalid, or has expired",
+            "description": "authenticated user does not have required permissions",
             "content": {
               "application/json": {
                 "schema": {
@@ -301,7 +281,7 @@
             }
           },
           "400": {
-            "description": "unhandled error",
+            "description": "unspecified error",
             "content": {
               "application/json": {
                 "schema": {
@@ -311,7 +291,7 @@
             }
           },
           "401": {
-            "description": "user not found",
+            "description": "API token is missing, invalid, or has expired",
             "content": {
               "application/json": {
                 "schema": {
@@ -321,7 +301,17 @@
             }
           },
           "403": {
-            "description": "API token is missing, invalid, or has expired",
+            "description": "authenticated user does not have required permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/failed_response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "user id is not associated with a user",
             "content": {
               "application/json": {
                 "schema": {
@@ -366,7 +356,7 @@
                       "$ref": "#/components/schemas/message"
                     },
                     "data": {
-                      "$ref": "#/components/schemas/record_details"
+                      "$ref": "#/components/schemas/user_details"
                     }
                   }
                 }
@@ -374,7 +364,7 @@
             }
           },
           "400": {
-            "description": "user has no records or other unhandled error",
+            "description": "unspecified error",
             "content": {
               "application/json": {
                 "schema": {
@@ -384,7 +374,7 @@
             }
           },
           "401": {
-            "description": "user not found",
+            "description": "API token is missing, invalid, or has expired",
             "content": {
               "application/json": {
                 "schema": {
@@ -393,8 +383,8 @@
               }
             }
           },
-          "403": {
-            "description": "API token is missing, invalid, or has expired",
+          "404": {
+            "description": "user has no records to retrieve",
             "content": {
               "application/json": {
                 "schema": {
@@ -437,7 +427,7 @@
                       "$ref": "#/components/schemas/message"
                     },
                     "data": {
-                      "$ref": "#/components/schemas/record_details"
+                      "$ref": "#/components/schemas/user_details"
                     }
                   }
                 }
@@ -445,7 +435,7 @@
             }
           },
           "400": {
-            "description": "user has no records or other unhandled error",
+            "description": "unspecified error",
             "content": {
               "application/json": {
                 "schema": {
@@ -455,7 +445,7 @@
             }
           },
           "401": {
-            "description": "user not found",
+            "description": "API token is missing, invalid, or has expired",
             "content": {
               "application/json": {
                 "schema": {
@@ -464,8 +454,8 @@
               }
             }
           },
-          "403": {
-            "description": "API token is missing, invalid, or has expired",
+          "404": {
+            "description": "user has no records to delete",
             "content": {
               "application/json": {
                 "schema": {
@@ -520,7 +510,7 @@
                       "$ref": "#/components/schemas/message"
                     },
                     "data": {
-                      "$ref": "#/components/schemas/record_details"
+                      "$ref": "#/components/schemas/user_details"
                     }
                   }
                 }
@@ -528,7 +518,7 @@
             }
           },
           "400": {
-            "description": "no mileage value provided or other unhandled error",
+            "description": "mileage not provided; provided date is invalid; provided time is invalid; unspecified error",
             "content": {
               "application/json": {
                 "schema": {
@@ -538,16 +528,6 @@
             }
           },
           "401": {
-            "description": "user not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/failed_response"
-                }
-              }
-            }
-          },
-          "403": {
             "description": "API token is missing, invalid, or has expired",
             "content": {
               "application/json": {

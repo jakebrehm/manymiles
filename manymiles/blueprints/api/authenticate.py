@@ -48,14 +48,14 @@ class AuthenticateAPI(Resource):
         # If the user failed to authenticate, return appropriate response
         if not success:
             # Change the response code
-            status = 400
+            status = 401
             # Record the API request in the appropriate table
             log_api_request(None, request, status)
             # Form and return the response
             return make_response(jsonify({
-                    "code": "FAILED",
-                    "message": "Authentication failed",
-                }), 401, {"WWW-Authenticate": 'Basic realm="Login Required"'})
+                "code": "FAILED",
+                "message": "Authentication failed",
+            }), status, {"WWW-Authenticate": 'Basic realm="Login Required"'})
         
         # Generate the expiration date and create the token
         expiration_datetime = dt.datetime.utcnow() + dt.timedelta(days=1)

@@ -63,7 +63,7 @@ def token_required(original) -> Callable:
             return make_response(jsonify({
                 "code": "FAILED",
                 "message": "API token is missing.",
-            }), 403)
+            }), 401)
         
         # If the token is able to be decoded, then the token is valid
         try:
@@ -77,13 +77,13 @@ def token_required(original) -> Callable:
             return make_response(jsonify({
                 "code": "FAILED",
                 "message": "API token is invalid.",
-            }), 403)
+            }), 401)
         # Abort if the token has expired
         except jwt.ExpiredSignatureError:
             return make_response(jsonify({
                 "code": "FAILED",
                 "message": "API token signature has expired.",
-            }), 403)
+            }), 401)
         # Abort if there was some other unhandled error
         except:
             return make_response(jsonify({
@@ -98,8 +98,8 @@ def token_required(original) -> Callable:
         if not current_user:
             return make_response(jsonify({
                 "code": "FAILED",
-                "message": "User could not be found",
-            }), 401)
+                "message": "User associated with token could not be found.",
+            }), 400)
 
         # If there were no issues decoding, execute the wrapped function
         return original(*args, **kwargs, current_user=current_user)
