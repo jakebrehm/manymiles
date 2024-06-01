@@ -54,7 +54,7 @@ class MostRecentRecordAPI(Resource):
         # Check if there are records to be retrieved
         if not record:
             # Change the response code
-            status = 400
+            status = 404
             # Record the API request in the appropriate table
             log_api_request(user, request, status)
             # Form and return the response
@@ -89,7 +89,7 @@ class MostRecentRecordAPI(Resource):
         # Check if there are records to be deleted
         if not record:
             # Change the response code
-            status = 400
+            status = 404
             # Record the API request in the appropriate table
             log_api_request(user, request, status)
             # Form and return the response
@@ -181,7 +181,7 @@ class RecordAPI(Resource):
             # Form and return the response
             return make_response(jsonify({
                 "code": "FAILED",
-                "message": "A mileage value must be supplied",
+                "message": "A mileage value must be supplied.",
             }), status)
         
         # Get the current datetime

@@ -63,7 +63,7 @@ class UserAPI(Resource):
         # Make sure the user has at least a minimum of admin rights
         if not has_admin_rights(user):
             # Change the response code
-            status = 400
+            status = 403
             # Record the API request in the appropriate table
             log_api_request(user, request, status)
             # Form and return the response
@@ -226,7 +226,7 @@ class UserAPI(Resource):
         # Make sure the user has at least a minimum of admin rights
         if not has_admin_rights(user):
             # Change the response code
-            status = 400
+            status = 403
             # Record the API request in the appropriate table
             log_api_request(user, request, status)
             # Form and return the response
