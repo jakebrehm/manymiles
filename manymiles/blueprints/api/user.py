@@ -9,7 +9,7 @@ from flask import jsonify, make_response, request, Response
 from flask_restful import Resource, reqparse
 from sqlalchemy import func
 
-from .validate import token_required
+from .validate import has_admin_rights, token_required
 from ... import utilities
 from ...extensions import db
 from ...models import Role, User, UserRole
@@ -61,9 +61,7 @@ class UserAPI(Resource):
         user = kwargs["current_user"]
 
         # Make sure the user has at least a minimum of admin rights
-        user_role = UserRole.query.filter_by(user_id=user.user_id).first()
-        print(user_role)
-        if user_role.role_id not in (1, 2):
+        if not has_admin_rights(user):
             # Change the response code
             status = 400
             # Record the API request in the appropriate table
@@ -213,4 +211,71 @@ class UserAPI(Resource):
             "code": "SUCCESS",
             "message": "User successfully created",
             "data": get_user_payload(new_user),
+        }), status)
+    
+    @token_required
+    def delete(self, **kwargs) -> Response:
+        """Handles DELETE requests for the API endpoint."""
+
+        # Initialize the status for the response
+        status = 200
+
+        # Get the current user
+        user = kwargs["current_user"]
+
+        # Make sure the user has at least a minimum of admin rights
+        if not has_admin_rights(user):
+            # Change the response code
+            status = 400
+            # Record the API request in the appropriate table
+            log_api_request(user, request, status)
+            # Form and return the response
+            return make_response(jsonify({
+                "code": "FAILED",
+                "message": (
+                    "You do not have the required permissions to perform this "
+                    "action."
+                ),
+            }), status)
+        
+        # Set up a request parser object
+        parser = reqparse.RequestParser()
+        parser.add_argument(
+            "user_id",
+            type=int,
+            help="User ID of the new user",
+            location="args",
+            required=False,
+        )
+
+        # Parse the arguments
+        args = parser.parse_args()
+        user_id = args["user_id"]
+
+        # Use the provided id to get the associated user
+        target_user = utilities.get_user_from_id(user_id)
+
+        # Check if the user exists
+        if not target_user:
+            # Change the response code
+            status = 400
+            # Record the API request in the appropriate table
+            log_api_request(user, request, status)
+            # Form and return the response
+            return make_response(jsonify({
+                "code": "FAILED",
+                "message": "The user id does not have an associated account.",
+            }), status)
+
+        # Add the user to the database
+        utilities.delete_account(target_user)
+
+        # Record the API request in the appropriate table
+        log_api_request(user, request, status)
+
+        # Return the response
+        return make_response(jsonify({
+            "code": "SUCCESS",
+            "message": "User successfully deleted",
+            "data": get_user_payload(target_user),
         }), status)
