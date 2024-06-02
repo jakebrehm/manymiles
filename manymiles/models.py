@@ -28,7 +28,6 @@ class User(db.Model):
     first_name = Column("first_name", String(35), nullable=True)
     last_name = Column("last_name", String(35), nullable=True)
     created = Column("created", DateTime, nullable=True)
-    # api_request = db.relationship("api_request", back_populates="user") # TODO
 
     def __repr__(self) -> str:
         return (f"{self.__class__.__name__}("
@@ -166,8 +165,6 @@ class ApiRequest(db.Model):
     method = Column("method", String(30), nullable=False)
     status = Column("status", Integer, nullable=False)
     request_datetime = Column("request_datetime", DateTime, nullable=False)
-
-    # user = db.relationship("User", back_populates="ApiRequest") # TODO
 
     def __repr__(self) -> str:
         return (f"{self.__class__.__name__}("
