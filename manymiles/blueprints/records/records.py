@@ -7,13 +7,15 @@ import datetime as dt
 import math
 
 from flask import (
-    Blueprint, flash, render_template, redirect, request, Response, session,
-    url_for
+    Blueprint, flash, render_template, redirect, request, Response, url_for
 )
 
 from ...extensions import db
 from ...models import Record
-from ...utilities import get_datetime_from_string, get_string_from_datetime
+from ...utilities import (
+    get_current_user_id, get_datetime_from_string, get_string_from_datetime,
+    login_required,
+)
 
 
 blueprint_records = Blueprint(
@@ -28,12 +30,12 @@ blueprint_records = Blueprint(
 @blueprint_records.route("/records", defaults={"page_num": 1, "per_page": 10})
 @blueprint_records.route("/records/<int:page_num>", defaults={"per_page": 10})
 @blueprint_records.route("/records/<int:page_num>/<int:per_page>")
+@login_required()
 def records(page_num: int, per_page: int) -> str:
     """Page that shows all records and allows the user to add new ones."""
 
-    # Confirm that the user is logged in
-    if not (user_id := session.get("user_id", None)):
-        return redirect("/login")
+    # Get the currently signed in user's id
+    user_id = get_current_user_id()
 
     # Get any optional filters
     if (from_timestamp := request.args.get("from")):
@@ -101,12 +103,12 @@ def filter_records() -> Response:
 
 
 @blueprint_records.route("/record/add", methods=["GET", "POST"])
+@login_required()
 def add_record() -> Response:
     """Adds a record to the database."""
 
-    # Confirm that the user is logged in
-    if not (user_id := session.get("user_id", None)):
-        return redirect("/login")
+    # Get the currently signed in user's id
+    user_id = get_current_user_id()
     
     # Get the relevant information from the form
     timestamp = request.form.get("timestamp")
@@ -143,13 +145,13 @@ def add_record() -> Response:
     return redirect(url_for("records.records"))
 
 
-@blueprint_records.route("/record/update/<int:record_id>", methods=["GET", "POST"])
+@blueprint_records.route(
+    "/record/update/<int:record_id>",
+    methods=["GET", "POST"],
+)
+@login_required()
 def update_record(record_id: int) -> Response:
     """Updates a record in the database."""
-
-    # Confirm that the user is logged in
-    if not session.get("user_id", None):
-        return redirect("/login")
 
     # Get the values of the inputs on the form
     updated_mileage = int(request.form.get("updated-mileage"))
@@ -180,13 +182,13 @@ def update_record(record_id: int) -> Response:
     return redirect(url_for("records.records", **request.args.to_dict()))
 
 
-@blueprint_records.route("/record/delete/<int:record_id>", methods=["GET", "POST"])
+@blueprint_records.route(
+    "/record/delete/<int:record_id>",
+    methods=["GET", "POST"],
+)
+@login_required()
 def delete_record(record_id: int) -> Response:
     """Deletes a record from the database."""
-
-    # Confirm that the user is logged in
-    if not session.get("user_id", None):
-        return redirect("/login")
 
     # Delete the record from the database
     record = Record.query.filter_by(record_id=record_id).one()

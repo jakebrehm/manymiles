@@ -54,9 +54,10 @@ def authenticate_user(
 
 
 def token_required(original) -> Callable:
+    
     @wraps(original)
     def wrapper(*args, **kwargs) -> Any | Response:
-        """Wraps the decorated with a check for a valid API token."""
+        """Wraps the decorated function with a check for a valid API token."""
 
         # Abort if there was no token sent in the request json
         if not (token := request.headers.get("api-token")):

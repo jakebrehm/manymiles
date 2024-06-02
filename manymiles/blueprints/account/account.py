@@ -13,9 +13,10 @@ from flask import (
 from ...extensions import db
 from ...models import User
 from ...utilities import (
-    delete_account, generate_hash, get_all_records_for_user, get_user_from_id,
-    get_password_from_id, is_username_available, is_valid_email, is_valid_name,
-    is_valid_password, is_valid_username, update_current_password,
+    delete_account, generate_hash, get_all_records_for_user, get_current_user_id,
+    get_user_from_id, get_password_from_id, is_username_available, 
+    is_valid_email, is_valid_name, is_valid_password, is_valid_username,
+    login_required, update_current_password,
 )
 
 
@@ -29,12 +30,12 @@ blueprint_account = Blueprint(
 
 
 @blueprint_account.route("/account")
+@login_required()
 def account() -> str | Response:
     """Page that allows the user to view and manage account information."""
 
-    # Confirm that the user is logged in
-    if not (user_id := session.get("user_id", None)):
-        return redirect("/login")
+    # Get the currently signed in user's id
+    user_id = get_current_user_id()
 
     # Get the user from the user id
     user = User.query.filter_by(user_id=user_id).one()
@@ -52,12 +53,12 @@ def account() -> str | Response:
 
 
 @blueprint_account.route("/account/export_data")
+@login_required()
 def export_data() -> Response:
     """Gets all of the user's records and downloads them as a csv file."""
 
-    # Confirm that the user is logged in
-    if not (user_id := session.get("user_id", None)):
-        return redirect("/login")
+    # Get the currently signed in user's id
+    user_id = get_current_user_id()
     
     # Pull all of the user's records
     user = User.query.filter_by(user_id=user_id).one()
@@ -87,12 +88,12 @@ def export_data() -> Response:
 
 
 @blueprint_account.route("/account/update_username", methods=["POST"])
+@login_required()
 def update_username() -> Response:
     """Updates a user's username in the database."""
 
-    # Confirm that the user is logged in
-    if not (user_id := session.get("user_id", None)):
-        return redirect("/login")
+    # Get the currently signed in user's id
+    user_id = get_current_user_id()
     
     # Get the relevant information from the form
     new_username = request.form.get("new-username")
@@ -132,12 +133,12 @@ def update_username() -> Response:
 
 
 @blueprint_account.route("/account/update_name", methods=["POST"])
+@login_required()
 def update_name() -> Response:
     """Updates a user's first and last name in the database."""
 
-    # Confirm that the user is logged in
-    if not (user_id := session.get("user_id", None)):
-        return redirect("/login")
+    # Get the currently signed in user's id
+    user_id = get_current_user_id()
     
     # Get the relevant information from the form
     new_first_name = request.form.get("new-first-name")
@@ -168,12 +169,12 @@ def update_name() -> Response:
 
 
 @blueprint_account.route("/account/update_email", methods=["POST"])
+@login_required()
 def update_email() -> Response:
     """Updates a user's email in the database."""
 
-    # Confirm that the user is logged in
-    if not (user_id := session.get("user_id", None)):
-        return redirect("/login")
+    # Get the currently signed in user's id
+    user_id = get_current_user_id()
     
     # Get the relevant information from the form
     new_email = request.form.get("new-email")
@@ -198,12 +199,12 @@ def update_email() -> Response:
 
 
 @blueprint_account.route("/account/update_password", methods=["POST"])
+@login_required()
 def update_password() -> Response:
     """Updates a user's password in the database."""
 
-    # Confirm that the user is logged in
-    if not (user_id := session.get("user_id", None)):
-        return redirect("/login")
+    # Get the currently signed in user's id
+    user_id = get_current_user_id()
     
     # Get the relevant information from the form
     old_password = request.form.get("old-password")
@@ -238,12 +239,12 @@ def update_password() -> Response:
 
 
 @blueprint_account.route("/account/delete_account")
+@login_required()
 def delete_user_account() -> Response:
     """Delete's all traces of a user's account from the database."""
 
-    # Confirm that the user is logged in
-    if not (user_id := session.get("user_id", None)):
-        return redirect("/login")
+    # Get the currently signed in user's id
+    user_id = get_current_user_id()
     
     # Get the user and delete their account
     user = get_user_from_id(user_id=user_id)
