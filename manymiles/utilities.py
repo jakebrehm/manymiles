@@ -96,6 +96,11 @@ def get_role_by_name(role_name: str) -> models.Role | None:
     return models.Role.query.filter_by(name=role_name).first()
 
 
+def get_roles() -> list[str]:
+    """Get a list of all role names."""
+    return [role.name for role in models.Role.query.all()]
+
+
 def update_current_password(user: models.User, password_hash: str) -> None:
     """Adds the user's current password to the password history table.
     

@@ -9,11 +9,11 @@ from flask import jsonify, make_response, request, Response
 from flask_restful import Resource, reqparse
 from sqlalchemy import func
 
-from .validate import has_admin_rights, requires_admin, token_required
+from .validate import requires_admin, token_required
 from ... import utilities
 from ...extensions import db
 from ...models import Role, User
-from ...utilities import log_api_request
+from ...utilities import get_role_by_name, get_roles, log_api_request
 
 
 def get_user_payload(user: User) -> dict:
@@ -94,9 +94,9 @@ class UserAPI(Resource):
             required=False,
         )
         parser.add_argument(
-            "role_id",
-            type=int,
-            help="Role ID of the new user",
+            "role",
+            type=str,
+            help="Role name of the new user",
             required=False,
         )
 
@@ -107,11 +107,11 @@ class UserAPI(Resource):
         email = args["email"]
         first_name = args["first_name"]
         last_name = args["last_name"]
-        role_id = args["role_id"]
+        role = args["role"]
 
         # Set default values where appropriate
-        if not role_id:
-            role_id = 3
+        if not role:
+            role = "User"
 
         # Check if the provided email is valid
         if not utilities.is_valid_email(email):
@@ -162,9 +162,8 @@ class UserAPI(Resource):
             }), status)
         
         # Check if the provided role id is valid
-        min_role_id = db.session.query(func.min(Role.role_id)).scalar()
-        max_role_id = db.session.query(func.max(Role.role_id)).scalar()
-        if not role_id in range(min_role_id, max_role_id+1):
+        valid_roles = get_roles()
+        if not role in valid_roles:
             # Change the response code
             status = 400
             # Record the API request in the appropriate table
@@ -172,7 +171,7 @@ class UserAPI(Resource):
             # Form and return the response
             return make_response(jsonify({
                 "code": "FAILED",
-                "message": "The provided role id is out of range.",
+                "message": f"The provided role must be one of: {valid_roles}.",
             }), status)
 
         # Create the user
@@ -184,7 +183,7 @@ class UserAPI(Resource):
             first_name=first_name,
             last_name=last_name,
             created=dt.datetime.now(),
-            role_id=role_id,
+            role_id=get_role_by_name(role).role_id,
         )
 
         # Add the user to the database
