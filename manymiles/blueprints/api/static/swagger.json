@@ -623,9 +623,9 @@
             "type": "string",
             "description": "last name of the user"
           },
-          "role_id": {
-            "type": "integer",
-            "description": "unique identification number of the role"
+          "role": {
+            "type": "string",
+            "description": "name of the user's role"
           }
         }
       },

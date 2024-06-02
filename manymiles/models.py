@@ -26,6 +26,12 @@ class User(db.Model):
     first_name = Column("first_name", String(35), nullable=True)
     last_name = Column("last_name", String(35), nullable=True)
     created = Column("created", DateTime, nullable=True)
+    role_id = Column(
+        "role_id",
+        ForeignKey("role.id", name="fk_user_role"),
+        nullable=True,
+        default=3,
+    )
 
     def __repr__(self) -> str:
         return (f"{self.__class__.__name__}("
@@ -36,7 +42,8 @@ class User(db.Model):
             f"email={repr(self.email)}, "
             f"first_name={repr(self.first_name)}, "
             f"last_name={repr(self.last_name)}, "
-            f"created={repr(self.created)}"
+            f"created={repr(self.created)}, "
+            f"role_id={repr(self.role_id)}"
         ")")
 
 
@@ -85,7 +92,8 @@ class Login(db.Model):
         return (f"{self.__class__.__name__}("
             f"login_id={repr(self.login_id)}, "
             f"user_id={repr(self.user_id)}, "
-            f"login_datetime={repr(self.login_datetime)}"
+            f"login_datetime={repr(self.login_datetime)}, "
+            f"successful={repr(self.successful)}"
         ")")
 
 
@@ -116,36 +124,14 @@ class Role(db.Model):
     __tablename__ = "role"
 
     role_id = Column("id", Integer, primary_key=True)
-    name = Column("name", String(50), nullable=False)
+    name = Column("name", String(50), nullable=False, unique=True)
+    admin = Column("admin", Boolean, nullable=False, default=False)
 
     def __repr__(self) -> str:
         return (f"{self.__class__.__name__}("
             f"role_id={repr(self.role_id)}, "
-            f"name={repr(self.name)}"
-        ")")
-
-
-class UserRole(db.Model):
-
-    __tablename__ = "user_role"
-
-    user_id = Column(
-        "user_id",
-        ForeignKey("user.id", name="fk_user_role_user"),
-        primary_key=True,
-        nullable=False,
-    )
-    role_id = Column(
-        "role_id",
-        ForeignKey("role.id", name="fk_user_role_role"),
-        primary_key=True,
-        nullable=False,
-    )
-
-    def __repr__(self) -> str:
-        return (f"{self.__class__.__name__}("
-            f"user_id={repr(self.user_id)}, "
-            f"role_id={repr(self.role_id)}"
+            f"name={repr(self.name)}, "
+            f"admin={repr(self.admin)}"
         ")")
 
 
