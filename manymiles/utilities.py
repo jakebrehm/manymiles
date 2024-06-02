@@ -96,18 +96,6 @@ def get_role_by_name(role_name: str) -> models.Role | None:
     return models.Role.query.filter_by(name=role_name).first()
 
 
-def add_user_role(user: models.User, role: models.Role) -> None:
-    """Assigns the requested role for the provided user."""
-
-    # Add the role to the user role table
-    user_role = models.UserRole(
-        user_id=user.user_id,
-        role_id=role.role_id,
-    )
-    db.session.add(user_role)
-    db.session.commit()
-
-
 def update_current_password(user: models.User, password_hash: str) -> None:
     """Adds the user's current password to the password history table.
     
@@ -161,7 +149,6 @@ def log_api_request(user: models.User, request: Request, status: int) -> None:
 def create_account(
     user: models.User,
     password_hash: str,
-    role_id: Optional[int] = 3,
 ) -> None:
     """Creates an account and adds it to the database.
     
@@ -177,10 +164,6 @@ def create_account(
 
     # Log the user's successful login to the database
     log_login(user, successful=True)
-
-    # Give the user the specified role
-    role = get_role_by_id(role_id)
-    add_user_role(user, role)
 
 
 def delete_account(
@@ -204,11 +187,6 @@ def delete_account(
     api_requests = models.ApiRequest.query.filter_by(user_id=user_id).all()
     for api_request in api_requests:
         db.session.delete(api_request)
-
-    # Delete the user's data in the user-role table
-    user_roles = models.UserRole.query.filter_by(user_id=user_id).all()
-    for user_role in user_roles:
-        db.session.delete(user_role)
 
     # Delete all of the user's data in the record table
     records = models.Record.query.filter_by(user_id=user_id).all()
@@ -262,7 +240,7 @@ def is_valid_password(password: str) -> bool:
     letter, one uppercase letter, one number, and one special character.
     """
     
-    expression = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[A-Za-z\d\W_]{7,}$"
+    expression = r"^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*\W)[A-Za-z\d\W]{7,}$"
     return bool(re.match(expression, password))
 
 

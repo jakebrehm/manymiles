@@ -184,10 +184,11 @@ class UserAPI(Resource):
             first_name=first_name,
             last_name=last_name,
             created=dt.datetime.now(),
+            role_id=role_id,
         )
 
         # Add the user to the database
-        utilities.create_account(new_user, hash, role_id=role_id)
+        utilities.create_account(new_user, hash)
 
         # Record the API request in the appropriate table
         log_api_request(user, request, status)

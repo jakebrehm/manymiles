@@ -49,9 +49,9 @@ function validatePassword(password) {
         // Check for lowercase character
         && /[a-z]/.test(password)
         // Check for number
-        && /[0-9]/.test(password)
+        && /[\d]/.test(password)
         // Check that there is a special character
-        && /[^A-za-z\d\W_]/.test(password)
+        && /[\W]/.test(password)
         // Check that the password is at least 7 character long
         && password.length >= 7
     );
