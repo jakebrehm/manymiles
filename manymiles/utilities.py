@@ -8,11 +8,12 @@ import hashlib
 import os
 import re
 from distutils.util import strtobool
-from typing import Optional
+from functools import wraps
+from typing import Any, Callable, Optional
 
 import pandas as pd
 import sqlalchemy as sa
-from flask import Request
+from flask import redirect, Request, Response, session
 
 from .extensions import db
 from . import models
@@ -199,6 +200,11 @@ def delete_account(
     for login in logins:
         db.session.delete(login)
 
+    # Delete all of the user's data in the API requests table
+    api_requests = models.ApiRequest.query.filter_by(user_id=user_id).all()
+    for api_request in api_requests:
+        db.session.delete(api_request)
+
     # Delete the user's data in the user-role table
     user_roles = models.UserRole.query.filter_by(user_id=user_id).all()
     for user_role in user_roles:
@@ -329,3 +335,41 @@ def get_all_records_for_user(user: models.User | int) -> pd.DataFrame:
     df = df.drop(columns=["_sa_instance_state"])
     # Return the dataframe
     return df
+
+
+def get_current_user_id() -> int | None:
+    """Gets the user id of the currently signed in user."""
+    return session.get("user_id", None)
+
+
+def get_current_user() -> models.User | None:
+    """Gets the currently signed in user."""
+    user_id = session.get("user_id", None)
+    return get_user_from_id(user_id)
+
+
+def login_required(redirect_location: str=None) -> Callable:
+
+    def decorator(original) -> Callable:
+        nonlocal redirect_location
+
+        # Set a default redirect location if none was provided
+        if not redirect_location:
+            redirect_location = "/login"
+        
+        @wraps(original)
+        def wrapper(*args, **kwargs) -> Any | Response:
+            """Wrapper to check that the user is logged in."""
+
+            # Confirm that the user is logged in
+            if not session.get("user_id", None):
+                return redirect(redirect_location)
+
+            # If there were no issues decoding, execute the wrapped function
+            return original(*args, **kwargs)
+
+        # Return the decorated function
+        return wrapper
+    
+    # Return the actual decorator
+    return decorator
