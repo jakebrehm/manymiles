@@ -9,10 +9,10 @@ from flask import jsonify, make_response, request, Response
 from flask_restful import Resource, reqparse
 from sqlalchemy import func
 
-from .validate import has_admin_rights, token_required
+from .validate import has_admin_rights, requires_admin, token_required
 from ... import utilities
 from ...extensions import db
-from ...models import Role, User, UserRole
+from ...models import Role, User
 from ...utilities import log_api_request
 
 
@@ -51,6 +51,7 @@ class UserAPI(Resource):
         }), status)
     
     @token_required
+    @requires_admin
     def put(self, **kwargs) -> Response:
         """Handles PUT requests for the API endpoint."""
 
@@ -59,21 +60,6 @@ class UserAPI(Resource):
 
         # Get the current user
         user = kwargs["current_user"]
-
-        # Make sure the user has at least a minimum of admin rights
-        if not has_admin_rights(user):
-            # Change the response code
-            status = 403
-            # Record the API request in the appropriate table
-            log_api_request(user, request, status)
-            # Form and return the response
-            return make_response(jsonify({
-                "code": "FAILED",
-                "message": (
-                    "You do not have the required permissions to perform this "
-                    "action."
-                ),
-            }), status)
         
         # Set up a request parser object
         parser = reqparse.RequestParser()
@@ -214,6 +200,7 @@ class UserAPI(Resource):
         }), status)
     
     @token_required
+    @requires_admin
     def delete(self, **kwargs) -> Response:
         """Handles DELETE requests for the API endpoint."""
 
@@ -222,21 +209,6 @@ class UserAPI(Resource):
 
         # Get the current user
         user = kwargs["current_user"]
-
-        # Make sure the user has at least a minimum of admin rights
-        if not has_admin_rights(user):
-            # Change the response code
-            status = 403
-            # Record the API request in the appropriate table
-            log_api_request(user, request, status)
-            # Form and return the response
-            return make_response(jsonify({
-                "code": "FAILED",
-                "message": (
-                    "You do not have the required permissions to perform this "
-                    "action."
-                ),
-            }), status)
         
         # Set up a request parser object
         parser = reqparse.RequestParser()

@@ -11,7 +11,7 @@ from flask import current_app, jsonify, make_response, Response, request
 
 from ...extensions import db
 from ...models import User, UserRole
-from ...utilities import is_correct_password
+from ...utilities import is_correct_password, log_api_request
 
 
 def authenticate_user(
@@ -54,7 +54,7 @@ def authenticate_user(
 
 
 def token_required(original) -> Callable:
-    
+
     @wraps(original)
     def wrapper(*args, **kwargs) -> Any | Response:
         """Wraps the decorated function with a check for a valid API token."""
@@ -115,3 +115,34 @@ def has_admin_rights(user: User) -> bool:
     # Make sure the user has at least a minimum of admin rights
     user_role = UserRole.query.filter_by(user_id=user.user_id).first()
     return user_role.role_id in (1, 2)
+
+
+def requires_admin(original) -> Callable:
+
+    @wraps(original)
+    def wrapper(*args, **kwargs) -> Any | Response:
+        """Wrapper that checks for administrator permissions."""
+
+        # Get the current user
+        user = kwargs["current_user"]
+
+        # Make sure the user has at least a minimum of admin rights
+        if not has_admin_rights(user):
+            # Change the response code
+            status = 403
+            # Record the API request in the appropriate table
+            log_api_request(user, request, status)
+            # Form and return the response
+            return make_response(jsonify({
+                "code": "FAILED",
+                "message": (
+                    "You do not have the required permissions to perform this "
+                    "action."
+                ),
+            }), status)
+        
+        # If there were no issues decoding, execute the wrapped function
+        return original(*args, **kwargs)
+
+    # Return the decorated function
+    return wrapper
