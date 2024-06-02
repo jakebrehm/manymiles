@@ -19,7 +19,7 @@ from manymiles.blueprints.errors.errors import blueprint_errors
 from manymiles.blueprints.main.main import blueprint_main
 from manymiles.blueprints.login.login import blueprint_login
 from manymiles.blueprints.records.records import blueprint_records
-from manymiles.extensions import db
+from manymiles.extensions import admin, db
 from manymiles.utilities import get_env_bool
 
 
@@ -48,6 +48,9 @@ def create_app() -> Flask:
 
     # Initialize the database
     db.init_app(app)
+
+    # Initialize the admin page
+    admin.init_app(app)
     
     # Register blueprints
     app.register_blueprint(blueprint_account)
