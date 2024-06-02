@@ -345,7 +345,7 @@ def get_current_user() -> models.User | None:
 
 def login_required(redirect_location: str=None) -> Callable:
 
-    def decorator(original):
+    def decorator(original) -> Callable:
         nonlocal redirect_location
 
         # Set a default redirect location if none was provided
