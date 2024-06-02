@@ -200,6 +200,11 @@ def delete_account(
     for login in logins:
         db.session.delete(login)
 
+    # Delete all of the user's data in the API requests table
+    api_requests = models.ApiRequest.query.filter_by(user_id=user_id).all()
+    for api_request in api_requests:
+        db.session.delete(api_request)
+
     # Delete the user's data in the user-role table
     user_roles = models.UserRole.query.filter_by(user_id=user_id).all()
     for user_role in user_roles:
