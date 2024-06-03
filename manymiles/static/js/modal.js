@@ -7,7 +7,7 @@ https://github.com/picocss/examples/blob/master/v1-preview/js/modal.js
 const isOpenClass = "modal-is-open";
 const openingClass = "modal-is-opening";
 const closingClass = "modal-is-closing";
-const animationDuration = 400; // ms
+const animationDuration = 400; // milliseconds
 let visibleModal = null;
 
 // Toggle modal
