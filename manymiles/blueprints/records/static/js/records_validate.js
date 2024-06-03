@@ -1,3 +1,9 @@
+/**
+ * [validateNewRecord description]
+ * Dynamically updates the fields on the form that allows a user to create a new
+ * record. Invalid values in the input fields will result in the submit button
+ * being disabled.
+ */
 function validateNewRecord() {
 
     // Get handles to the timestamp and mileage inputs
@@ -8,14 +14,14 @@ function validateNewRecord() {
     // Create an array of all required inputs
     const requiredInputs = [timestampInput, mileageInput];
 
-    // 
+    // Add an event listener to the timestamp input
     timestampInput.addEventListener(
         "input",
         function () {
             // Get the value of the timestamp input
             const timestampValue = timestampInput.value;
 
-            // 
+            // Set the state of the input according to the its validity
             if (timestampValue) {
                 timestampInput.setAttribute("aria-invalid", "false");
             } else {
@@ -24,14 +30,14 @@ function validateNewRecord() {
         }
     );
 
-    // 
+    // Add an event listener to the mileage input
     mileageInput.addEventListener(
         "input",
         function () {
             // Get the value of the mileage input
             const mileageValue = mileageInput.value;
 
-            // 
+            // Set the state of the input according to the its validity
             if (!mileageValue) {
                 mileageInput.removeAttribute("aria-invalid");
             } else if (mileageValue < 0) {
@@ -42,7 +48,7 @@ function validateNewRecord() {
         }
     );
 
-    //
+    // Add an event listener to each input to determine overall validity
     requiredInputs.forEach((requiredInput) => {
         requiredInput.addEventListener(
             "input",
@@ -62,6 +68,12 @@ function validateNewRecord() {
 
 }
 
+/**
+ * [validateFilter description]
+ * Dynamically updates the fields on the form that allows a user to filter their
+ * records. Invalid values in the input fields will result in the submit button
+ * being disabled.
+ */
 function validateFilter() {
     // Get handles to the filters
     const fromTimestampInput = document.getElementById("from-timestamp");
@@ -71,7 +83,7 @@ function validateFilter() {
     // Create an array of all the timestamp filters
     const timestampInputs = [fromTimestampInput, toTimestampInput];
 
-    // 
+    // Add an event listener to each input to determine overall validity
     timestampInputs.forEach((timestampInput) => {
         timestampInput.addEventListener(
             "input",
@@ -84,7 +96,7 @@ function validateFilter() {
                 // Determine if the "from" timestamp is less than the "to"
                 const fromLessThan = fromTimestampValue <= toTimestampValue;
 
-                // 
+                // Enable or disable the apply button accordingly
                 if (timestampsFilled && !fromLessThan) {
                     fromTimestampInput.setAttribute("aria-invalid", "true");
                     toTimestampInput.setAttribute("aria-invalid", "true");
@@ -99,6 +111,12 @@ function validateFilter() {
     });
 }
 
+/**
+ * [validateUpdateForm description]
+ * Dynamically updates the fields on the form that allows a user to update a
+ * record. Invalid values in the input fields will result in the submit button
+ * being disabled.
+ */
 function validateUpdateForm() {
     // Define the template used to identify each dialog and its buttons
     const template = "modal-update-";
@@ -109,7 +127,7 @@ function validateUpdateForm() {
         // Get the unique identifier for each dialog
         const identifier = updateDialog.id.replace(template, "");
 
-        // 
+        // Get handles to each element
         const timestampInput = document.getElementById(
             `update-timestamp-${identifier}`
         );
@@ -121,17 +139,17 @@ function validateUpdateForm() {
             `submit-update-record-${identifier}`
         );
 
-        // 
+        // Create an array of required inputs
         const requiredInputs = [timestampInput, mileageInput];
 
-        // 
+        // Add an event listener to the timestamp input
         timestampInput.addEventListener(
             "input",
             function () {
                 // Get the value of the timestamp input
                 const timestampValue = timestampInput.value;
 
-                // 
+                // Set the state of the input according to the its validity
                 if (timestampValue) {
                     timestampInput.setAttribute("aria-invalid", "false");
                 } else {
@@ -140,14 +158,14 @@ function validateUpdateForm() {
             }
         );
 
-        // 
+        // Add an event listener to the mileage input
         mileageInput.addEventListener(
             "input",
             function () {
                 // Get the value of the mileage input
                 const mileageValue = mileageInput.value;
                 
-                // 
+                // Set the state of the input according to the its validity
                 if (!mileageValue) {
                     mileageInput.removeAttribute("aria-invalid");
                 } else if (mileageValue < 0) {
@@ -158,7 +176,7 @@ function validateUpdateForm() {
             }
         );
 
-        //
+        // Add an event listener to each input to determine overall validity
         requiredInputs.forEach((requiredInput) => {
             requiredInput.addEventListener(
                 "input",
@@ -178,7 +196,7 @@ function validateUpdateForm() {
     });
 }
 
-//
+// Call each function
 validateNewRecord()
 validateFilter()
 validateUpdateForm()

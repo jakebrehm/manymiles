@@ -21,8 +21,9 @@ function showPasswords() {
 
 /**
  * [validateForm description]
- * Adds event listeners to the inputs on the page that changes their respective
- * "aria-invalid" attributes according to their values' validity.
+ * Dynamically updates the fields on the form that allows a user to create an
+ * account. Invalid values in the input fields will result in the submit button
+ * being disabled.
  */
 function validateForm() {
 
@@ -74,7 +75,7 @@ function validateForm() {
         );
     });
 
-    //
+    // Add event listeners to each of the password inputs
     passwordInputs.forEach((passwordInput) => {
         passwordInput.addEventListener(
             "input",
@@ -111,7 +112,7 @@ function validateForm() {
         );
     });
 
-    // 
+    // Add an event listener to the email input
     email.addEventListener(
         "input",
         function() {
@@ -129,7 +130,7 @@ function validateForm() {
         }
     );
 
-    // 
+    // Add an event listener to the username input
     username.addEventListener(
         "input",
         function() {
@@ -147,7 +148,7 @@ function validateForm() {
         }
     );
 
-    // 
+    // Add event listeners to each input to determine submit button availability
     allInputs.forEach((allInput) => {
         allInput.addEventListener(
             "input",

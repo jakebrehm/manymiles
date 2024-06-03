@@ -1,3 +1,10 @@
+/**
+ * [fetchData description]
+ * Makes a GET request to the provided endpoint and returns the JSON from the
+ * response body.
+ * @param   {String}    endpoint    The endpoint to make the request to.
+ * @returns {Promise}               A promise containing JSON data.
+ */
 async function fetchData(endpoint) {
     // Make a GET request and get the JSON from the response body
     try {
@@ -14,6 +21,12 @@ async function fetchData(endpoint) {
     }
 }
 
+/**
+ * [cssVariable description]
+ * Gets the value of a computed style from the document body.
+ * @param   {String}    variable    The name of the CSS variable.
+ * @returns {String}                The value of the CSS variable.
+ */
 function cssVariable(variable) {
     // Get the computed style of the document body
     var style = getComputedStyle(document.body);
@@ -21,6 +34,13 @@ function cssVariable(variable) {
     return style.getPropertyValue(variable);
 }
 
+/**
+ * [createRecordTimeline description]
+ * Pulls data from the specified endpoint and creates the record timeline
+ * visualization.
+ * @param   {String}    canvasId    The ID of the canvas.
+ * @param   {String}    endpoint    The endpoint to make the request.
+ */
 function createRecordTimeline(canvasId, endpoint) {
     // Get a handle to the canvas that will be used for the visualization
     const canvas = document.getElementById(canvasId);
@@ -99,6 +119,15 @@ function createRecordTimeline(canvasId, endpoint) {
     })
 }
 
+/**
+ * [createHistogram description]
+ * Pulls data from the specified endpoint and creates a histogram visualization.
+ * @param   {String}    canvasId    The ID of the canvas.
+ * @param   {String}    endpoint    The endpoint to make the request.
+ * @param   {String}    title       The title of the histogram.
+ * @param   {String}    xLabel      The label of the histogram's x-axis.
+ * @param   {String=}   yLabel      The label of the histogram's y-axis.
+ */
 function createHistogram(canvasId, endpoint, title, xLabel, yLabel="Count") {
     // Get a handle to the canvas that will be used for the visualization
     const canvas = document.getElementById(canvasId);

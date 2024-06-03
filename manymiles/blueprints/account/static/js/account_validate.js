@@ -1,7 +1,8 @@
 /**
  * [validateUpdateUsernameForm description]
- * Adds event listeners to the appropriate inputs on the page that changes
- * their "aria-invalid" attributes according to their values' validity.
+ * Dynamically updates the fields on the form that allows a user to update
+ * their username. Invalid values in the input fields will result in the
+ * submit button being disabled.
  */
 function validateUpdateUsernameForm() {
 
@@ -47,8 +48,9 @@ function validateUpdateUsernameForm() {
 
 /**
  * [validateUpdateNameForm description]
- * Adds event listeners to the appropriate inputs on the page that changes
- * their "aria-invalid" attributes according to their values' validity.
+ * Dynamically updates the fields on the form that allows a user to update
+ * their first and last name. Invalid values in the input fields will result in
+ * the submit button being disabled.
  */
 function validateUpdateNameForm() {
 
@@ -108,8 +110,9 @@ function validateUpdateNameForm() {
 
 /**
  * [validateUpdateEmailForm description]
- * Adds event listeners to the appropriate inputs on the page that changes
- * their "aria-invalid" attributes according to their values' validity.
+ * Dynamically updates the fields on the form that allows a user to update
+ * their email. Invalid values in the input fields will result in the
+ * submit button being disabled.
  */
 function validateUpdateEmailForm() {
 
@@ -155,8 +158,9 @@ function validateUpdateEmailForm() {
 
 /**
  * [validateUpdatePasswordForm description]
- * Adds event listeners to the appropriate inputs on the page that changes
- * their "aria-invalid" attributes according to their values' validity.
+ * Dynamically updates the fields on the form that allows a user to update
+ * their password. Invalid values in the input fields will result in the
+ * submit button being disabled.
  */
 function validateUpdatePasswordForm() {
 
