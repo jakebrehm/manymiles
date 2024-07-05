@@ -170,3 +170,5 @@ For anyone curious to see how the database was modeled, an entity relationship d
 ## Acknowledgements
 
 Thank you to [Muhammad Haroon](https://www.fiverr.com/haroonnaeem) for designing the **ManyMiles** logo.
+
+All credit for the hero image goes to Photo by [Jack Anstey](https://unsplash.com/@jack_anstey?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash) on [Unsplash](https://unsplash.com/photos/aerial-photography-of-road-zS4lUqLEiNA?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash).
