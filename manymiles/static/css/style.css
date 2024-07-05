@@ -127,9 +127,13 @@ nav ul li.hide-on-mobile:has(details) {
 
 .divider {
     height: 1px;
-    border: none;
-    color: var(--secondary);
+    padding: 0 !important;
+    margin: 5px !important;
     background-color: var(--secondary);
+}
+
+.dropdown-text-right {
+    text-align: right !important;
 }
 
 /* Message flashing */
