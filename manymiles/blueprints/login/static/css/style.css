@@ -75,7 +75,7 @@ summary[role="link"].secondary:is([aria-current], :hover, :active, :focus) {
 #hero {
     display: none;
     background-color: #374956;
-    background-image: url("../img/hero.jpeg");
+    background-image: url("../img/hero.jpg");
     background-position: center;
     background-size: cover;
 }
