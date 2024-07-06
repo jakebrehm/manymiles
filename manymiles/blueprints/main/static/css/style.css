@@ -1,3 +1,10 @@
+/* Customization Buttons */
+
+.customize-select {
+    max-width: max-content;
+    margin-left: auto;
+}
+
 /* Visualization */
 
 .visualization-row {
