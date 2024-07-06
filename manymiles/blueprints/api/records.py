@@ -12,7 +12,7 @@ from flask_restful import Resource, reqparse
 from .validate import token_required
 from ...extensions import db
 from ...models import Record, User
-from ...utilities import log_api_request
+from ...utilities import log_api_request, get_most_recent_record
 
 
 def get_record_payload(
@@ -49,7 +49,7 @@ class MostRecentRecordAPI(Resource):
         user = kwargs["current_user"]
 
         # Get the most recent record for the user
-        record = self.get_most_recent_record(user)
+        record = get_most_recent_record(user)
 
         # Check if there are records to be retrieved
         if not record:
@@ -84,7 +84,7 @@ class MostRecentRecordAPI(Resource):
         user = kwargs["current_user"]
         
         # Get the most recent record for the user
-        record = self.get_most_recent_record(user)
+        record = get_most_recent_record(user)
 
         # Check if there are records to be deleted
         if not record:
@@ -111,15 +111,6 @@ class MostRecentRecordAPI(Resource):
             "message": "Record successfully deleted",
             "data": get_record_payload(record),
         }), status)
-
-    def get_most_recent_record(self, user: User) -> Record:
-        """Gets the most recently recorded record of the provided user."""
-        return (
-            db.session.query(Record)
-            .filter_by(user_id=user.user_id)
-            .order_by(Record.record_datetime.desc())
-            .first()
-        )
 
 
 class RecordAPI(Resource):

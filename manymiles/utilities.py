@@ -306,11 +306,27 @@ def get_all_records_for_user(user: models.User | int) -> pd.DataFrame:
     
     The `user` input can be the user object or the user id.
     """
+    return get_records_since(user, since=None)
+
+
+def get_records_since(
+    user: models.User | int,
+    since: dt.datetime | None,
+) -> pd.DataFrame:
+    """Gets all of a user's records since a specified datetime.
+    
+    The `user` input can be the user object or the user id. Setting `since` to
+    None will return all records.
+    """
 
     # Extract the user id from the input
     user_id = user if isinstance(user, int) else user.user_id
     # Get all of the records for the provided user
     records = models.Record.query.filter_by(user_id=user_id)
+    # Filter out data outside of the specified range
+    if since:
+        records = records.filter(models.Record.record_datetime >= since)
+    # Convert the records to a list of dictionaries
     records = [record.__dict__ for record in records.all()]
     # Convert the data to a dataframe
     df = pd.DataFrame.from_records(records)
@@ -318,6 +334,20 @@ def get_all_records_for_user(user: models.User | int) -> pd.DataFrame:
     df = df.drop(columns=["_sa_instance_state"])
     # Return the dataframe
     return df
+
+
+def get_most_recent_record(user: models.User | int) -> models.Record:
+    """Gets the most recently recorded record of the provided user."""
+
+    # Extract the user id from the input
+    user_id = user if isinstance(user, int) else user.user_id
+    # Get all of the records for the provided user
+    return (
+        db.session.query(models.Record)
+        .filter_by(user_id=user_id)
+        .order_by(models.Record.record_datetime.desc())
+        .first()
+    )
 
 
 def get_current_user_id() -> int | None:
