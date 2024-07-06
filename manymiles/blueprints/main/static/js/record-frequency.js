@@ -1,13 +1,15 @@
 // Create an object to represent the record timeline
-var recordTimeline = {
+var recordFrequency = {
 
     // Internal variables
-    canvasId: "record-timeline",
-    selectId: "record-timeline-period",
-    endpoint: "/data/record-timeline",
+    canvasId: "record-frequency",
+    selectId: "record-frequency-period",
+    endpoint: "/data/record-frequency",
 
     // Chart customizations
     title: null,
+    xLabel: null,
+    yLabel: "Count",
 
     // Placeholder variables
     chart: null,
@@ -49,15 +51,13 @@ var recordTimeline = {
             // Create the chart
             var ctx = that.canvas.getContext("2d");
             that.chart = new Chart(ctx, {
-                type: "line",
+                type: "bar",
                 data: {
                     labels: data["labels"],
                     datasets: [{
-                            label: "Mileage",
+                            label: "Count",
                             data: data["values"],
-                            fill: false,
-                            borderColor: cssVariable("--primary"),
-                            lineTension: 0.1
+                            backgroundColor: cssVariable("--primary"),
                     }],
                 },
                 options: {
@@ -83,8 +83,8 @@ var recordTimeline = {
                     scales: {
                         x: {
                             title: {
-                                display: true,
-                                text: "Date",
+                                display: that.xLabel !== null,
+                                text: that.xLabel,
                                 color: cssVariable("--contrast"),
                                 font: {
                                     size: 14,
@@ -96,8 +96,8 @@ var recordTimeline = {
                         },
                         y: {
                             title: {
-                                display: true,
-                                text: "Mileage",
+                                display: that.yLabel !== null,
+                                text: that.yLabel,
                                 color: cssVariable("--contrast"),
                                 font: {
                                     size: 14,
@@ -127,5 +127,5 @@ var recordTimeline = {
 };
 
 // Initialize and create the record timeline
-recordTimeline.initialize();
-recordTimeline.createChart();
+recordFrequency.initialize();
+recordFrequency.createChart();

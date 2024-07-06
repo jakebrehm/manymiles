@@ -76,7 +76,7 @@ def get_record_timeline() -> Response:
 
     # Attempt to grab the data used for making the record timeline visualization
     try:
-        df = calculations.create_record_timeline_dataframe(user_id, lookback)
+        df = calculations.create_record_timeline_df(user_id, lookback)
     except KeyError:
         return jsonify({"valid": False})
 
@@ -88,45 +88,26 @@ def get_record_timeline() -> Response:
     return jsonify({"valid": True, "labels": labels, "values": values})
 
 
-# @blueprint_main.route("/data/day-of-week-histogram", methods=["GET"])
-# @login_required()
-# def get_day_of_week_histogram() -> Response: # TODO
-#     """Gets the data necessary to create the day of week histogram."""
+@blueprint_main.route("/data/record-frequency", methods=["GET"])
+@login_required()
+def get_record_frequency() -> Response:
+    """Gets the data necessary to create the record frequency visualization."""
 
-#     # Get the currently signed in user's id
-#     user_id = get_current_user_id()
+    # Get the currently signed in user's id
+    user_id = get_current_user_id()
 
-#     try:
-#         # Grab the data used for making the record timeline visualization
-#         df = calculations.create_day_of_week_histogram_dataframe(user_id)
-#     except KeyError:
-#         return jsonify({"valid": False})
+    # Get the value of query parameters from the request
+    period = request.args.get("period", default="day")
 
-#     # Separate the records in the record dates and mileage values
-#     labels = df["Day Name"].tolist()
-#     values = df["Count"].tolist()
+    # Attempt to grab the data used for making the record timeline visualization
+    try:
+        df = calculations.create_record_frequency_df(user_id, period=period)
+    except KeyError:
+        return jsonify({"valid": False})
 
-#     # Return the data as a json
-#     return jsonify({"valid": True, "labels": labels, "values": values})
+    # Separate the records in the record dates and mileage values
+    labels = df[f"{period.capitalize()} Name"].tolist()
+    values = df["Count"].tolist()
 
-
-# @blueprint_main.route("/data/month-histogram", methods=["GET"])
-# @login_required()
-# def get_month_histogram() -> Response: # TODO
-#     """Gets the data necessary to create the day of week histogram."""
-
-#     # Get the currently signed in user's id
-#     user_id = get_current_user_id()
-
-#     try:
-#         # Grab the data used for making the record timeline visualization
-#         df = calculations.create_month_histogram_dataframe(user_id)
-#     except KeyError:
-#         return jsonify({"valid": False})
-
-#     # Separate the records in the record dates and mileage values
-#     labels = df["Month Name"].tolist()
-#     values = df["Count"].tolist()
-
-#     # Return the data as a json
-#     return jsonify({"valid": True, "labels": labels, "values": values})
+    # Return the data as a json
+    return jsonify({"valid": True, "labels": labels, "values": values})
