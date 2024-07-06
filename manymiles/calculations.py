@@ -3,14 +3,23 @@ Performs calculations and operations related to metrics and visualizations.
 """
 
 
+import datetime as dt
+
 import pandas as pd
 
 from . import utilities
 from .models import User
 
 
-def create_record_timeline_dataframe(user: User | int) -> pd.DataFrame:
-    """Creates the dataframe that is used for the record timeline chart."""
+def create_record_timeline_dataframe(
+    user: User | int,
+    lookback: int | None,
+) -> pd.DataFrame:
+    """Creates the dataframe that is used for the record timeline chart.
+    
+    Argument `lookback` is the number of days to look back for data. Leaving
+    this argument blank will result in the function returning all data.
+    """
 
     # Get all records for the specified user
     columns = ["record_datetime", "mileage"]
@@ -22,6 +31,18 @@ def create_record_timeline_dataframe(user: User | int) -> pd.DataFrame:
 
     # Back fill any missing dates
     df["mileage"] = df["mileage"].ffill()
+
+    # If a lookback was specified, filter out any undesired data
+    if lookback:
+        # Determine the starting date to return data from
+        most_recent_record = utilities.get_most_recent_record(user)
+        threshold = most_recent_record.record_datetime - dt.timedelta(days=lookback)
+        # Construct a datetime of the day of the most recent record at midnight
+        threshold_date = threshold.date()
+        midnight = dt.datetime.min.time()
+        threshold_dt = dt.datetime.combine(threshold_date, midnight)
+        # Filter out values before the threshold date
+        df = df[df.index >= threshold_dt]
 
     # Drop the extra datetime column
     df = df.drop(labels=["record_datetime"], axis=1)

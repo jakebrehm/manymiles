@@ -4,11 +4,12 @@ related/required pages.
 """
 
 
-from flask import (
-    Blueprint, jsonify, render_template, redirect, session, Response
-)
+import datetime as dt
 
 import pandas as pd
+from flask import (
+    Blueprint, jsonify, render_template, redirect, session, request, Response
+)
 
 from ... import calculations
 from ...utilities import (
@@ -63,9 +64,19 @@ def get_record_timeline() -> Response:
     # Get the currently signed in user's id
     user_id = get_current_user_id()
 
+    # Get the value of query parameters from the request
+    period = request.args.get("period")
+
+    # Determine how much data to pull according to the query parameters
+    lookback = {
+        "week": 7,
+        "month": 30,
+        "year": 365,
+    }.get(period, None)
+
+    # Attempt to grab the data used for making the record timeline visualization
     try:
-        # Grab the data used for making the record timeline visualization
-        df = calculations.create_record_timeline_dataframe(user_id)
+        df = calculations.create_record_timeline_dataframe(user_id, lookback)
     except KeyError:
         return jsonify({"valid": False})
 
@@ -77,45 +88,45 @@ def get_record_timeline() -> Response:
     return jsonify({"valid": True, "labels": labels, "values": values})
 
 
-@blueprint_main.route("/data/day-of-week-histogram", methods=["GET"])
-@login_required()
-def get_day_of_week_histogram() -> Response:
-    """Gets the data necessary to create the day of week histogram."""
+# @blueprint_main.route("/data/day-of-week-histogram", methods=["GET"])
+# @login_required()
+# def get_day_of_week_histogram() -> Response: # TODO
+#     """Gets the data necessary to create the day of week histogram."""
 
-    # Get the currently signed in user's id
-    user_id = get_current_user_id()
+#     # Get the currently signed in user's id
+#     user_id = get_current_user_id()
 
-    try:
-        # Grab the data used for making the record timeline visualization
-        df = calculations.create_day_of_week_histogram_dataframe(user_id)
-    except KeyError:
-        return jsonify({"valid": False})
+#     try:
+#         # Grab the data used for making the record timeline visualization
+#         df = calculations.create_day_of_week_histogram_dataframe(user_id)
+#     except KeyError:
+#         return jsonify({"valid": False})
 
-    # Separate the records in the record dates and mileage values
-    labels = df["Day Name"].tolist()
-    values = df["Count"].tolist()
+#     # Separate the records in the record dates and mileage values
+#     labels = df["Day Name"].tolist()
+#     values = df["Count"].tolist()
 
-    # Return the data as a json
-    return jsonify({"valid": True, "labels": labels, "values": values})
+#     # Return the data as a json
+#     return jsonify({"valid": True, "labels": labels, "values": values})
 
 
-@blueprint_main.route("/data/month-histogram", methods=["GET"])
-@login_required()
-def get_month_histogram() -> Response:
-    """Gets the data necessary to create the day of week histogram."""
+# @blueprint_main.route("/data/month-histogram", methods=["GET"])
+# @login_required()
+# def get_month_histogram() -> Response: # TODO
+#     """Gets the data necessary to create the day of week histogram."""
 
-    # Get the currently signed in user's id
-    user_id = get_current_user_id()
+#     # Get the currently signed in user's id
+#     user_id = get_current_user_id()
 
-    try:
-        # Grab the data used for making the record timeline visualization
-        df = calculations.create_month_histogram_dataframe(user_id)
-    except KeyError:
-        return jsonify({"valid": False})
+#     try:
+#         # Grab the data used for making the record timeline visualization
+#         df = calculations.create_month_histogram_dataframe(user_id)
+#     except KeyError:
+#         return jsonify({"valid": False})
 
-    # Separate the records in the record dates and mileage values
-    labels = df["Month Name"].tolist()
-    values = df["Count"].tolist()
+#     # Separate the records in the record dates and mileage values
+#     labels = df["Month Name"].tolist()
+#     values = df["Count"].tolist()
 
-    # Return the data as a json
-    return jsonify({"valid": True, "labels": labels, "values": values})
+#     # Return the data as a json
+#     return jsonify({"valid": True, "labels": labels, "values": values})
