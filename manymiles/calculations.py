@@ -84,12 +84,12 @@ def create_record_frequency_df(
     df["year"] = df.index.isocalendar().year
     df["week"] = df.index.isocalendar().week
     if period == "month":
-        n = 12
+        number_range = range(1, 12+1)
         name_from_number = lambda x: calendar.month_name[x]
         df["number"] = pd.to_datetime(df["record_datetime"]).dt.month
         df["name"] = pd.to_datetime(df["record_datetime"]).dt.month_name()
     else:
-        n = 7
+        number_range = range(7)
         name_from_number = lambda x: calendar.day_name[x]
         df["number"] = pd.to_datetime(df["record_datetime"]).dt.dayofweek
         df["name"] = pd.to_datetime(df["record_datetime"]).dt.day_name()
@@ -105,7 +105,7 @@ def create_record_frequency_df(
 
     # Fill in any missing days
     df = df.set_index("number")
-    df = df.reindex(range(n), fill_value=0)
+    df = df.reindex(number_range, fill_value=0)
     df = df.reset_index(names=["number"])
     
     # Ensure that the days are named and in the correct order and return
