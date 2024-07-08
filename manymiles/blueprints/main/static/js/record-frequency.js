@@ -86,6 +86,7 @@ var recordFrequency = {
                                 label: (context) => {
                                     let i = context.dataIndex;
                                     let average = data["averages"][i];
+                                    average = Math.round(average * 100) / 100;
                                     let total = data["counts"][i];
                                     return `Average: ${average}, Total: ${total}`;
                                 },
