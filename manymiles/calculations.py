@@ -3,6 +3,7 @@ Performs calculations and operations related to metrics and visualizations.
 """
 
 
+import calendar
 import datetime as dt
 
 import pandas as pd
@@ -76,30 +77,33 @@ def create_record_frequency_df(
     columns = ["record_datetime", "mileage"]
     df = utilities.get_all_records_for_user(user)[columns]
 
-    # Consolidate the records to only the highest value for each day
-    df.index = pd.to_datetime(df["record_datetime"]).dt.date
+    # Set the dataframe index to the date of the record
+    df.index = pd.to_datetime(df["record_datetime"])
 
-    # Capitalize the period for labels
-    label = period.capitalize()
-
-    # Create columns for day of week number and name
+    # Create columns for the appropriate period year, week, number, and name
+    df["year"] = df.index.isocalendar().year
+    df["week"] = df.index.isocalendar().week
     if period == "month":
-        df[f"{label} Number"] = pd.to_datetime(df["record_datetime"]).dt.month
-        df[f"{label} Name"] = (
-            pd.to_datetime(df["record_datetime"]).dt.month_name()
-        )
+        df["number"] = pd.to_datetime(df["record_datetime"]).dt.month
+        df["name"] = pd.to_datetime(df["record_datetime"]).dt.month_name()
     else:
-        df[f"{label} Number"] = pd.to_datetime(df["record_datetime"]).dt.dayofweek
-        df[f"{label} Name"] = (
-            pd.to_datetime(df["record_datetime"]).dt.day_name()
-        )
+        df["number"] = pd.to_datetime(df["record_datetime"]).dt.dayofweek
+        df["name"] = pd.to_datetime(df["record_datetime"]).dt.day_name()
 
-    # Count the number of records for each day of the week
-    group_columns = [f"{label} Number", f"{label} Name"]
-    df = df.groupby(group_columns).size().reset_index(name="Count")
+    # Determine how many records were made for each day
+    group_columns = ["year", "week", "number"]
+    df = df.groupby(group_columns).size().reset_index(name="count")
+    # Determine average and total records for each period
+    df = df.groupby(["number"])["count"].agg(
+        average="mean",
+        count="sum",
+    ).reset_index()
 
-    # Ensure that the days are in the correct order
-    df = df.sort_values(by=f"{label} Number", ascending=True)
+    # Fill in any missing days
+    df = df.set_index("number")
+    df = df.reindex(range(7), fill_value=0)
+    df = df.reset_index(names=["number"])
     
-    # Return the fully constructed dataframe
-    return df
+    # Ensure that the days are named and in the correct order and return
+    df["name"] = df["number"].apply(lambda x: calendar.day_name[x])
+    return df.sort_values(by="number", ascending=True)

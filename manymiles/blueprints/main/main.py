@@ -106,8 +106,14 @@ def get_record_frequency() -> Response:
         return jsonify({"valid": False})
 
     # Separate the records in the record dates and mileage values
-    labels = df[f"{period.capitalize()} Name"].tolist()
-    values = df["Count"].tolist()
+    labels = df[f"name"].tolist()
+    counts = df["count"].tolist()
+    averages = df["average"].tolist()
 
     # Return the data as a json
-    return jsonify({"valid": True, "labels": labels, "values": values})
+    return jsonify({
+        "valid": True,
+        "labels": labels,
+        "counts": counts,
+        "averages": averages,
+    })

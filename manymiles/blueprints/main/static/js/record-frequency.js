@@ -9,7 +9,7 @@ var recordFrequency = {
     // Chart customizations
     title: null,
     xLabel: null,
-    yLabel: "Count",
+    yLabel: "Average",
 
     // Placeholder variables
     chart: null,
@@ -55,8 +55,8 @@ var recordFrequency = {
                 data: {
                     labels: data["labels"],
                     datasets: [{
-                        label: "Count",
-                        data: data["values"],
+                        label: "Average",
+                        data: data["averages"],
                         borderWidth: 2,
                         borderColor: cssVariable("--primary"),
                         backgroundColor: hslOpacity(cssVariable("--primary"), 0.15),
@@ -80,6 +80,16 @@ var recordFrequency = {
                         },
                         legend: {
                             display: false,
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => {
+                                    let i = context.dataIndex;
+                                    let average = data["averages"][i];
+                                    let total = data["counts"][i];
+                                    return `Average: ${average}, Total: ${total}`;
+                                },
+                            },
                         },
                     },
                     scales: {
