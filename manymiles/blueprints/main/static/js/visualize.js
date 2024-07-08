@@ -35,6 +35,17 @@ function cssVariable(variable) {
 }
 
 /**
+ * [hslOpacity]
+ * Applies the specified opacity to an HSL string.
+ * @param   {String}    hsl         The HSL string to apply opacity to.
+ * @param   {String}    alpha       The opacity to apply ranging from 0 to 1.
+ * @returns {String}                The HSL string with the opacity applied.
+ */
+function hslOpacity(hsl, alpha) {
+    return hsl.replace("hsl", "hsla").replace(")", `, ${alpha})`);
+}
+
+/**
  * [cssVariable description]
  * Appends the provided parameters to the endpoint.
  * @param   {String}    endpoint    The endpoint to attach parameters to.

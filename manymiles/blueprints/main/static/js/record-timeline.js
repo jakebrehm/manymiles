@@ -53,11 +53,12 @@ var recordTimeline = {
                 data: {
                     labels: data["labels"],
                     datasets: [{
-                            label: "Mileage",
-                            data: data["values"],
-                            fill: false,
-                            borderColor: cssVariable("--primary"),
-                            lineTension: 0.1
+                        label: "Mileage",
+                        data: data["values"],
+                        borderColor: cssVariable("--primary"),
+                        lineTension: 0.1,
+                        fill: true,
+                        backgroundColor: hslOpacity(cssVariable("--primary"), 0.15),
                     }],
                 },
                 options: {
