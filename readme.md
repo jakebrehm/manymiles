@@ -45,7 +45,7 @@
 
 ## Getting set up
 
-The source code can be viewed on Github [here](https://github.com/jakebrehm/manymiles). Keep in mind that **ManyMiles** was not built with the intention of being run locally, so there are a few hoops to jump through if you want to do so.
+The source code can be viewed on GitHub [here](https://github.com/jakebrehm/manymiles). Keep in mind that **ManyMiles** was not built with the intention of being run locally, so there are a few hoops to jump through if you want to do so.
 
 Before you start, you're going to need to have a local instance of MySQL installed on your machine. I recommend using [MySQL Workbench](https://dev.mysql.com/downloads/workbench/), although I won't be going into too much detail about how to work with it here.
 
@@ -165,7 +165,7 @@ For anyone curious to see how the database was modeled, an entity relationship d
 
 ## Contributors
 
-- **Jake Brehm** - *main developer* - [Email](mailto:mail@jakebrehm.com) | [Github](http://github.com/jakebrehm) | [LinkedIn](http://linkedin.com/in/jacobbrehm)
+- **Jake Brehm** - *main developer* - [Email](mailto:mail@jakebrehm.com) | [GitHub](http://github.com/jakebrehm) | [LinkedIn](http://linkedin.com/in/jacobbrehm)
 
 ## Acknowledgements
 
