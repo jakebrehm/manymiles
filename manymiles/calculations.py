@@ -86,16 +86,17 @@ def create_record_frequency_df(
     if period == "month":
         number_range = range(1, 12+1)
         name_from_number = lambda x: calendar.month_name[x]
+        group_columns = ["year", "number"]
         df["number"] = pd.to_datetime(df["record_datetime"]).dt.month
         df["name"] = pd.to_datetime(df["record_datetime"]).dt.month_name()
     else:
         number_range = range(7)
         name_from_number = lambda x: calendar.day_name[x]
+        group_columns = ["year", "week", "number"]
         df["number"] = pd.to_datetime(df["record_datetime"]).dt.dayofweek
         df["name"] = pd.to_datetime(df["record_datetime"]).dt.day_name()
 
     # Determine how many records were made for each day
-    group_columns = ["year", "week", "number"]
     df = df.groupby(group_columns).size().reset_index(name="count")
     # Determine average and total records for each period
     df = df.groupby(["number"])["count"].agg(
