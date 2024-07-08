@@ -96,7 +96,7 @@ def create_record_frequency_df(
         df["number"] = pd.to_datetime(df["record_datetime"]).dt.dayofweek
         df["name"] = pd.to_datetime(df["record_datetime"]).dt.day_name()
 
-    # Determine how many records were made for each day
+    # Determine how many records were made for each period
     df = df.groupby(group_columns).size().reset_index(name="count")
     # Determine average and total records for each period
     df = df.groupby(["number"])["count"].agg(
