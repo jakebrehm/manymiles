@@ -25,6 +25,21 @@ def create_record_timeline_df(
     columns = ["record_datetime", "mileage"]
     df = utilities.get_all_records_for_user(user)[columns]
 
+    # Extract the datetime and mileage from the most recent record
+    most_recent_dt = df["record_datetime"].max()
+    most_recent_record = df.loc[df["record_datetime"].idxmax()]["mileage"]
+    # Construct a datetime for today at midnight
+    today = dt.date.today()
+    midnight = dt.datetime.min.time()
+    today_at_midnight = dt.datetime.combine(today, midnight)
+    # Check to see if there was already a record today
+    if today > most_recent_dt.date():
+        # Add today's date to the dataframe if it doesn't already exist
+        df.loc[len(df)] = {
+            "record_datetime": today_at_midnight,
+            "mileage": most_recent_record,
+        }
+
     # Get the maximum mileage value for each day
     df.index = df["record_datetime"]
     df = df.groupby(pd.Grouper(freq="D")).max()
@@ -35,12 +50,8 @@ def create_record_timeline_df(
     # If a lookback was specified, filter out any undesired data
     if lookback:
         # Determine the starting date to return data from
-        most_recent_record = utilities.get_most_recent_record(user)
-        threshold = most_recent_record.record_datetime - dt.timedelta(days=lookback)
-        # Construct a datetime of the day of the most recent record at midnight
-        threshold_date = threshold.date()
-        midnight = dt.datetime.min.time()
-        threshold_dt = dt.datetime.combine(threshold_date, midnight)
+        threshold = (dt.datetime.now() - dt.timedelta(days=lookback)).date()
+        threshold_dt = dt.datetime.combine(threshold, midnight)
         # Filter out values before the threshold date
         df = df[df.index >= threshold_dt]
 
