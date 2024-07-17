@@ -4,6 +4,10 @@ user can change their username, password, delete their account, etc.
 """
 
 
+import datetime as dt
+from io import StringIO
+
+import pandas as pd
 import sqlalchemy as sa
 from flask import (
     Blueprint, flash, make_response, render_template, redirect, request,
@@ -11,7 +15,7 @@ from flask import (
 )
 
 from ...extensions import db
-from ...models import User
+from ...models import Record, User
 from ...utilities import (
     delete_account, generate_hash, get_all_records_for_user, get_current_user_id,
     get_user_from_id, get_password_from_id, is_username_available, 
@@ -50,6 +54,48 @@ def account() -> str | Response:
         user=user,
         password_changed=last_updated.strftime(r"%B %-d, %Y %-I:%M:%S %p"),
     )
+
+
+@blueprint_account.route("/account/import_data", methods=["POST"])
+@login_required()
+def import_data() -> Response:
+    """Imports data from a csv file and replaces the user's records."""
+
+    # Get the currently signed in user's id
+    user_id = get_current_user_id()
+
+    # Check if the records was posted by the form
+    if request.method == "POST":
+        # Get the file from the request
+        file = request.files["recordsToImport"]
+        try:
+            # Read the file into a dataframe
+            df = pd.read_csv(StringIO(file.read().decode("utf-8")))
+            # Remove all of the user's records
+            db.session.query(Record).filter_by(user_id=user_id).delete()
+            # Add the new records
+            for row in df.iterrows():
+                notes = row[1]["notes"]
+                db.session.add(Record(
+                    user_id=user_id,
+                    mileage=row[1]["mileage"],
+                    record_datetime=row[1]["record_datetime"],
+                    create_datetime=dt.datetime.now(),
+                    update_datetime=dt.datetime.now(),
+                    notes=None if pd.isnull(notes) else notes,
+                ))
+            # Commit the changes
+            db.session.commit()
+        except Exception as e:
+            print(e)
+            # If there was an error, flash a message
+            flash(
+                "There was an error importing your data. "
+                "Please make sure that the file is in the correct format."
+            )
+    
+    # Redirect back to the account page
+    return redirect(url_for("account.account"))
 
 
 @blueprint_account.route("/account/export_data")
