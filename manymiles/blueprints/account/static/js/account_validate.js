@@ -239,6 +239,31 @@ function validateUpdatePasswordForm() {
 }
 
 /**
+ * [enableImportDataConfirm() description]
+ * Toggles the confirmation button for record importing a specified number
+ * of milliseconds after being called.
+ * @param   {Number}    timeout    The number of seconds to wait to toggle.
+ */
+function enableImportDataConfirm(timeout=5000) {
+
+    // Get handles to the form submission button
+    const confirmButton = document.getElementById("confirm-modal-import-data");
+    const confirmHref = document.getElementById("confirm-href-import-data");
+
+    // Disabled the button to begin
+    confirmButton.disabled = true;
+
+    // Disable the functionality of the href
+    confirmHref.href = "javascript:void(0);";
+
+    // Re-enable the button after the specified amount of time has passed
+    setTimeout(function() {
+        confirmButton.disabled = false;
+        confirmHref.href = "/account/import_data";
+    }, timeout);
+}
+
+/**
  * [enableDeleteAccountConfirm() description]
  * Toggles the confirmation button for account deletion a specified number
  * of milliseconds after being called.
